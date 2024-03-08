@@ -10,7 +10,7 @@ sentences.
 Each team member should Place an 'X' under their name to vote for the ideas 
 you like the best.
 
-| Project Idea | Description | Raja | Eric | BK | JD | Astoge | 
+| Project Idea | Description | Raja | Eric | BK | JD | Avaz | 
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | Chat App | Create account, create/join chatrooms, have friend circles. | | | | | |
 | Ticket management System |  Like eventbrite where anyone can create an event (public or private) and send the link to friends or anyone, and they can buy a ticket or RSVP to join the event. That way, the host can know who's coming and how many. | | | |X| |
