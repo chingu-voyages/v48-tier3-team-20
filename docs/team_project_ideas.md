@@ -12,8 +12,8 @@ you like the best.
 
 | Project Idea | Description | Raja | Eric | BK | JD | Avaz | 
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Chat App | Create account, create/join chatrooms, have friend circles. | | | | | |
-| Ticket management System |  Like eventbrite where anyone can create an event (public or private) and send the link to friends or anyone, and they can buy a ticket or RSVP to join the event. That way, the host can know who's coming and how many. | | | |X| |
+| Chat App | Create account, create/join chatrooms, have friend circles. | |X| | | |
+| Ticket management System |  Like eventbrite where anyone can create an event (public or private) and send the link to friends or anyone, and they can buy a ticket or RSVP to join the event. That way, the host can know who's coming and how many. | |X| |X| |
 | Education Platform | Online Learning Platform with Course Tracker | | | | | |
 | Online realty platform | Property rent or buy platform. | | | | | |
 | Pomodoro + notes / journals | Description | | | | | |
