@@ -10,9 +10,12 @@ sentences.
 Each team member should Place an 'X' under their name to vote for the ideas 
 you like the best.
 
-| Project Idea | Description | teammate name | teammate name | teammate name | teammate name | teammate name | teammate name |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| First idea | Description | | | | | | |
-| Second idea | Description | | | | | | |
-| ... | Description | | | | | | |
-| Last idea | Description | | | | | | |
+| Project Idea | Description | Raja | Eric | BK | JD | Astoge | 
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| Chat App | Create account, create/join chatrooms, have friend circles. | | | | | |
+| Ticket management System |  Like eventbrite where anyone can create an event (public or private) and send the link to friends or anyone, and they can buy a ticket or RSVP to join the event. That way, the host can know who's coming and how many. | | | | | |
+| Education Platform | Online Learning Platform with Course Tracker | | | | | |
+| Online realty platform | Property rent or buy platform. | | | | | |
+| Pomodoro + notes / journals | Description | | | | | |
+| Book Trading | Description | | | | | |
+| Event Finder | A platform for people to find and participate in physical games like more outdoor games in their local area or university | | | | | |
