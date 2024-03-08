@@ -8,7 +8,8 @@ To set this up add each teammates name in the `teammate name` column. Each
 team member should Place an 'X' under their name to vote for the ideas 
 you like the best.
 
-| No. | Question/Option | Raja | Eric | BK | JD | Avaz | 
+| No. | Question/Option | Raja | Eric | BK | JD | Avaz 
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | 1 | Team meeting schedule | | | | | | |
 |   |	- Sprint Planning Sunday@9:00 a.m. CST | | | | | | |
 |   |	- Knowledge Xfer as needed | | | | | | |
