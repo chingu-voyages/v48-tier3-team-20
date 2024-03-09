@@ -7,7 +7,7 @@ To set this up, add each teammate's name in the `Teammate Name` column. Each tea
 | No. | Question/Option                                     | Raja | Eric | BK | JD | Avaz |
 | --- | ----------------------------------------------------- | ---- | ---- | -- | -- | ---- |
 | 1   | Team meeting schedule                                |      |      |    |    |      |
-|     | - Sprint Planning Day              |      |Mon (any weekday is fine)|    |    |      |
+|     | - Sprint Planning Day              |      |Mon (any weekday is fine)|    |    | any weekday is fine |
 |     | - Knowledge Xfer as needed                           |      |      |    |    |      |
 | 2   | Project Backlog Tool                                  |      |      |    |    |      |
 |     | - Notion                                              |      |No preference|    |    |      |
