@@ -22,7 +22,7 @@ To set this up, add each teammate's name in the `Teammate Name` column. Each tea
 | 4   | Where to host the app?                                |      |      |    |    |      |
 |     | - Heroku (suitable for FE, BE, & Postgres)            |      | x |    |    |   x   |
 |     | - Netlify (suitable only for FE)                     |      |      |    |    |      |
-|     | - Vercel (suitable only for FE)                      |      |      |    |  X  |   x   |
+|     | - Vercel (suitable only for FE and NextJs)                      |      |      |    |  X  |   x   |
 |     | - Mongo Atlas (suitable only for MongoDB)            |      | x  |    |    |      |
 | 5   | BE/FE repos organization                              |      |      |    |    |      |
 |     | - Separate GitHub repos for each                     |      | x |    |    |  x    |
