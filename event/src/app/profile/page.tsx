@@ -1,3 +1,3 @@
 export default function Profile() {
-  return <>Profile</>;
+  return <p>Profile</p>;
 }
