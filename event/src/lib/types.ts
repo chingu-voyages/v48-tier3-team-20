@@ -15,16 +15,16 @@ export type UserType = {
 };
 
 // example
-type EventCategory = 'Sports' | 'Music' | 'Games' | 'Comedy' | 'Others';
+export type EventCategory = "Sports" | "Music" | "Games" | "Comedy" | "Others";
 
 // example
 export type EventType = {
-  id: string;
-  name: string;
-  host: UserType;
+  id: number;
+  eventName: string;
+  hostId?: string;
   description: string;
-  category: EventCategory;
-  eventPoster: ImageType;
-  isPublic: boolean;
-  remainingSpots: number;
+  category?: EventCategory;
+  date: Date;
+  img: string;
+  location: string;
 };

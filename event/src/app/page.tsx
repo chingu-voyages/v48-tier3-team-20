@@ -1,80 +1,31 @@
-"use client";
 import EventList from "@/components/EventList";
 
-const data = [
-  {
-    id: 1,
-    category: "trendy weekly events",
-    events: [
-      {
-        id: 1,
-        eventName: "event1",
-        date: new Date(),
-        location: "88 garden",
-        img: "image-source-url",
-      },
-      {
-        id: 2,
-        eventName: "event2",
-        date: new Date(),
-        location: "Marden",
-        img: "image-source-url",
-      },
-    ],
-  },
-  {
-    id: 2,
-    category: "upcoming events",
-    events: [
-      {
-        id: 1,
-        eventName: "event12",
-        date: new Date(),
-        location: "88 garden",
-        img: "image-source-url",
-      },
-      {
-        id: 2,
-        eventName: "event2",
-        date: new Date(),
-        location: "Marden",
-        img: "image-source-url",
-      },
-    ],
-  },
-  {
-    id: 3,
-    category: "music events",
-    events: [
-      {
-        id: 1,
-        eventName: "event3",
-        date: new Date(),
-        location: "88 garden",
-        img: "image-source-url",
-      },
-      {
-        id: 2,
-        eventName: "event2",
-        date: new Date(),
-        location: "Marden",
-        img: "image-source-url",
-      },
-    ],
-  },
-];
+import { getAllEvents } from "@/lib/dummyBackend";
+import { cn } from "@/lib/utils";
+import React from "react";
 
-export default function Home() {
+export default async function Home() {
+  const { data } = getAllEvents(); // pretend is await fetch(...)
   return (
     <main className="h-full w-full text-lg outline">
-      <div className="flex flex-col items-center">
-        <h1 className="p-5 text-3xl">Find your favourite event</h1>
+      <div className="mb-10 flex flex-col items-center gap-4 pt-12">
+        <h1 className="text-3xl">Find your favourite event</h1>
         <p>Invite your best friends and make them happy</p>
-        <input
-          className="w-80 rounded-lg px-8 py-2"
-          type="text"
-          placeholder="enter keyword or location"
-        />
+        <div className="relative flex">
+          <input
+            className="w-80 rounded-lg py-2 pl-8 pr-16"
+            type="text"
+            placeholder="enter keyword or location"
+          />
+          <button
+            className={cn(
+              "absolute right-3 top-1/2 -translate-y-1/2",
+              "rounded-3xl bg-slate-200 px-2 py-1 text-sm hover:ring",
+            )}
+          >
+            GO
+          </button>
+        </div>
       </div>
 
       {data.map((card) => (
