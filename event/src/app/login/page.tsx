@@ -1,9 +1,10 @@
 "use client"
 import { FormEvent } from 'react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/router';
 
 
 export default function LoginPage() {
+  const router = useRouter();
 
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -13,20 +14,21 @@ export default function LoginPage() {
     const email = formData.get('email')
     const password = formData.get('password')
 
-    await fetch('../api/users/login', {
+    const response = await fetch('../api/users/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
-    }).then((response) => {
-      console.log("response from FETCH", response)
-      if (response.ok) {
-        console.log("redirecting")
-        redirect('/app')
-      } else {
-        console.log("not redirecting")
-        // Handle errors
-      }
-    })
+    });
+
+    console.log("response from FETCH", response)
+    if (response.ok) {
+      console.log("redirecting")
+      router.push("/app/page")
+    } else {
+      console.log("not redirecting")
+      // Handle errors
+    }
+
 
   }
 
