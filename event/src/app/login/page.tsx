@@ -1,10 +1,13 @@
 "use client"
 import { FormEvent } from 'react'
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
+import Cookies from "js-cookie";
 
 
 export default function LoginPage() {
   const router = useRouter();
+
+  
 
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -19,13 +22,16 @@ export default function LoginPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     });
+    const resp = await response.json();
 
-    console.log("response from FETCH", response)
     if (response.ok) {
-      console.log("redirecting")
-      router.push("/app/page")
+      //set a cookie that the homepage will verify with Cookies.get("accessToken")
+      console.log(resp.token)
+      Cookies.set("accessToken", resp.token);
+      
+      //router.push("/app")
     } else {
-      console.log("not redirecting")
+      alert(resp.message)
       // Handle errors
     }
 

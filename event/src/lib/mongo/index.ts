@@ -5,7 +5,6 @@ declare global {
 }
 
 let uri: string;
-
 if (process.env.MONGODB_URI) {
   uri = process.env.MONGODB_URI
 } else {

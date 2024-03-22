@@ -5,34 +5,31 @@ import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken'
 
 
-
 export async function POST(req: Request) {
+        await dbConnect();
+        const body = await req.json();
+        const user = await Users.findOne({ email: body.email }).exec();
+        //peepoo@gmail.com
 
-    const body = await req.json();
-    
-    if(!body || !body.email || !body.password){
-        return NextResponse.json({ success: false, message: "Please provide email and password."})
-    }
+        if (!user) {
+            console.log("NO user")
+            return NextResponse.json({ message: "No user by that email..." }, {status: 500})
+        }
 
     try {
-        //peepoo@gmail.com
-        await dbConnect();
-        const user = await Users.find({ email: body.email });
-        const match = body.password === user[0].password; //await bcrypt.compare(body.password, user[0].password);
-        if(!user){
-            return NextResponse.json({message: "No user by that email..."})
-        }
-        if(match){
+        const match = body.password === user.password; //await bcrypt.compare(body.password, user[0].password);
+        if (match) {
             //login
-            const payload = JSON.parse(JSON.stringify(user[0]))
-            const token = jwt.sign(payload, "privateKey", { expiresIn: '1hr' });
-            return NextResponse.json({ token })
+            const payload = JSON.parse(JSON.stringify(user._id))
+            const token = jwt.sign(payload, "privateKey");
+            return NextResponse.json({ "token": token });
+         
         } else {
-            return NextResponse.json({ message: "Email or password do not match..."}, {status: 500})
+            return NextResponse.json({ message: "Email or password do not match..." }, { status: 500 })
         }
     } catch (err) {
         console.log(err);
-        return NextResponse.json({message: "Wrong email or password.."})
+        return NextResponse.json({ message: "Wrong email or password.." })
 
     }
 }
