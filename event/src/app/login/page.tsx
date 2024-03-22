@@ -1,14 +1,10 @@
-"use client"
+'use client'
 import { FormEvent } from 'react'
 import { useRouter } from 'next/navigation';
-import Cookies from "js-cookie";
 
 
 export default function LoginPage() {
   const router = useRouter();
-
-  
-
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -17,24 +13,19 @@ export default function LoginPage() {
     const email = formData.get('email')
     const password = formData.get('password')
 
-    const response = await fetch('../api/users/login', {
+    const response = await fetch('/api/users/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     });
-    const resp = await response.json();
 
     if (response.ok) {
-      //set a cookie that the homepage will verify with Cookies.get("accessToken")
-      console.log(resp.token)
-      Cookies.set("accessToken", resp.token);
-      
-      //router.push("/app")
+      router.push("/about")
     } else {
-      alert(resp.message)
       // Handle errors
     }
-
+    const data = await response.json()
+    console.log('data', data)
 
   }
 
