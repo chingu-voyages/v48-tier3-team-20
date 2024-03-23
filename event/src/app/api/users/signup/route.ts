@@ -1,6 +1,6 @@
 import User, { Users } from "@/models/User";
 import { NextRequest, NextResponse } from "next/server";
-import bcryptjs from "bcryptjs";
+import bcrypt from "bcrypt";
 import dbConnect from "@/lib/mongo";
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
@@ -17,10 +17,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ error: "User already exists with that email" }, { status: 400 });
         }
         
-        const salt: string = await bcryptjs.genSalt(10);
-        const hashedPassword: string = await bcryptjs.hash(password, salt);
+        const salt: string = await bcrypt.genSalt(10);
+        const hashedPassword: string = await bcrypt.hash(password, salt);
 
-        const newUser: Users = new User({
+        const newUser = new User({
             fullname,
             email,
             username,
