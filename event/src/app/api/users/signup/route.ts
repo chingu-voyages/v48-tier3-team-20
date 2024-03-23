@@ -28,7 +28,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             isSubscribed            
         });
 
-        const savedUser: Users = await newUser.save();
+        const savedUser = await newUser.save();
 
         const responseUser = savedUser.toJSON();
         delete responseUser.password;
