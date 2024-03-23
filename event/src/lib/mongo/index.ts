@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 declare global {
   var mongoose: any;
@@ -7,6 +7,9 @@ declare global {
 let uri: string;
 if (process.env.MONGODB_URI) {
   uri = process.env.MONGODB_URI
+
+  console.log(uri)
+
 } else {
   throw new Error("Please define the MONGODB_URI environment variable inside .env.local")
 }
@@ -34,7 +37,7 @@ const dbConnect = async () => {
   } catch (e) {
     cached.promise = null;
     throw e;
-  }
+  }  
   return cached.conn;
 }
 
