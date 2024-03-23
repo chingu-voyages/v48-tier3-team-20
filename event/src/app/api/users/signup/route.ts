@@ -30,10 +30,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         const savedUser: Users = await newUser.save();
 
+        const responseUser = savedUser.toJSON();
+        delete responseUser.password;
         return NextResponse.json({
             message: "User created successfully",
             success: true,
-            savedUser
+            responseUser 
         });
 
     } catch (err) {
