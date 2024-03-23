@@ -8,7 +8,8 @@ export default function EventType({
   return (
     <>
       <div className='flex gap-2 bg-red-200'>
-        <p>Category {params.eventType}: </p>
+        <p className='text-xl'> {params.eventType}:</p>
+        <div>Image goes here</div>
         <Link className='text-red-800' href={`/events/${params.eventType}/123`}>
           123
         </Link>
