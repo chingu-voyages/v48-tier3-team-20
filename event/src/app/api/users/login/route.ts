@@ -2,14 +2,16 @@ import dbConnect from '@/lib/mongo/index';
 import Users from '@/models/User';
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import jwt from 'jsonwebtoken'
-import { cookies } from 'next/headers';
+import {cookies} from 'next/headers'
+
+import { SignJWT } from 'jose';
+
+
 
 export async function POST(req: Request) {
     await dbConnect();
     const body = await req.json();
     const user = await Users.findOne({ email: body.email }).exec();
-    //peepoo@gmail.com
 
     if (!user) {
         console.log("NO user")
@@ -21,19 +23,29 @@ export async function POST(req: Request) {
         if (match) {
             //login
             const payload = JSON.parse(JSON.stringify(user._id))
-            const token = jwt.sign(payload, "privateKey");
+            const key = new TextEncoder().encode("encoderKEY")
+        
+            const token = await new SignJWT({
+                userid: payload
+            })
+                .setProtectedHeader({
+                    alg: 'HS256'
+                }) 
+                .setExpirationTime("1hr")
+                .sign(key);
+            
+            
+    
             cookies().set("accessToken", token);
+            console.log("token creation",token);
+
             return NextResponse.json({ success: true });
 
         } else {
             return NextResponse.json({ message: "Email or password do not match..." }, { status: 500 })
         }
-    // }
-    // catch (err) {
-    //     console.log(err.message);
-    //     return NextResponse.json({ message: "Wrong email or password.." })
-    // }
-}    catch (error) {
+
+    } catch (error) {
         console.log('error caught:', error);
         const err = error as Error;
         console.log(err.name, err.message);

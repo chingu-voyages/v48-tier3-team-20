@@ -1,16 +1,24 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import {verify} from 'jsonwebtoken';
+
+import * as jose from 'jose';
+
 
 export function middleware(request: NextRequest) {
+    let cookie = request.cookies.get('accessToken')
+    const key = new TextEncoder().encode("encoderKEY")
+
+    console.log("MIDDLEWARE START")
+    console.log("cookie", cookie)
+
     try {
-        let cookie = request.cookies.get('accessToken')
-        console.log('cookie from middleware', cookie);
+        console.log("Beginning of the try middleware")
         if (!cookie) {
             console.log('no cookie')
             return NextResponse.rewrite(new URL('/login', request.url))
         }
-        verify(cookie.value, "privateKey")
+        jose.jwtVerify(cookie.value, key)
+        //console.log(jose.jwtVerify(cookie.value, key))
         console.log('after jwt verify')
         if (request.nextUrl.pathname.startsWith('/about')) {
             console.log('middleware about')
@@ -20,14 +28,11 @@ export function middleware(request: NextRequest) {
         if (request.nextUrl.pathname.startsWith('/dashboard')) {
             return NextResponse.rewrite(new URL('/dashboard/user', request.url))
         }
-
-
-
-    } catch (err) {
-        console.log(err)
+    } catch (error) {
+        console.log('error caught:', error);
+        const err = error as Error;
+        console.log(err.name, err.message);
     }
-
-
 
 }
 
