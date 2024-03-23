@@ -4,12 +4,15 @@ import type { NextRequest } from 'next/server'
 import * as jose from 'jose';
 
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
     let cookie = request.cookies.get('accessToken')
     const key = new TextEncoder().encode("encoderKEY")
 
     console.log("MIDDLEWARE START")
     console.log("cookie", cookie)
+
+    
+      
 
     try {
         console.log("Beginning of the try middleware")
@@ -17,12 +20,17 @@ export function middleware(request: NextRequest) {
             console.log('no cookie')
             return NextResponse.rewrite(new URL('/login', request.url))
         }
-        jose.jwtVerify(cookie.value, key)
-        //console.log(jose.jwtVerify(cookie.value, key))
+        const { payload, protectedHeader } = await jose.jwtVerify(cookie.value, key, {
+           
+          })
+          //in chat right now
+          console.log("protectedheader", protectedHeader)
+          console.log("payload",payload)
+
         console.log('after jwt verify')
         if (request.nextUrl.pathname.startsWith('/about')) {
             console.log('middleware about')
-            return NextResponse.rewrite(new URL('/about-2', request.url))
+            return NextResponse.rewrite(new URL('/', request.url))
         }
 
         if (request.nextUrl.pathname.startsWith('/dashboard')) {
