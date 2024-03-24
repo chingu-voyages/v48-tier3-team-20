@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { cn } from "@/lib/utils";
@@ -11,7 +12,6 @@ export const metadata: Metadata = {
   title: "Event App",
   description: "A chingu app by team 20",
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{
