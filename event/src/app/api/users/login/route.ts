@@ -42,7 +42,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ success: true });
 
         } else {
-            return NextResponse.json({ message: "Email or password do not match..." }, { status: 500 })
+            return NextResponse.json({ message: "Email or password do not match..." }, { status: 400 })
         }
 
     } catch (error) {
