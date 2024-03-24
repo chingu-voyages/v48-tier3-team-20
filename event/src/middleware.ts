@@ -5,8 +5,9 @@ import * as jose from 'jose';
 
 
 export async function middleware(request: NextRequest) {
-    let cookie = request.cookies.get('accessToken')
-    const key = new TextEncoder().encode("encoderKEY")
+    let skey : string = process.env.SECRETKEY!;
+    let cookie = request.cookies.get("accessToken")
+    const key = new TextEncoder().encode(skey)
 
     console.log("MIDDLEWARE START")
     console.log("cookie", cookie)
