@@ -7,8 +7,8 @@ export default function Header() {
         LOGO
       </Link>
       <nav className="flex gap-4">
-        <Link className="text-sky-700" href="/events">
-          Events
+        <Link className="text-sky-700" href="/category">
+          Category
         </Link>
         <Link className="text-sky-700" href="/login">
           Login

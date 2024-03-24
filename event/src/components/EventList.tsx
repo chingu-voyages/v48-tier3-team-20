@@ -3,22 +3,16 @@ import EventCard from "./EventCard";
 
 type EventListProp = {
   category: string;
-  events: {
-    eventName: string;
-    date: Date;
-    location: string;
-    img: string;
-    id: number;
-  }[];
+  children?: React.ReactNode;
 };
 
-export default function EventList({ category, events }: EventListProp) {
+export default function EventList({ category, children }: EventListProp) {
   return (
     <section className="m-1">
       <div className="flex items-center justify-center">
         <h2 className="mr-4 text-2xl font-bold">{category}</h2>
         <Link
-          href="#"
+          href={`/category/${category}`}
           className="flex items-center rounded-lg border px-2 py-1 text-sm"
         >
           View more
@@ -29,9 +23,9 @@ export default function EventList({ category, events }: EventListProp) {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right"
           >
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -40,17 +34,7 @@ export default function EventList({ category, events }: EventListProp) {
         </Link>
       </div>
 
-      <div className="flex justify-center">
-        {events.map((event) => (
-          <EventCard
-            key={event.id}
-            eventName={event.eventName}
-            date={event.date}
-            location={event.location}
-            img={event.img}
-          />
-        ))}
-      </div>
+      <div className="flex justify-center">{children}</div>
     </section>
   );
 }

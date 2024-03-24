@@ -1,4 +1,5 @@
 // put all shared typescript types here
+import { CATEGORIES } from "@/lib/constants";
 
 // example
 type ImageType = {
@@ -15,16 +16,18 @@ export type UserType = {
 };
 
 // example
-export type EventCategory = "Sports" | "Music" | "Games" | "Comedy" | "Others";
+// type EventCategory = "Sports" | "Music" | "Games" | "Comedy" | "Others";
+export type EventCategory = (typeof CATEGORIES)[number];
 
 // example
 export type EventType = {
-  id: number;
+  id: string;
   eventName: string;
   hostId?: string;
   description: string;
-  category?: EventCategory;
+  category: EventCategory;
   date: Date;
   img: string;
   location: string;
+  weeklyViews: number;
 };
