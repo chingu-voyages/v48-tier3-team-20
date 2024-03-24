@@ -36,7 +36,7 @@ export async function POST(req: Request) {
             
             
     
-            cookies().set("accessToken", token);
+            cookies().set("accessToken", token, { secure: true, httpOnly: true });
             console.log("token creation",token);
 
             return NextResponse.json({ success: true });
