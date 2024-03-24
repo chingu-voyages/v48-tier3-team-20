@@ -23,7 +23,9 @@ export async function POST(req: Request) {
         if (match) {
             //login
             const payload = JSON.parse(JSON.stringify(user._id))
-            const key = new TextEncoder().encode("encoderKEY")
+             let skey : string = process.env.SECRETKEY!;
+
+            const key = new TextEncoder().encode(skey)
         
             const token = await new SignJWT({
                 userid: payload
