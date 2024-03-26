@@ -27,6 +27,7 @@ const Eventschema = new mongoose.Schema<Events>({
     minlength: [3, "Slug must be 3 letters long"],
     unique: true,
     required: true,
+    lowercase: true,
   },
   description: {
     type: String,
