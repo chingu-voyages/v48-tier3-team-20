@@ -3,7 +3,7 @@ import Event from "@/models/Event";
 import { NextRequest, NextResponse } from "next/server";
 import z from 'zod'
 import * as jose from 'jose';
-import { IPayload } from "../../users/login/route";
+import { IUserPayload } from "../../users/login/route";
 
 const EventSchema = z.object({
   name: z.string(),
@@ -40,13 +40,13 @@ export async function POST(req: NextRequest) {
     console.log('no cookie')
     return NextResponse.json({
       status: 400,
-      body: { error: 'Data Invalid', details: 'Not Authorized'},
+      body: { error: 'Data Invalid', details: 'Not Authorized' },
     })
   }
-  
-  const { payload, protectedHeader } : {payload : IPayload, protectedHeader: any} = await jose.jwtVerify(cookie.value, key, {})
 
-  if(!payload.isSubscribed){
+  const { payload, protectedHeader }: { payload: IUserPayload, protectedHeader: any } = await jose.jwtVerify(cookie.value, key, {})
+  console.log(payload)
+  if (!payload) {
     return NextResponse.json({ error: "User not subscribed" })
   }
   await dbConnect();
@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
-  
+
   let skey: string = process.env.SECRETKEY!;
   let cookie = req.cookies.get("accessToken")
   const key = new TextEncoder().encode(skey)
@@ -69,19 +69,18 @@ export async function GET(req: NextRequest) {
     console.log(req.cookies)
     return NextResponse.json({
       status: 400,
-      body: { error: 'Data Invalid', details: 'Not Authorized'},
+      body: { error: 'Data Invalid', details: 'Not Authorized' },
     })
   }
-  
-  const { payload, protectedHeader } : {payload : IPayload, protectedHeader: any} = await jose.jwtVerify(cookie.value, key, {})
+
+  const { payload, protectedHeader }: { payload: { user: IUserPayload }, protectedHeader: any } = await jose.jwtVerify(cookie.value, key, {})
 
   console.log(payload);
-  
 
-  if(!payload.userId){
-    return NextResponse.json({ error: "Invalid user" }) 
-  } 
+  if (!payload.user.id) {
+    return NextResponse.json({ error: "Invalid user" })
+  }
 
-  const events = await Event.find({ host: payload.userId })
+  const events = await Event.find({ host: payload.user.id })
   return NextResponse.json(events)
 }
