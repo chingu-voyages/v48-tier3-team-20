@@ -11,10 +11,7 @@ export async function middleware(request: NextRequest) {
 
     console.log("MIDDLEWARE START")
     console.log("cookie", cookie)
-
     
-      
-
     try {
         console.log("Beginning of the try middleware")
         if (!cookie) {
