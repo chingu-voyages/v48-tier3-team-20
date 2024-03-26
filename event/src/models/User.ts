@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export interface Users extends mongoose.Document {
+export interface IUsers extends mongoose.Document {
   fullname: string;
   email: string;
   username: string;
@@ -8,7 +8,7 @@ export interface Users extends mongoose.Document {
   isSubscribed: boolean;
 }
 
-const UserSchema = new mongoose.Schema<Users>({
+const UserSchema = new mongoose.Schema<IUsers>({
   fullname: {
     type: String,
     lowercase: true,
