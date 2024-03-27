@@ -2,6 +2,8 @@ import { IUserPayload } from "@/app/api/users/login/route";
 import { NextRequest, NextResponse } from "next/server";
 import * as jose from 'jose'
 import Event, { Events } from "@/models/Event";
+import { EventSchema, IEvent } from "../route";
+import dbConnect from "@/lib/mongo";
 
 export async function GET(req: NextRequest, content: any) {
 
@@ -34,3 +36,4 @@ export async function GET(req: NextRequest, content: any) {
   return NextResponse.json({error: "you are not the host!"})
  
 }
+

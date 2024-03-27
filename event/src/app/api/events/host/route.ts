@@ -5,7 +5,8 @@ import z from 'zod'
 import * as jose from 'jose';
 import { IUserPayload } from "../../users/login/route";
 
-const EventSchema = z.object({
+export const EventSchema = z.object({
+  _id: z.string().optional(),
   name: z.string(),
   slug: z.string(),
   description: z.string(),
@@ -20,7 +21,7 @@ const EventSchema = z.object({
   participants: z.array(z.string())
 })
 
-type IEvent = z.infer<typeof EventSchema>
+export type IEvent = z.infer<typeof EventSchema>
 
 export async function POST(req: NextRequest) {
 
@@ -45,7 +46,7 @@ export async function POST(req: NextRequest) {
   }
 
   const { payload, protectedHeader }: { payload: IUserPayload, protectedHeader: any } = await jose.jwtVerify(cookie.value, key, {})
-  if (!payload) {
+  if (!payload.userId) {
     return NextResponse.json({ error: "User not subscribed" })
   }
   await dbConnect();
@@ -76,10 +77,47 @@ export async function GET(req: NextRequest) {
 
   console.log(payload);
 
-  if (!payload) {
+  if (!payload.userId) {
     return NextResponse.json({ error: "Invalid user" })
   }
 
   const events = await Event.find({ host: payload.userId })
   return NextResponse.json(events)
+}
+
+export async function PUT(req: NextRequest) {
+
+  const body: IEvent = await req.json();
+  const validate = EventSchema.safeParse(body);
+  if (!validate.success) {
+    return NextResponse.json({
+      status: 400,
+      body: { error: 'Data Invalid', details: validate.error },
+    })
+  }
+
+  let skey: string = process.env.SECRETKEY!;
+  let cookie = req.cookies.get("accessToken")
+  const key = new TextEncoder().encode(skey)
+  if (!cookie) {
+    console.log('no cookie')
+    return NextResponse.json({
+      status: 400,
+      body: { error: 'Data Invalid', details: 'Not Authorized' },
+    })
+  }
+
+  const { payload, protectedHeader }: { payload: IUserPayload, protectedHeader: any } = await jose.jwtVerify(cookie.value, key, {})
+  if (!payload) {
+    return NextResponse.json({ error: "User not subscribed" })
+  }
+  await dbConnect();
+  
+  const updatedEvent = await Event.findOneAndUpdate({_id: body._id, host: payload.userId }, body, {new: true})
+  
+  if(updatedEvent) {
+    return NextResponse.json(updatedEvent);
+  } 
+
+  return NextResponse.json({ error: "Nothing..." })
 }
