@@ -4,17 +4,18 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { cookies } from 'next/headers'
 import { SignJWT } from 'jose';
+import { JwtPayload } from 'jsonwebtoken';
 
-export interface IPayload{
-    userId : string;
-    isSubscribed : boolean;
+export interface IUserPayload extends JwtPayload {
+    userId: string;
+    isSubscribed: boolean;
 }
 
 export async function POST(req: Request) {
     await dbConnect();
     const body = await req.json();
     const user: IUsers = await Users.findOne({ email: body.email }).exec();
-    
+
     if (!user) {
         console.log("NO user")
         return NextResponse.json({ message: "No user by that email..." }, { status: 500 })
@@ -25,15 +26,15 @@ export async function POST(req: Request) {
         if (match) {
             //login
             // const payload = JSON.parse(JSON.stringify(user._id))
-            const payload : IPayload = {
+            const userPayload: IUserPayload = {
                 userId: user._id,
                 isSubscribed: user.isSubscribed
             }
             let skey: string = process.env.SECRETKEY!;
 
             const key = new TextEncoder().encode(skey)
-
-            const token = await new SignJWT(payload)
+            
+            const token = await new SignJWT(userPayload)
                 .setProtectedHeader({
                     alg: 'HS256'
                 })
