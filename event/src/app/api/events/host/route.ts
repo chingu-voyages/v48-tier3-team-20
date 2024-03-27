@@ -45,7 +45,6 @@ export async function POST(req: NextRequest) {
   }
 
   const { payload, protectedHeader }: { payload: IUserPayload, protectedHeader: any } = await jose.jwtVerify(cookie.value, key, {})
-  console.log(payload)
   if (!payload) {
     return NextResponse.json({ error: "User not subscribed" })
   }
@@ -73,14 +72,14 @@ export async function GET(req: NextRequest) {
     })
   }
 
-  const { payload, protectedHeader }: { payload: { user: IUserPayload }, protectedHeader: any } = await jose.jwtVerify(cookie.value, key, {})
+  const { payload, protectedHeader }: { payload: IUserPayload, protectedHeader: any } = await jose.jwtVerify(cookie.value, key, {})
 
   console.log(payload);
 
-  if (!payload.user.id) {
+  if (!payload) {
     return NextResponse.json({ error: "Invalid user" })
   }
 
-  const events = await Event.find({ host: payload.user.id })
+  const events = await Event.find({ host: payload.userId })
   return NextResponse.json(events)
 }

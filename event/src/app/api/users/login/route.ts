@@ -7,7 +7,7 @@ import { SignJWT } from 'jose';
 import { JwtPayload } from 'jsonwebtoken';
 
 export interface IUserPayload extends JwtPayload {
-    id: string;
+    userId: string;
     isSubscribed: boolean;
 }
 
@@ -27,14 +27,14 @@ export async function POST(req: Request) {
             //login
             // const payload = JSON.parse(JSON.stringify(user._id))
             const userPayload: IUserPayload = {
-                id: user._id,
+                userId: user._id,
                 isSubscribed: user.isSubscribed
             }
             let skey: string = process.env.SECRETKEY!;
 
             const key = new TextEncoder().encode(skey)
-
-            const token = await new SignJWT({ user: userPayload })
+            
+            const token = await new SignJWT(userPayload)
                 .setProtectedHeader({
                     alg: 'HS256'
                 })
