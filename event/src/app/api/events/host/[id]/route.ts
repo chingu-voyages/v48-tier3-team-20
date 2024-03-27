@@ -53,13 +53,9 @@ export async function DELETE(req: NextRequest, content: any) {
   }
   const id = content.params.id
   await dbConnect();
-  const event: Events | null = await Event.findById(id)
+  const event = await Event.findOneAndDelete({ _id: id, host: payload.userId })
   if (!event) {
-    return NextResponse.json({ error: "Event doesn't exist" })
+    return NextResponse.json({ error: "Event Not Found" })
   }
-  if (!event.host.equals(payload.userId)) {
-    return NextResponse.json({ error: "Not Authorized" })
-  }
-  await Event.findByIdAndDelete(id)
-  return NextResponse.json({ success: "Event Deleted" }) 
+  return NextResponse.json({ success: "Event Deleted" })
 }
