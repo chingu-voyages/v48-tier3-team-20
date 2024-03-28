@@ -12,22 +12,11 @@ type CategoryData = {
 
 export default async function Events() {
   const categoryData: CategoryData = [];
-
-  for (let cat of CATEGORIES) {
-    const { data } = await getEventByCategory(cat);
-
-    if (!data) {
-      continue;
-    }
-
-    categoryData.push({
-      id: crypto.randomUUID(),
-      category: cat,
-      event: data.slice(0, 3),
-    });
+  const response = await fetch('http:localhost:3000/api/events/getEventsByCategory', { method: 'GET' });
+  if (response.ok) {
+    const data = await response.json()
+    console.log("fetch req data", data)
   }
-
-  console.log("catdata", categoryData);
   return (
     <>
       <div className="flex flex-col gap-2 bg-lime-200">
