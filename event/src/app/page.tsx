@@ -2,7 +2,7 @@ import EventCard from "@/components/EventCard";
 import EventList from "@/components/EventList";
 import { getAllEvents } from "@/lib/dummyBackend";
 import { cn } from "@/lib/utils";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 export default async function Home() {
   const { data } = await getAllEvents(); // pretend is await fetch(...)
