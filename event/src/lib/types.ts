@@ -45,3 +45,7 @@ export type MongoEventType = {
   host: any;
   participants: string[];
 };
+
+export type ReturnType<T> =
+  | { data: T; error: null }
+  | { data: null; error: string };
