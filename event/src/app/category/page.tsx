@@ -3,6 +3,7 @@ import EventCard from "@/components/EventCard";
 import EventList from "@/components/EventList";
 import { getEventByCategory } from "@/lib/dummyBackend";
 import { EventType } from "@/lib/types";
+import { uuid } from 'uuidv4';
 
 type CategoryData = {
   id: string;
@@ -12,10 +13,36 @@ type CategoryData = {
 
 export default async function Events() {
   const categoryData: CategoryData = [];
-  const response = await fetch('http:localhost:3000/api/events/getEventsByCategory', { method: 'GET' });
+  const response = await fetch('http:localhost:3000/api/events/getEventsByCategory', {
+    method: 'GET',
+    headers: {
+      "Content-type": "application/json"
+    },
+  });
   if (response.ok) {
-    const data = await response.json()
-    console.log("fetch req data", data)
+    try {
+      const data = await response.json()
+      for (const event of data.data) {
+        const categories = event.category;
+        for (const category of categories) {
+          const existingCategory = categoryData.find(cat => cat.category === category);
+          if (existingCategory) {
+            existingCategory.event.push(event);
+          } else {
+            const newCat = {
+              id: uuid(),
+              category: category,
+              event: [event]
+            }
+            categoryData.push(newCat)
+          }
+
+        }
+      }
+      //console.log("theDatum", categoryData)
+    } catch (err) {
+      console.log(err)
+    }
   }
   return (
     <>
@@ -23,17 +50,19 @@ export default async function Events() {
         <p className="text-4xl font-bold">Categories: </p>
         {categoryData.map((cat) => (
           <EventList category={cat.category} key={cat.id}>
-            {cat.event.map((event) => (
+            {cat.event.map((event) => {
+              //console.log("asdfasdf", event)
+              return (
               <EventCard
                 key={event.id}
                 id={event.id}
                 eventName={event.eventName}
-                date={event.date}
+                date={new Date(event.eventStartDate)}
                 location={event.location}
                 img={event.img}
                 views={event.weeklyViews}
               />
-            ))}
+            )})}
           </EventList>
         ))}
 
