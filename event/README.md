@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Event App
 
-## Getting Started
+A chingu app by team 20
 
-First, run the development server:
+## List of FE routes for reference
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Todo (subject to change, feel free to edit/improve):
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Root layout contains `<Header/>` and `<Footer/>`, to add context providers?
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Public routes [Public]
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Home: `/`
+  - Middleware check: Redirect to `/dashboard` if user is already logged in
+  - Contains `<SearchBar/>` which links to `/search`
+  - Contains `Trending` and `Upcoming` which links to `/trending` and `/upcoming`
+  - Contains `See all catogories` which links to `/category`
+- Login (login and signup together): `/login`
+  - Middleware check: Redirects to `/dashboard` if user already logged in
+- Individual event: /`events/[eventid]`
+  - Links to `/category/[category]` if clicked on category
+  - Links to `/host/[hostid]` if clicked on host name
+  - Able to click join/leave on event page, no redirects, just popup/modal
+- List of all categories (with some featured events): `/category`
+  - Contains a link to every category `/category/[category]`
+- List of all public events by category (paginated? infinite? sort/filter?): `/category/[category]`
+- List of all public events by host (paginated? infinite? sort/filter?): `/host/[hostid]`
+- Search event: `/search`
+- Trending event: `/trending`
+- Upcoming event: `/upcoming`
+- About: `/about`
 
-## Learn More
+### User routes [Require Login]
 
-To learn more about Next.js, take a look at the following resources:
+Middleware check: Redirects to `/login` if not logged in
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Dashboard: `/dashboard`
+  - Shows list of recommended events based on user interest and list of events user has joined
+  - Copy/reuse `/`, basically the same but with user specific data?
+- User profile for logged in user: `/profile`
+- Other host/user public profile: `/profile/[userid]`
+- Logout: `/logout`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Host routes [Require Host Login]
 
-## Deploy on Vercel
+Middleware check: Redirects to `/login` if not logged in, shows `401 Unauthorized` if logged in user is not host
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Event Management: `/dashboard/events`
+  - Shows list of all events with links to edit `/dashboard/edit`
+  - Shows a create event button which links to `/dashboard/create`
+- Create Event: `/dashboard/create`
+- Edit Event (update and delete): `/dashboard/edit`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## List of BE routes for reference
+
+Todo (subject to change, feel free to edit/improve):
+
+### Users
+
+Existing:
+
+- loginUser: `POST /api/users/login`
+- registerUser: `POST /api/users/register`
+
+Todo:
+
+- logoutUser: `POST /api/users/logout`
+
+To consider:
+
+- updateUserData (one endpoint for everything or separate?): `PUT /api/users/[userid]`
+- updateProfilePicture
+- updateIsSubscribed
+- updatePassword
+- forgetPassword (nice to have?)
+- getUserPublicData (interest, bio, etc): `GET /api/users/[userid]`
+
+### Events
+
+For host dashboard [Require Host Login]:
+
+- createEvent: `POST /api/events`
+- updateEvent: `PUT /api/events/[eventid]`
+- deleteEvent: `DELETE /api/events/[eventid]`
+- getHostEvents: `GET /api/events/host/[hostid]` (return error if hostid is not a host, include private events only if logged in user matches hostid, else return public events only)
+
+Get individual event by id [Public]:
+
+- getEventById: `GET /api/events/[eventid]`
+
+Get list of categories/locations/hosts (and a few featured events?) [Public]:
+
+- getEventCategories: `GET /api/events/category`
+- getEventLocations: `GET /api/events/location` (nice to have)
+- getEventHosts: `GET /api/events/host` (nice to have)
+
+Note: To update location to separate online/offline, country, city, address
+Note: May need a separate collection to store list of categories
+Note: To implement public/private events? (nice to have)
+
+Get list of events [Public]:
+
+- getEventsByCategory: `GET /api/events/category/[category]`
+- getEventsByLocation: `GET /api/events/location/[location]`
+- getEventsByDate: `GET /api/events/date/[date]`
+- getEventsByHost: `GET /api/events/host/[hostid]` (return error if hostid is not a host, return public events only, include private events only if logged in user matches hostid)
+- getEventsByUser: `GET /api/events/user/[userid]`
+- getUpcomingEvents?: `GET /api/events/upcoming`
+- getTrendingEvents?: `GET /api/events/trending`
+
+Search events [Public]:
+
+- searchEvents: `GET /api/events/search?q={query}`
+
+For logged in users [Require Login]:
+
+- joinEvent: `PUT /api/events/join/[eventid]`
+- leaveEvent: `PUT /api/events/leave/[eventid]`
+- reportEvent: `POST /api/events/report/[eventid]` (nice to have, to do later)
+
+Note: To create new collection or update event schema for event reporting

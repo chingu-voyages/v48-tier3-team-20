@@ -1,5 +1,9 @@
 List of API routes for reference
 
+# NO LONGER UPDATED
+
+`/event/src/app/api/events/readme.md` is no longer updated, refer to `/event/README.md` instead
+
 ## Users
 
 Existing:
