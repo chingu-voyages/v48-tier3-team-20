@@ -11,6 +11,8 @@ type CategoryData = {
   event: EventType[];
 }[];
 
+let hide = false;
+
 export default async function Events() {
   const categoryData: CategoryData = [];
   const response = await fetch('http:localhost:3000/api/events/getEventsByCategory', {
@@ -20,6 +22,7 @@ export default async function Events() {
     },
   });
   if (response.ok) {
+    hide = true;
     try {
       const data = await response.json()
       for (const event of data.data) {
@@ -39,7 +42,6 @@ export default async function Events() {
 
         }
       }
-      //console.log("theDatum", categoryData)
     } catch (err) {
       console.log(err)
     }
@@ -48,25 +50,27 @@ export default async function Events() {
     <>
       <div className="flex flex-col gap-2 bg-lime-200">
         <p className="text-4xl font-bold">Categories: </p>
-        {categoryData.map((cat) => (
+        {hide && categoryData.map((cat) => (
           <EventList category={cat.category} key={cat.id}>
             {cat.event.map((event) => {
-              //console.log("asdfasdf", event)
               return (
-              <EventCard
-                key={event.id}
-                id={event.id}
-                eventName={event.eventName}
-                date={new Date(event.eventStartDate)}
-                location={event.location}
-                img={event.img}
-                views={event.weeklyViews}
-              />
-            )})}
+                <EventCard
+                  key={event.id}
+                  id={event.id}
+                  eventName={event.eventName}
+                  date={new Date(event.eventStartDate)}
+                  location={event.location}
+                  img={event.imgPoster}
+                  views={event.weeklyViews}
+                />
+              )
+            }
+            )}
           </EventList>
-        ))}
+        )
+        )}
 
-        <EventList category="Test404Category">
+        {!hide && (<EventList category="Test404Category">
           <EventCard
             id="Testing404Event"
             eventName="Testing404Event"
@@ -75,7 +79,7 @@ export default async function Events() {
             img="https://picsum.photos/id/1/200/150"
             views={0}
           />
-        </EventList>
+        </EventList>)}
       </div>
     </>
   );

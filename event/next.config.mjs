@@ -11,6 +11,10 @@ const nextConfig = {
             protocol: "https",
             hostname: "loremflickr.com",
           },
+          {
+            protocol: "https",
+            hostname: "example.com"
+          }
         ]
     }
 };

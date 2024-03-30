@@ -8,10 +8,9 @@ import * as jose from "jose";
 // check auth and get user id from mongo
 // get event from mongo and sort into lists by category
 // send data to client
-let eventCats = [];
 
 export async function GET(request: NextRequest) {
-    /*
+  
   const skey: string = process.env.SECRETKEY!;
   const cookie = request.cookies.get("accessToken");
   const key = new TextEncoder().encode(skey);
@@ -22,31 +21,30 @@ export async function GET(request: NextRequest) {
       body: { error: "Please login, to redirect to login page" },
     });
   }
-*/
+
   try {
+    console.log("category db connection")
     await dbConnect();
 
-    // const { payload } = await jose.jwtVerify(cookie.value, key, {});
+    const { payload } = await jose.jwtVerify(cookie.value, key, {});
 
-    // console.log("payload", payload);
+    console.log("payload", payload);
 
-    // if (!payload.userid) {
-    //   return NextResponse.json({ error: "Invalid user" });
-    // }
+    if (!payload.userid) {
+      return NextResponse.json({ error: "Invalid user" });
+    }
 
-    // const user = await User.findById(payload.userid);
+    const user = await User.findById(payload.userid);
 
-    // console.log("user", user);
+    console.log("user", user);
 
-    // if (!user) {
-    //   return NextResponse.json({ error: "No such user in db" });
-    // }
+    if (!user) {
+      return NextResponse.json({ error: "No such user in db" });
+    }
 
 
     const event = await Event.find({});
-    
-
-
+   
     if (!event) {
       return NextResponse.json({ error: "No events in db" });
     }
