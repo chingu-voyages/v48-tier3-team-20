@@ -1,8 +1,6 @@
 import dbConnect from "@/lib/mongo";
 import Event from "@/models/Event";
-import User from "@/models/User";
 import { NextRequest, NextResponse } from "next/server";
-import * as jose from "jose";
 
 // workflow:
 // check auth and get user id from mongo
@@ -10,39 +8,10 @@ import * as jose from "jose";
 // send data to client
 
 export async function GET(request: NextRequest) {
-  console.log("getEventByCategory GET")
-  
-  const skey: string = process.env.SECRETKEY!;
-  const cookie = request.cookies.get("accessToken");
-  const key = new TextEncoder().encode(skey);
-  console.log("Cookie?", cookie)
-  if (!cookie) {
-    return NextResponse.json({
-      status: 400,
-      body: { error: "Please login, to redirect to login page" },
-    });
-  }
 
   try {
-    console.log("category db connection")
+    
     await dbConnect();
-
-    const { payload } = await jose.jwtVerify(cookie.value, key, {});
-
-    console.log("payload", payload);
-
-    if (!payload.userid) {
-      return NextResponse.json({ error: "Invalid user" });
-    }
-
-    const user = await User.findById(payload.userid);
-
-    console.log("user", user);
-
-    if (!user) {
-      return NextResponse.json({ error: "No such user in db" });
-    }
-
 
     const event = await Event.find({});
    

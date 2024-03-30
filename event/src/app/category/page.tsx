@@ -1,7 +1,5 @@
-import { CATEGORIES } from "@/lib/constants";
 import EventCard from "@/components/EventCard";
 import EventList from "@/components/EventList";
-import { getEventByCategory } from "@/lib/dummyBackend";
 import { EventType } from "@/lib/types";
 import { uuid } from 'uuidv4';
 
@@ -15,19 +13,19 @@ var hide = true;
 
 export default async function Events() {
   const categoryData: CategoryData = [];
-  const response = await fetch('http:localhost:3000/api/events/getEventsByCategory', {
+  const response = await fetch('http://localhost:3000/api/events/getEventsByCategory', {
     method: 'GET',
     headers: {
       "Content-type": "application/json"
     },
   });
-  console.log("after response", response)
   if (response.ok) {
     const data = await response.json()
+    console.log(data.body)
+
     if(data.body.error){
       hide = false;
     }
-    console.log(data.body)
     try {
       for (const event of data.data) {
         const categories = event.category;
