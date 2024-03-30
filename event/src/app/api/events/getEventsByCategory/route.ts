@@ -10,12 +10,12 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
 
   try {
-    
+    console.log("GET REQUEST")
     await dbConnect();
 
-    const event = await Event.find({});
+    const event = await Event.find({}).exec();
    
-    if (!event) {
+    if (!event || event.length === 0) {
       return NextResponse.json({ error: "No events in db" });
     }
     return NextResponse.json({ message: "Successfully joined", data: event });

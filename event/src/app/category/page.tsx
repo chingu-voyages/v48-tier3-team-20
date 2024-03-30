@@ -21,9 +21,8 @@ export default async function Events() {
   });
   if (response.ok) {
     const data = await response.json()
-    console.log(data.body)
 
-    if(data.body.error){
+    if(data.error){
       hide = false;
     }
     try {
