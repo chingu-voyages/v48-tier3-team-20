@@ -10,6 +10,7 @@ import * as jose from "jose";
 // send data to client
 
 export async function GET(request: NextRequest) {
+  console.log("getEventByCategory GET")
   
   const skey: string = process.env.SECRETKEY!;
   const cookie = request.cookies.get("accessToken");

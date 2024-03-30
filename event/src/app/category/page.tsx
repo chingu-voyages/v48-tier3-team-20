@@ -11,7 +11,7 @@ type CategoryData = {
   event: EventType[];
 }[];
 
-let hide = false;
+var hide = true;
 
 export default async function Events() {
   const categoryData: CategoryData = [];
@@ -21,10 +21,14 @@ export default async function Events() {
       "Content-type": "application/json"
     },
   });
+  console.log("after response", response)
   if (response.ok) {
-    hide = true;
+    const data = await response.json()
+    if(data.body.error){
+      hide = false;
+    }
+    console.log(data.body)
     try {
-      const data = await response.json()
       for (const event of data.data) {
         const categories = event.category;
         for (const category of categories) {
@@ -45,6 +49,8 @@ export default async function Events() {
     } catch (err) {
       console.log(err)
     }
+  } else {
+    hide = false;
   }
   return (
     <>
