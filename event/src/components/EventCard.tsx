@@ -20,7 +20,7 @@ export default function EventCard({
 }: EventListProp) {
   return (
     <div className="my-3 max-w-60 bg-blue-200 p-5">
-      <Link href={`/${id}`}>
+      <Link href={`/events/${id}`}>
         <div className="relative aspect-[4/3] w-full">
           <Image
             width={200}

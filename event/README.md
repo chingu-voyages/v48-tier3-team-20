@@ -35,8 +35,11 @@ Root layout contains `<Header/>` and `<Footer/>`, to add context providers?
 Middleware check: Redirects to `/login` if not logged in
 
 - Dashboard: `/dashboard`
-  - Shows list of recommended events based on user interest and list of events user has joined
+  - Shows list of upcoming events the user has joined, and list of past events
+  - Shows some recommendations based on interest or popularity
   - Copy/reuse `/`, basically the same but with user specific data?
+- Upcoming events: `/dashboard/upcoming`
+- Past events (already attended): `/dashboard/past`
 - User profile for logged in user: `/profile`
 - Other host/user public profile: `/profile/[userid]`
 - Logout: `/logout`
@@ -46,10 +49,12 @@ Middleware check: Redirects to `/login` if not logged in
 Middleware check: Redirects to `/login` if not logged in, shows `401 Unauthorized` if logged in user is not host
 
 - Event Management: `/dashboard/events`
-  - Shows list of all events with links to edit `/dashboard/edit`
-  - Shows a create event button which links to `/dashboard/create`
-- Create Event: `/dashboard/create`
-- Edit Event (update and delete): `/dashboard/edit`
+  - Shows list of all events with links to `/dashboard/events/[eventid]` to edit event
+  - Contains a delete button to delete event (with confirmation popup)
+  - Shows a create event form and button to create new events
+- Upcoming events: `/dashboard/events/upcoming`
+- Past events (already over): `/dashboard/events/past`
+- Edit Event (update and delete): `/dashboard/events/[eventid]`
 
 ## List of BE routes for reference
 
@@ -104,7 +109,6 @@ Get list of events [Public]:
 - getEventsByLocation: `GET /api/events/location/[location]`
 - getEventsByDate: `GET /api/events/date/[date]`
 - getEventsByHost: `GET /api/events/host/[hostid]` (return error if hostid is not a host, return public events only, include private events only if logged in user matches hostid)
-- getEventsByUser: `GET /api/events/user/[userid]`
 - getUpcomingEvents?: `GET /api/events/upcoming`
 - getTrendingEvents?: `GET /api/events/trending`
 
@@ -116,6 +120,7 @@ For logged in users [Require Login]:
 
 - joinEvent: `PUT /api/events/join/[eventid]`
 - leaveEvent: `PUT /api/events/leave/[eventid]`
+- getEventsByUser: `GET /api/events/user/[userid]` (return 401 unauthorized if logged in user is not userid, return events the logged in user has joined)
 - reportEvent: `POST /api/events/report/[eventid]` (nice to have, to do later)
 
 Note: To create new collection or update event schema for event reporting
