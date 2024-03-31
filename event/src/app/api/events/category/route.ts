@@ -9,8 +9,8 @@ export async function GET(req: NextRequest) {
     let result: {} = {}
     for (let i in CATEGORIES) {
       const events = await Event.aggregate([{ $match: { "category": CATEGORIES[i] } }])
-        .addFields({ "length": { "$size": '$participants' } })
-        .sort({ "length": -1 })
+        .addFields({ "participantCount": { "$size": '$participants' } })
+        .sort({ "participantCount": -1 })
         .limit(3)
       if (!events) {
         continue

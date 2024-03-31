@@ -11,9 +11,9 @@ export async function POST(req: NextRequest) {
   const validate = EventSchema.safeParse(body);
   if (!validate.success) {
     return NextResponse.json({
-      status: 400,
       body: { error: 'Data Invalid', details: validate.error },
-    })
+    }, { status: 400 }
+    )
   }
 
   let skey: string = process.env.SECRETKEY!;
@@ -22,20 +22,30 @@ export async function POST(req: NextRequest) {
   if (!cookie) {
     console.log('no cookie')
     return NextResponse.json({
-      status: 400,
-      body: { error: 'Data Invalid', details: 'Not Authorized' },
-    })
+      body: { error: 'Unauthorized', details: 'User is not authenticated. Please login' },
+    }, { status: 401 })
   }
 
   const { payload, protectedHeader }: { payload: IUserPayload, protectedHeader: any } = await jose.jwtVerify(cookie.value, key, {})
-  if (!payload.userId) {
-    return NextResponse.json({ error: "User not subscribed" })
+  if (!payload.isSubscribed) {
+    return NextResponse.json({ error: "Unauthorized", details: "User is not subscribed to the service. Subscription is required to access this feature." }, { status: 401 })
   }
+
   await dbConnect();
 
-  const isExist = await Event.findOne({ name: body.name })
+  if (!body.slug) {
+    body.slug = body.name.split(' ').join('-')
+  }
+
+  const isExist = await Event.exists({
+    $or: [
+      { name: body.name },
+      { slug: body.slug }
+    ]
+  });
+
   if (isExist) {
-    return NextResponse.json({ error: "Name is already exist" })
+    return NextResponse.json({ error: "Duplicate Entry", details: "The provided name or slug already exists. Please use a unique name or slug." }, { status: 409 })
   }
   const event = await Event.create({ ...body, host: payload.userId });
   return NextResponse.json(event);

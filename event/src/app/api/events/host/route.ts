@@ -8,7 +8,7 @@ import { IUserPayload } from "../../users/login/route";
 export const EventSchema = z.object({
   _id: z.string().optional(),
   name: z.string(),
-  slug: z.string(),
+  slug: z.string().optional(),
   description: z.string(),
   location: z.string(),
   imgPoster: z.string(),
