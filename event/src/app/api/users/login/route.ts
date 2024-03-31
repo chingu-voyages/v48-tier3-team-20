@@ -1,17 +1,16 @@
-import dbConnect from '@/lib/mongo/index';
-import Users, { IUsers } from '@/models/User';
+import dbConnect from "@/lib/mongo/index";
+import Users, { IUsers } from "@/models/User";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import { cookies } from 'next/headers'
-import { SignJWT } from 'jose';
-import { JwtPayload } from 'jsonwebtoken';
+import { cookies } from "next/headers";
+import { JwtPayload } from "jsonwebtoken";
 import { createJwt, UserJWTPayload } from "@/lib/authHelper";
 
 // to update with authHelper later
 
 export interface IUserPayload extends JwtPayload {
-    userId: string;
-    isSubscribed: boolean;
+  userId: string;
+  isSubscribed: boolean;
 }
 
 export async function POST(req: Request) {
@@ -28,33 +27,13 @@ export async function POST(req: Request) {
       );
     }
 
-
-    try {
-        const match = await bcrypt.compare(body.password, user.password);
-        if (match) {
-            // login
-            // const payload = JSON.parse(JSON.stringify(user._id))
-            const userPayload: IUserPayload = {
-                userId: user._id,
-                isSubscribed: user.isSubscribed
-            }
-            let skey: string = process.env.SECRETKEY!;
-
-            const key = new TextEncoder().encode(skey)
-            
-            const token = await new SignJWT(userPayload)
-                .setProtectedHeader({
-                    alg: 'HS256'
-                })
-                .setExpirationTime("1hr")
-                .sign(key);
-
-
-
-            cookies().set("accessToken", token, { secure: true, httpOnly: true });
-            console.log("token creation", token);
-
-            return NextResponse.json({ success: true });
+    const match = await bcrypt.compare(body.password, user.password);
+    if (!match) {
+      return NextResponse.json(
+        { message: "Email or password do not match..." },
+        { status: 400 },
+      );
+    }
 
     const payload: UserJWTPayload = {
       userId: user._id as string,
