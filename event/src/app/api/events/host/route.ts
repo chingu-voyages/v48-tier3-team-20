@@ -1,27 +1,8 @@
-import dbConnect from "@/lib/mongo";
 import Event from "@/models/Event";
 import { NextRequest, NextResponse } from "next/server";
-import z from 'zod'
 import * as jose from 'jose';
 import { IUserPayload } from "../../users/login/route";
-
-export const EventSchema = z.object({
-  _id: z.string().optional(),
-  name: z.string(),
-  slug: z.string().optional(),
-  description: z.string(),
-  location: z.string(),
-  imgPoster: z.string(),
-  category: z.array(z.string()),
-  eventStartDate: z.string().pipe(z.coerce.date()),
-  eventEndDate: z.string().optional(),
-  lastDateToJoin: z.string().pipe(z.coerce.date()),
-  maximumParticipants: z.number(),
-  participants: z.array(z.string())
-})
-
-export type IEvent = z.infer<typeof EventSchema>
-
+import dbConnect from "@/lib/mongo";
 
 export async function GET(req: NextRequest) {
 
@@ -39,11 +20,11 @@ export async function GET(req: NextRequest) {
 
   const { payload, protectedHeader }: { payload: IUserPayload, protectedHeader: any } = await jose.jwtVerify(cookie.value, key, {})
 
-  console.log(payload);
-
   if (!payload.userId) {
     return NextResponse.json({ error: "Invalid user" })
   }
+
+  await dbConnect()
 
   const events = await Event.find({ host: payload.userId })
   return NextResponse.json(events)

@@ -1,5 +1,7 @@
 // put all shared typescript types here
 import { CATEGORIES } from "@/lib/constants";
+import { z } from "zod";
+import { CreateEventValidator, UpdateEventValidator } from "./validator";
 
 // example
 type ImageType = {
@@ -30,6 +32,10 @@ export type EventType = {
   location: string;
   weeklyViews: number;
 };
+
+
+export type CreateEvent = z.infer<typeof CreateEventValidator>
+export type UpdateEvent = z.infer<typeof UpdateEventValidator>
 
 export type MongoEventType = {
   name: string;

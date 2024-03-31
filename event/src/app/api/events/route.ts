@@ -1,20 +1,27 @@
 import { IUserPayload } from "@/app/api/users/login/route";
 import { NextRequest, NextResponse } from "next/server";
 import * as jose from 'jose'
-import Event, { Events } from "@/models/Event";
+import Event from "@/models/Event";
 import dbConnect from "@/lib/mongo";
-import { EventSchema, IEvent } from "./host/route";
+import { CreateEvent } from "@/lib/types";
+import { CreateEventValidator } from "@/lib/validator";
 
 export async function POST(req: NextRequest) {
 
-  const body: IEvent = await req.json();
-  const validate = EventSchema.safeParse(body);
+  const body: CreateEvent = await req.json();
+  const validate = CreateEventValidator.safeParse(body);
+
   if (!validate.success) {
     return NextResponse.json({
       body: { error: 'Data Invalid', details: validate.error },
     }, { status: 400 }
     )
   }
+
+  if ('participants' in body) {
+    delete body.participants;
+  }
+
 
   let skey: string = process.env.SECRETKEY!;
   let cookie = req.cookies.get("accessToken")
@@ -47,6 +54,7 @@ export async function POST(req: NextRequest) {
   if (isExist) {
     return NextResponse.json({ error: "Duplicate Entry", details: "The provided name or slug already exists. Please use a unique name or slug." }, { status: 409 })
   }
+
   const event = await Event.create({ ...body, host: payload.userId });
   return NextResponse.json(event);
 }

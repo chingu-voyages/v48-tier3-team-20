@@ -1,9 +1,10 @@
 import { IUserPayload } from "@/app/api/users/login/route";
 import { NextRequest, NextResponse } from "next/server";
 import * as jose from 'jose'
-import Event, { Events } from "@/models/Event";
+import Event from "@/models/Event";
 import dbConnect from "@/lib/mongo";
-import { EventSchema, IEvent } from "../host/route";
+import { UpdateEvent } from "@/lib/types";
+import { UpdateEventValidator } from "@/lib/validator";
 
 export async function DELETE(req: NextRequest, content: any) {
   let skey: string = process.env.SECRETKEY!;
@@ -12,14 +13,13 @@ export async function DELETE(req: NextRequest, content: any) {
   if (!cookie) {
     console.log('no cookie')
     return NextResponse.json({
-      status: 400,
-      body: { error: 'Data Invalid', details: 'Not Authorized' },
-    })
+      body: { error: 'Invalid User' },
+    }, { status: 400 })
   }
 
   const { payload, protectedHeader }: { payload: IUserPayload, protectedHeader: any } = await jose.jwtVerify(cookie.value, key, {})
   if (!payload.userId) {
-    return NextResponse.json({ error: "Invalid user" })
+    return NextResponse.json({ error: "Invalid User" })
   }
   const id = content.params.id
   await dbConnect();
@@ -32,8 +32,8 @@ export async function DELETE(req: NextRequest, content: any) {
 
 export async function PUT(req: NextRequest, content: any) {
   const id = content.params.id
-  const body: IEvent = await req.json();
-  const validate = EventSchema.safeParse(body);
+  const body: UpdateEvent = await req.json();
+  const validate = UpdateEventValidator.safeParse(body);
   if (!validate.success) {
     return NextResponse.json({
       status: 400,
@@ -57,8 +57,7 @@ export async function PUT(req: NextRequest, content: any) {
     return NextResponse.json({ error: "User not subscribed" })
   }
   await dbConnect();
-  delete body._id
-  console.log(body)
+
   const updatedEvent = await Event.findOneAndUpdate({ _id: id, host: payload.userId }, body, { new: true })
 
   if (updatedEvent) {
