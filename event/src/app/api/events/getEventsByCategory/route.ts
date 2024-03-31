@@ -23,7 +23,6 @@ export async function GET(request: NextRequest) {
         }
       },
     ])
-    console.log(event)
    
     if (!event || event.length === 0) {
       return NextResponse.json({ error: "No events in db" });

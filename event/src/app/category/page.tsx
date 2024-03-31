@@ -21,11 +21,23 @@ export default async function Events() {
   });
   if (response.ok) {
     const data = await response.json()
+    //console.log("response ok ", data.data)
+    const categories = data.data;
 
-    if(data.error){
+    if (data.error) {
       hide = false;
     }
     try {
+      for (const i in categories) {
+        //console.log(categories[i])
+        const newCat = {
+          id: uuid(),
+          category: categories[i]._id,
+          event: categories[i].documents
+        }
+        categoryData.push(newCat)
+      }
+      console.log(categoryData)
       // for (const event of data.data) {
       //   const categories = event.category;
       //   for (const category of categories) {
