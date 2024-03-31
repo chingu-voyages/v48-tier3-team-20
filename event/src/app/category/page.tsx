@@ -26,23 +26,23 @@ export default async function Events() {
       hide = false;
     }
     try {
-      for (const event of data.data) {
-        const categories = event.category;
-        for (const category of categories) {
-          const existingCategory = categoryData.find(cat => cat.category === category);
-          if (existingCategory) {
-            existingCategory.event.push(event);
-          } else {
-            const newCat = {
-              id: uuid(),
-              category: category,
-              event: [event]
-            }
-            categoryData.push(newCat)
-          }
+      // for (const event of data.data) {
+      //   const categories = event.category;
+      //   for (const category of categories) {
+      //     const existingCategory = categoryData.find(cat => cat.category === category);
+      //     if (existingCategory) {
+      //       existingCategory.event.push(event);
+      //     } else {
+      //       const newCat = {
+      //         id: uuid(),
+      //         category: category,
+      //         event: [event]
+      //       }
+      //       categoryData.push(newCat)
+      //     }
 
-        }
-      }
+      //   }
+      // }
     } catch (err) {
       console.log(err)
     }

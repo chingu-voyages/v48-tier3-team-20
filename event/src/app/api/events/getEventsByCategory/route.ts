@@ -13,7 +13,17 @@ export async function GET(request: NextRequest) {
     console.log("GET REQUEST")
     await dbConnect();
 
-    const event = await Event.find({}).exec();
+    const event = await Event.aggregate([
+      {$unwind: "$category"},
+      {$sort: {"category.topics": 1}},
+      {
+        $group: {
+          _id: "$category",
+          documents: {$push: "$$ROOT"}
+        }
+      },
+    ])
+    console.log(event)
    
     if (!event || event.length === 0) {
       return NextResponse.json({ error: "No events in db" });
