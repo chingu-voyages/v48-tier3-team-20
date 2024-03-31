@@ -29,7 +29,7 @@ export default function Header() {
           </Link>
           <Link
             className="cursor-pointer text-sky-700 transition-all hover:font-bold"
-            href="/category"
+            href="/about"
           >
             About
           </Link>
