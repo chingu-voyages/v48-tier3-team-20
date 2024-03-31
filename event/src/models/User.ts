@@ -6,6 +6,10 @@ export interface IUsers extends mongoose.Document {
   username: string;
   password: string;
   isSubscribed: boolean;
+  profile_pic: string;
+  bio: string;
+  interest: Array<string>;
+  // dob: string;   // Date of birth
 }
 
 const UserSchema = new mongoose.Schema<IUsers>({
@@ -33,6 +37,19 @@ const UserSchema = new mongoose.Schema<IUsers>({
     type: Boolean,
     default: false,
   },
+  profile_pic: {
+    type: String,
+    required: true,
+  },
+  bio: {
+    type: String
+  },
+  interest: {
+    type: [String]
+  }
+  // dob: {
+  //   type: Date
+  // }
 });
 
 // export default mongoose.model<Users>('users', UserSchema);
