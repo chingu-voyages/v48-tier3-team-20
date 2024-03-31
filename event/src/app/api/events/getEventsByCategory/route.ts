@@ -1,3 +1,4 @@
+import { CATEGORIES } from "@/lib/constants";
 import dbConnect from "@/lib/mongo";
 import Event from "@/models/Event";
 import { NextRequest, NextResponse } from "next/server";
@@ -7,27 +8,20 @@ import { NextRequest, NextResponse } from "next/server";
 // get event from mongo and sort into lists by category
 // send data to client
 
-export async function GET(request: NextRequest) {
+// api/events/GEteiedi/[cat]
+
+export async function GET(request: NextRequest, {params}: {params: {cat: string}}) {
 
   try {
     console.log("GET REQUEST")
     await dbConnect();
 
-    const event = await Event.aggregate([
-      {$unwind: "$category"},
-      {$sort: {"category.topics": 1}},
-      {
-        $group: {
-          _id: "$category",
-          documents: {$push: "$$ROOT"}
-        }
-      },
-    ])
+    const events = await Event.find({category: params.cat})
    
-    if (!event || event.length === 0) {
+    if (!events || events.length) {
       return NextResponse.json({ error: "No events in db" });
     }
-    return NextResponse.json({ message: "Successfully joined", data: event });
+    return NextResponse.json({ message: "Successfully joined", data: events });
   } catch (error) {
     const err = error as Error;
     console.log("error caught:", error);
