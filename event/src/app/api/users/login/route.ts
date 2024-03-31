@@ -1,17 +1,20 @@
 import dbConnect from '@/lib/mongo/index';
-import Users from '@/models/User';
+import Users, { IUsers } from '@/models/User';
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import {cookies} from 'next/headers'
-
+import { cookies } from 'next/headers'
 import { SignJWT } from 'jose';
+import { JwtPayload } from 'jsonwebtoken';
 
-
+export interface IUserPayload extends JwtPayload {
+    userId: string;
+    isSubscribed: boolean;
+}
 
 export async function POST(req: Request) {
     await dbConnect();
     const body = await req.json();
-    const user = await Users.findOne({ email: body.email }).exec();
+    const user: IUsers = await Users.findOne({ email: body.email }).exec();
 
     if (!user) {
         console.log("NO user")
@@ -22,24 +25,26 @@ export async function POST(req: Request) {
         const match = await bcrypt.compare(body.password, user.password);
         if (match) {
             //login
-            const payload = JSON.parse(JSON.stringify(user._id))
-             let skey : string = process.env.SECRETKEY!;
+            // const payload = JSON.parse(JSON.stringify(user._id))
+            const userPayload: IUserPayload = {
+                userId: user._id,
+                isSubscribed: user.isSubscribed
+            }
+            let skey: string = process.env.SECRETKEY!;
 
             const key = new TextEncoder().encode(skey)
-        
-            const token = await new SignJWT({
-                userid: payload
-            })
+            
+            const token = await new SignJWT(userPayload)
                 .setProtectedHeader({
                     alg: 'HS256'
-                }) 
+                })
                 .setExpirationTime("1hr")
                 .sign(key);
-            
-            
-    
+
+
+
             cookies().set("accessToken", token, { secure: true, httpOnly: true });
-            console.log("token creation",token);
+            console.log("token creation", token);
 
             return NextResponse.json({ success: true });
 
