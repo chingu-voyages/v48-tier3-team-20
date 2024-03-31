@@ -1,4 +1,4 @@
-import User, { Users } from "@/models/User";
+import User, { IUsers } from "@/models/User";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import dbConnect from "@/lib/mongo";
@@ -11,7 +11,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const reqBody = await request.json();
         const { fullname, email, username, password, isSubscribed }: {fullname: string, email: string, username: string, password: string, isSubscribed: boolean } = reqBody;
        
-        const user: Users | null = await User.findOne({ email });
+        const user: IUsers | null = await User.findOne({ email });
 
         if (user) {
             return NextResponse.json({ error: "User already exists with that email" }, { status: 400 });
