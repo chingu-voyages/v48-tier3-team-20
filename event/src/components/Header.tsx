@@ -13,6 +13,9 @@ export default function Header() {
         <Link className="text-sky-700" href="/login">
           Login
         </Link>
+        <Link className="text-sky-700" href="/api/users/logout">
+          Logout
+        </Link>
         <Link className="text-sky-700" href="/profile">
           Profile
         </Link>

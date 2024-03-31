@@ -1,6 +1,6 @@
 import dbConnect from "@/lib/mongo/index";
 import Users from "@/models/User";
-import { NextResponse, userAgent } from "next/server";
+import { NextResponse } from "next/server";
 import Events from "@/models/Event";
 import { createMongoEvent } from "@/lib/dummyBackend";
 
@@ -8,6 +8,13 @@ import { createMongoEvent } from "@/lib/dummyBackend";
 // the number n will represent the number of dummy events to insert into mongo
 
 export async function GET(request: Request) {
+  // NOT FOR PRODUCTION
+  if (process.env.NODE_ENV === "production") {
+    return NextResponse.json({
+      error: "NOT FOR PRODUCTION",
+    });
+  }
+
   const { searchParams } = new URL(request.url);
   const n = Number(searchParams.get("n"));
 
