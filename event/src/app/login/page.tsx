@@ -1,12 +1,15 @@
 "use client";
 import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import React from "react";
+import { UserContext, UserData } from "@/context/UserContext";
 
 // add data to UserContext to keep login state on FE
 // delete UserContext on logout
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login } = React.useContext(UserContext);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -21,13 +24,17 @@ export default function LoginPage() {
       body: JSON.stringify({ email, password }),
     });
 
-    if (response.ok) {
-      router.push("/about");
-    } else {
-      // Handle errors
+    if (!response.ok) {
+      console.log("login page, response not ok");
+      return;
     }
-    const data = await response.json();
-    console.log("data", data);
+
+    const { user }: { user: UserData } = await response.json();
+    console.log("data", user);
+
+    login(user);
+
+    router.push("/dashboard");
   }
 
   return (

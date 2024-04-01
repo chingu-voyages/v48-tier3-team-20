@@ -39,7 +39,13 @@ export async function POST(req: Request) {
     cookies().set("accessToken", token, { secure: true, httpOnly: true });
     console.log("token creation", token);
 
-    return NextResponse.json({ message: "Successfully logged in" });
+    const responseUser = user.toJSON();
+    delete responseUser.password;
+
+    return NextResponse.json({
+      message: "Successfully logged in",
+      user: responseUser,
+    });
   } catch (error) {
     const err = error as Error;
     console.log("error caught in api/users/login:", err);

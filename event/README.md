@@ -11,7 +11,6 @@ Root layout contains `<Header/>` and `<Footer/>`, to add context providers?
 ### Public routes [Public]
 
 - Home: `/`
-  - Middleware check: Redirect to `/dashboard` if user is already logged in
   - Contains `<SearchBar/>` which links to `/search`
   - Contains `Trending` and `Upcoming` which links to `/trending` and `/upcoming`
   - Contains `See all catogories` which links to `/category`
@@ -46,15 +45,15 @@ Middleware check: Redirects to `/login` if not logged in
 
 ### Host routes [Require Host Login]
 
-Middleware check: Redirects to `/login` if not logged in, shows `401 Unauthorized` if logged in user is not host
+Middleware check: Redirects to `/login` if not logged in, ~~shows `401 Unauthorized`~~ redirects to `/dashboard` if user is not host
 
-- Event Management: `/dashboard/events`
-  - Shows list of all events with links to `/dashboard/events/[eventid]` to edit event
+- Event Management: `/host/events`
+  - Shows list of all events with links to `/host/[eventid]` to edit event
   - Contains a delete button to delete event (with confirmation popup)
   - Shows a create event form and button to create new events
-- Upcoming events: `/dashboard/events/upcoming`
-- Past events (already over): `/dashboard/events/past`
-- Edit Event (update and delete): `/dashboard/events/[eventid]`
+- Upcoming events: `/host/upcoming`
+- Past events (already over): `/host/past`
+- Edit Event (update and delete): `/host/[eventid]`
 
 ## List of BE routes for reference
 

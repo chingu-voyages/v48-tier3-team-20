@@ -2,12 +2,10 @@
 import React from "react";
 import { UserContext } from "@/context/UserContext";
 import Link from "next/link";
+import LogoutButton from "./LogoutButton";
 
 export default function Header() {
   const { userData } = React.useContext(UserContext);
-
-  // use userData to conditionally render login/logout buttons
-  console.log(userData);
 
   return (
     <header className="flex w-full justify-between bg-sky-100 px-6 py-4">
@@ -18,15 +16,23 @@ export default function Header() {
         <Link className="text-sky-700" href="/category">
           Category
         </Link>
-        <Link className="text-sky-700" href="/login">
-          Login
-        </Link>
-        <Link className="text-sky-700" href="/api/users/logout">
-          Logout
-        </Link>
-        <Link className="text-sky-700" href="/profile">
-          Profile
-        </Link>
+        {userData === null ? (
+          <>
+            <Link className="text-sky-700" href="/login">
+              Login
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link className="text-sky-700" href="/dashboard">
+              Dashboard
+            </Link>
+            <Link className="text-sky-700" href="/profile">
+              {userData.username}
+            </Link>
+            <LogoutButton className="text-sky-700" />
+          </>
+        )}
       </nav>
     </header>
   );

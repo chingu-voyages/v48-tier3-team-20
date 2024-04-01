@@ -7,7 +7,7 @@ type UserContextType = {
   logout: () => void;
 };
 
-type UserData = {
+export type UserData = {
   fullname: string;
   email: string;
   username: string;
