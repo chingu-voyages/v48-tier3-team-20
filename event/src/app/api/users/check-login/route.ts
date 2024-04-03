@@ -14,7 +14,7 @@ export default async function GET(req:Request){
     }
     try{
         const userData = await verifyJwt(token);
-        return NextResponse.json({message: "user verified", data: userData})
+        return NextResponse.json({message: "user verified", data: userData.data})
 
     } catch(err){
         console.log(err)
