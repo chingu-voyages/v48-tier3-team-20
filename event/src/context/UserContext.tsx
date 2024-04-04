@@ -8,9 +8,10 @@ type UserContextType = {
 };
 
 export type UserData = {
-  fullname: string;
-  email: string;
-  username: string;
+  //   fullname: string;
+  //   email: string;
+  //   username: string;
+  userId: string;
   isSubscribed: boolean;
 } | null;
 
@@ -27,13 +28,13 @@ export default function UserProvider({
 }) {
   const [userData, setUserData] = React.useState<UserData>(null);
 
-  const login = (user: UserData) => {
+  const login = React.useCallback((user: UserData) => {
     setUserData(user);
-  };
+  }, []);
 
-  const logout = () => {
+  const logout = React.useCallback(() => {
     setUserData(null);
-  };
+  }, []);
 
   const value = {
     userData,

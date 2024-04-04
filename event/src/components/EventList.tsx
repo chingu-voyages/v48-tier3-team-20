@@ -2,17 +2,18 @@ import Link from "next/link";
 import EventCard from "./EventCard";
 
 type EventListProp = {
-  category: string;
+  link: string;
+  text: string;
   children?: React.ReactNode;
 };
 
-export default function EventList({ category, children }: EventListProp) {
+export default function EventList({ link, text, children }: EventListProp) {
   return (
     <section className="m-1">
       <div className="flex items-center justify-center">
-        <h2 className="mr-4 text-2xl font-bold">{category}</h2>
+        <h2 className="mr-4 text-2xl font-bold">{text}</h2>
         <Link
-          href={`/category/${category}`}
+          href={link}
           className="flex items-center rounded-lg border px-2 py-1 text-sm"
         >
           View more

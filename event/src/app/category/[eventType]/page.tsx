@@ -4,7 +4,6 @@ import EventCard from "@/components/EventCard";
 import { isType } from "@/lib/utils";
 import { CATEGORIES } from "@/lib/constants";
 
-
 let hide = false;
 
 export default async function EventType({
@@ -28,22 +27,22 @@ export default async function EventType({
   }
 
   const { data } = await getEventByCategory(params.eventType);
-  if (!data) {
-    return <EventCard
-      id="Testing404Event"
-      eventName="Testing404Event"
-      date={new Date()}
-      location="Click to test 404 event"
-      img="https://picsum.photos/id/1/200/150"
-      views={0}
-    />;
-  }
+  // if (!data) {
+  //   return <EventCard
+  //     id="Testing404Event"
+  //     eventName="Testing404Event"
+  //     date={new Date()}
+  //     location="Click to test 404 event"
+  //     img="https://picsum.photos/id/1/200/150"
+  //     views={0}
+  //   />;
+  // }
 
   return (
     <>
       <div className="flex flex-col gap-2">
         <p>Category {params.eventType}: </p>
-        <div className="flex flex-wrap gap-2">
+        {/* <div className="flex flex-wrap gap-2">
           {data.map((event) => (
             <EventCard
               key={event.id}
@@ -57,7 +56,7 @@ export default async function EventType({
           ))}
 
 
-        </div>
+        </div> */}
       </div>
     </>
   );

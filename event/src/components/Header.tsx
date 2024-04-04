@@ -1,11 +1,25 @@
 "use client";
 import React from "react";
-import { UserContext } from "@/context/UserContext";
+import { UserContext, UserData } from "@/context/UserContext";
 import Link from "next/link";
 import LogoutButton from "./LogoutButton";
 
 export default function Header() {
-  const { userData } = React.useContext(UserContext);
+  const { userData, login, logout } = React.useContext(UserContext);
+
+  React.useEffect(() => {
+    const checkJwt = async () => {
+      const res = await fetch("/api/users/");
+      const { data, error } = await res.json();
+      if (error || !data) {
+        logout();
+      } else {
+        login(data);
+      }
+    };
+
+    checkJwt();
+  }, [login, logout]);
 
   return (
     <header className="flex w-full justify-between bg-sky-100 px-6 py-4">
@@ -24,11 +38,16 @@ export default function Header() {
           </>
         ) : (
           <>
+            {userData.isSubscribed && (
+              <Link className="text-sky-700" href="/host">
+                Host
+              </Link>
+            )}
             <Link className="text-sky-700" href="/dashboard">
               Dashboard
             </Link>
             <Link className="text-sky-700" href="/profile">
-              {userData.username}
+              Profile
             </Link>
             <LogoutButton className="text-sky-700" />
           </>

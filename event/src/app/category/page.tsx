@@ -32,8 +32,12 @@ export default async function Events() {
     <>
       <div className="flex flex-col gap-2 bg-lime-200">
         <p className="text-4xl font-bold">Categories: </p>
-        {categoryData.map((cat) => (
-          <EventList category={cat.category} key={cat.id}>
+        {/* {categoryData.map((cat) => (
+          <EventList
+            text={cat.category}
+            link={`/category/${cat.category}`}
+            key={cat.id}
+          >
             {cat.event.map((event) => (
               <EventCard
                 key={event.id}
@@ -48,7 +52,7 @@ export default async function Events() {
           </EventList>
         ))}
 
-        <EventList category="Test404Category">
+        <EventList link={`/category/Test404Category`} text="Test404Category">
           <EventCard
             id="Testing404Event"
             eventName="Testing404Event"
@@ -57,7 +61,7 @@ export default async function Events() {
             img="https://picsum.photos/id/1/200/150"
             views={0}
           />
-        </EventList>
+        </EventList> */}
       </div>
     </>
   );
