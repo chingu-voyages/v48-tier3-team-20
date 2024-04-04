@@ -1,15 +1,18 @@
-import { IUserPayload } from "@/app/api/users/login/route";
 import { NextRequest, NextResponse } from "next/server";
-import * as jose from 'jose'
 import Event from "@/models/Event";
 import dbConnect from "@/lib/mongo";
-import { CreateEvent } from "@/lib/types";
 import { CreateEventValidator } from "@/lib/validator";
+import { verifyJwt } from "@/lib/authHelper";
+import { parseEventFormData, uploadImageToCloudinary } from "@/lib/utils";
+import { CloudinaryResponse, CreateEvent } from "@/lib/types";
 
 export async function POST(req: NextRequest) {
 
-  const body: CreateEvent = await req.json();
-  const validate = CreateEventValidator.safeParse(body);
+  const formData = await req.formData();
+  const formDataObject = parseEventFormData(formData) as CreateEvent
+
+  const validate = CreateEventValidator.safeParse(formDataObject);
+  const imgPoster = formData.get('imgPoster') as File
 
   if (!validate.success) {
     return NextResponse.json({
@@ -18,36 +21,26 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  if ('participants' in body) {
-    delete body.participants;
+  const accessToken = req.cookies.get('accessToken')
+  if (!accessToken) {
+    return NextResponse.json({ error: 'no auth token' })
   }
 
-
-  let skey: string = process.env.SECRETKEY!;
-  let cookie = req.cookies.get("accessToken")
-  const key = new TextEncoder().encode(skey)
-  if (!cookie) {
-    console.log('no cookie')
-    return NextResponse.json({
-      body: { error: 'Unauthorized', details: 'User is not authenticated. Please login' },
-    }, { status: 401 })
-  }
-
-  const { payload, protectedHeader }: { payload: IUserPayload, protectedHeader: any } = await jose.jwtVerify(cookie.value, key, {})
-  if (!payload.isSubscribed) {
-    return NextResponse.json({ error: "Unauthorized", details: "User is not subscribed to the service. Subscription is required to access this feature." }, { status: 401 })
+  const { data, error } = await verifyJwt(accessToken.value)
+  if (error !== null) {
+    return NextResponse.json(error)
   }
 
   await dbConnect();
 
-  if (!body.slug) {
-    body.slug = body.name.split(' ').join('-')
+  if (!formDataObject.slug) {
+    formDataObject.slug = formDataObject.name.split(' ').join('-')
   }
 
   const isExist = await Event.exists({
     $or: [
-      { name: body.name },
-      { slug: body.slug }
+      { name: formDataObject.name },
+      { slug: formDataObject.slug }
     ]
   });
 
@@ -55,6 +48,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Duplicate Entry", details: "The provided name or slug already exists. Please use a unique name or slug." }, { status: 409 })
   }
 
-  const event = await Event.create({ ...body, host: payload.userId });
+  if (imgPoster) {
+    const arrayBuffer = await imgPoster.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer)
+    const results = await uploadImageToCloudinary(buffer, imgPoster.name)
+    formDataObject.imgPoster = (results as CloudinaryResponse).url
+  }
+
+  const event = await Event.create({ ...formDataObject, host: data.userId });
   return NextResponse.json(event);
 }
