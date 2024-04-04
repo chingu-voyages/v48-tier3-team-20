@@ -1,5 +1,5 @@
 import dbConnect from "@/lib/mongo/index";
-import User, { Users } from "@/models/User";
+import User, { IUser } from "@/models/User";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { cookies } from "next/headers";
@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     await dbConnect();
 
     const body = await req.json();
-    const user: Users = await User.findOne({ email: body.email }).exec();
+    const user: IUser = await User.findOne({ email: body.email }).exec();
 
     if (!user) {
       return NextResponse.json(
