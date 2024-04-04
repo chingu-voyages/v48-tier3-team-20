@@ -1,24 +1,18 @@
 import dbConnect from "@/lib/mongo/index";
-import Users, { IUsers } from "@/models/User";
+import User, { Users } from "@/models/User";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { cookies } from "next/headers";
-import { JwtPayload } from "jsonwebtoken";
 import { createJwt, UserJWTPayload } from "@/lib/authHelper";
 
 // to update with authHelper later
-
-export interface IUserPayload extends JwtPayload {
-  userId: string;
-  isSubscribed: boolean;
-}
 
 export async function POST(req: Request) {
   try {
     await dbConnect();
 
     const body = await req.json();
-    const user: IUsers = await Users.findOne({ email: body.email }).exec();
+    const user: Users = await User.findOne({ email: body.email }).exec();
 
     if (!user) {
       return NextResponse.json(

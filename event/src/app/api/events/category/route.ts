@@ -7,15 +7,18 @@ export async function GET(req: NextRequest) {
   try {
     await dbConnect()
     let result: {} = {}
-    for (let i in CATEGORIES) {
-      const events = await Event.aggregate([{ $match: { "category": CATEGORIES[i] } }])
-        .addFields({ "participantCount": { "$size": '$participants' } })
-        .sort({ "participantCount": -1 })
-        .limit(3)
+    for (let category of CATEGORIES) {
+      const events = await Event.aggregate([
+        { $match: { "category": category } },
+        { $addFields: { "participantCounts": { "$size": '$participants' } } },
+        { $sort: { "participantCounts": -1 } },
+        { $limit: 3 }
+      ])
+
       if (!events) {
         continue
       }
-      result = { ...result, [CATEGORIES[i]]: events }
+      result = { ...result, [category]: events }
     }
     return NextResponse.json({ result })
   } catch (e) {
