@@ -5,11 +5,21 @@ import { NextResponse } from 'next/server';
 
 export async function GET(req: NextApiRequest) {
     const { q } = req.query;
-
-
     try{
         await dbConnect();
-        
+        await Event.createIndexes();
+
+        const queryEvents = await Event.find({
+            $or:[
+                { name: {$regex: q, $options: "i"}},
+                { description: {$regex: q, $options: "i"}},
+            ],
+        })
+
+        if(queryEvents[0]){
+            return NextResponse.json({message: "results found..", data: queryEvents})
+        }
+        return NextResponse.json({message: "No results found..."})
 
     } catch(err){
         console.log(err)
