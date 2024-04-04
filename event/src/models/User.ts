@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export interface IUsers extends mongoose.Document {
+export interface IUser extends mongoose.Document {
   fullname: string;
   email: string;
   username: string;
@@ -12,7 +12,9 @@ export interface IUsers extends mongoose.Document {
   // dob: string;   // Date of birth
 }
 
-const UserSchema = new mongoose.Schema<IUsers>({
+export interface PublicUser extends Omit <IUser, 'password'> {}
+
+const UserSchema = new mongoose.Schema<IUser>({
   fullname: {
     type: String,
     lowercase: true,
