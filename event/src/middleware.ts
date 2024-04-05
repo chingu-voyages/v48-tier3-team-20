@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
 
   try {
     const { data, error } = await verifyJwt(cookie.value);
-
+    console.log(data)
     if (!data || error) {
       return NextResponse.redirect(new URL("/login", request.url));
     }

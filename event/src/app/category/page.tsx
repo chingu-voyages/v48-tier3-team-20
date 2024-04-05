@@ -1,7 +1,6 @@
 import EventCard from "@/components/EventCard";
 import EventList from "@/components/EventList";
 import { EventType } from "@/lib/types";
-import { uuid } from 'uuidv4';
 
 type CategoryData = {
   id: string;
@@ -31,7 +30,7 @@ export default async function Events() {
       for (const i in categories) {
         //console.log(categories[i])
         const newCat = {
-          id: uuid(),
+          id: crypto.randomUUID(),
           category: categories[i]._id,
           event: categories[i].documents
         }
