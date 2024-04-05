@@ -1,5 +1,4 @@
 import Link from "next/link";
-import EventCard from "./EventCard";
 
 type EventListProp = {
   category: string;

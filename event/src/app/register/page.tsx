@@ -1,54 +1,56 @@
-import React from 'react';
+import Input from "@/components/Input";
+import React from "react";
 
 const Register = () => {
   return (
-    <section className="flex items-center justify-center w-96">
-      <div className="bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-3xl font-semibold text-gray-100 mb-6">Register</h2>
+    <section className="flex w-96 items-center justify-center">
+      <div className="w-full max-w-md rounded-lg bg-gray-800 p-8 shadow-md">
+        <h2 className="mb-6 text-3xl font-semibold text-gray-100">Register</h2>
         <form className="space-y-4">
-          <div>
-            <label htmlFor="username" className="text-gray-200 block mb-1">Username</label>
-            <input
-              type="text"
-              name="username"
-              id="username"
-              className="w-full px-3 py-2 rounded-md bg-gray-700 text-gray-200 focus:outline-none focus:ring focus:ring-blue-500"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="email" className="text-gray-200 block mb-1">Email</label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              className="w-full px-3 py-2 rounded-md bg-gray-700 text-gray-200 focus:outline-none focus:ring focus:ring-blue-500"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="password" className="text-gray-200 block mb-1">Password</label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              className="w-full px-3 py-2 rounded-md bg-gray-700 text-gray-200 focus:outline-none focus:ring focus:ring-blue-500"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="confirmPassword" className="text-gray-200 block mb-1">Confirm Password</label>
-            <input
-              type="password"
-              name="confirmPassword"
-              id="confirmPassword"
-              className="w-full px-3 py-2 rounded-md bg-gray-700 text-gray-200 focus:outline-none focus:ring focus:ring-blue-500"
-              required
-            />
-          </div>
+          <Input
+            htmlFor="username"
+            labelClassName="mb-1 block text-gray-200"
+            labelName="Username"
+            type="text"
+            name="username"
+            id="username"
+            className="w-full rounded-md bg-gray-700 px-3 py-2 text-gray-200 focus:outline-none focus:ring focus:ring-blue-500"
+            required={true}
+          />
+          <Input
+            htmlFor="email"
+            labelClassName="mb-1 block text-gray-200"
+            labelName="Email"
+            type="email"
+            name="email"
+            id="email"
+            className="w-full rounded-md bg-gray-700 px-3 py-2 text-gray-200 focus:outline-none focus:ring focus:ring-blue-500"
+            required={true}
+          />
+
+          <Input
+            htmlFor="password"
+            labelClassName="mb-1 block text-gray-200"
+            labelName="Password"
+            type="password"
+            name="password"
+            id="password"
+            className="w-full rounded-md bg-gray-700 px-3 py-2 text-gray-200 focus:outline-none focus:ring focus:ring-blue-500"
+            required={true}
+          />
+          <Input
+            htmlFor="confirmPassword"
+            labelName="Confirm Password"
+            labelClassName="mb-1 block text-gray-200"
+            type="password"
+            name="confirmPassword"
+            id="confirmPassword"
+            className="w-full rounded-md bg-gray-700 px-3 py-2 text-gray-200 focus:outline-none focus:ring focus:ring-blue-500"
+            required={true}
+          />
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+            className="w-full rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-600 focus:outline-none"
           >
             Register
           </button>
