@@ -41,6 +41,15 @@ export function parseEventFormData(formData: FormData) {
   return formDataObject
 }
 
+/* user form data */
+export function parseUserFormData(formData: FormData) {
+  const formDataObject: { [key: string]: any } = {};
+  formData.forEach((val, key) => {
+    formDataObject[key] = typeof val === 'string' ? tryParseJSON(val) : val;
+  })
+  return formDataObject
+}
+
 export const uploadImageToCloudinary = async (buffer: Buffer, filename: string, options: { tags?: string[] } = {}) => {
   return new Promise((resolve, reject) => {
     cloudinary.v2.uploader.upload_stream(

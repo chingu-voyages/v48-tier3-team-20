@@ -27,7 +27,6 @@ export async function DELETE(req: NextRequest, { params, }: { params: { id: stri
   return NextResponse.json({ success: "Event Deleted" })
 }
 
-
 export async function PUT(req: NextRequest, { params, }: { params: { id: string }; }) {
 
   const id = params.id
