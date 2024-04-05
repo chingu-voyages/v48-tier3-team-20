@@ -35,12 +35,16 @@ export async function PUT(
 ) {
   const id = params.id;
   const formData = await req.formData();
+  console.log(formData);
   const imgPoster = formData.get("imgPoster") as File;
 
+  // unable to send array via formData for category
+  // temp changed to category: z.string() in validator.ts
   const formDataObject = parseEventFormData(formData) as UpdateEvent;
   const validate = UpdateEventValidator.safeParse(formDataObject);
 
   if (!validate.success) {
+    console.log(validate.error);
     return NextResponse.json(
       {
         body: { error: "Data Invalid", details: validate.error },
@@ -65,8 +69,9 @@ export async function PUT(
   if (imgPoster) {
     const arrayBuffer = await imgPoster.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    const results = await uploadImageToCloudinary(buffer, imgPoster.name);
-    formDataObject.imgPoster = (results as CloudinaryResponse).url;
+    console.log("PUT /api/event/[id] imgPoster buffer", buffer);
+    // const results = await uploadImageToCloudinary(buffer, imgPoster.name);
+    // formDataObject.imgPoster = (results as CloudinaryResponse).url;
   }
 
   const updatedEvent = await Event.findOneAndUpdate(

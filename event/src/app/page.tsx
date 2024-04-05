@@ -5,13 +5,13 @@ import { cn } from "@/lib/utils";
 import React from "react";
 
 export default async function Home() {
-  const { data } = await getAllEvents(); // pretend is await fetch(...)
-  const upcoming = data
-    .sort((a, b) => a.date.getTime() - b.date.getTime())
-    .slice(0, 3);
-  const trending = data
-    .sort((a, b) => b.weeklyViews - a.weeklyViews)
-    .slice(0, 3);
+  // const { data } = await getAllEvents(); // pretend is await fetch(...)
+  // const upcoming = data
+  //   .sort((a, b) => a.date.getTime() - b.date.getTime())
+  //   .slice(0, 3);
+  // const trending = data
+  //   .sort((a, b) => b.weeklyViews - a.weeklyViews)
+  //   .slice(0, 3);
   return (
     <main className="h-full w-full text-lg outline">
       <div className="mb-10 flex flex-col items-center gap-4 pt-12">
@@ -34,7 +34,7 @@ export default async function Home() {
         </div>
       </div>
 
-      <EventList category="Trending">
+      {/* <EventList category="Trending">
         {trending.map((event) => (
           <EventCard
             key={event.id}
@@ -60,8 +60,7 @@ export default async function Home() {
             views={event.weeklyViews}
           />
         ))}
-      </EventList>
-
+      </EventList> */}
     </main>
   );
 }

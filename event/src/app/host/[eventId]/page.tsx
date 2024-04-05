@@ -1,27 +1,12 @@
 "use client";
+import { EventType } from "@/lib/types";
+import { getDateTime } from "@/lib/utils";
 import React, { ChangeEvent, FormEvent } from "react";
+import { ACCEPTED_IMAGE_TYPES, CATEGORIES } from "@/lib/constants";
+import Image from "next/image";
 // import { Events } from "@/models/Event";
 
 // dashboard for host to edit/delete events
-
-type Events = {
-  _id: string;
-  name: string;
-  slug: string; // has to be unique, default to name.split(' ').join('-')?
-  description: string;
-  location: string;
-  imgPoster: string; // image url
-  category: string[];
-  eventStartDate: string;
-  eventStartTime?: string;
-  eventEndDate?: string;
-  eventEndTime?: string;
-  lastDateToJoin: string;
-  lastDateToJoinTime?: string;
-  maximumParticipants: number;
-  host: string;
-  participants: string[];
-};
 
 export default function DashboardHostEvent({
   params,
@@ -34,13 +19,12 @@ export default function DashboardHostEvent({
   // form onSubmit fetch PUT /api/events/[eventid]
   // delete button (with confirmation popup) fetch DELETE /api/events/[eventid]
 
-  const [event, setEvent] = React.useState<Events>({
+  const [event, setEvent] = React.useState<EventType>({
     _id: "",
     name: "",
     slug: "",
     description: "",
     location: "",
-    imgPoster: "",
     category: [],
     eventStartDate: "",
     lastDateToJoin: "",
@@ -52,26 +36,17 @@ export default function DashboardHostEvent({
   React.useEffect(() => {
     const fetchData = async () => {
       const res = await fetch(`/api/events/${params.eventId}`);
-      const { data }: { data: Events } = await res.json();
+      const { data }: { data: EventType } = await res.json();
+      console.log(data);
 
       const offset = new Date().getTimezoneOffset();
 
-      // dealing with dates is a pain...
-      // https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
-      const start = new Date(
-        new Date(data.eventStartDate).getTime() - offset * 60 * 1000,
-      ).toISOString();
-      // const lastDate = new Date(data.lastDateToJoin).getTime();
+      data.eventStartDate = getDateTime(new Date(data.eventStartDate));
+      data.lastDateToJoin = getDateTime(new Date(data.lastDateToJoin));
 
-      // data.eventStartDate = start.split("T")[0];
-      // data.eventStartTime = startDate.toLocaleTimeString().split(" ")[0];
-      // data.lastDateToJoin = lastDate.toLocaleDateString();
-      // data.lastDateToJoinTime = lastDate.toLocaleTimeString().split(" ")[0];
-      // if (data.eventEndDate) {
-      //   const endDate = new Date(data.eventEndDate);
-      //   data.eventEndDate = endDate.toLocaleDateString();
-      //   data.eventEndTime = endDate.toLocaleTimeString().split(" ")[0];
-      // }
+      if (data.eventEndDate) {
+        data.eventEndDate = getDateTime(new Date(data.eventEndDate));
+      }
 
       console.log(data);
       setEvent(data);
@@ -83,17 +58,69 @@ export default function DashboardHostEvent({
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const { name, value } = e.currentTarget;
+    const { name, value, type, checked } = e.currentTarget as HTMLInputElement &
+      HTMLTextAreaElement;
+    if (name === "category") {
+      const set = new Set(event.category);
+
+      checked ? set.add(value) : set.delete(value);
+
+      if (value !== "Uncategorized") {
+        set.delete("Uncategorized");
+      } else {
+        set.clear();
+        set.add("Uncategorized");
+      }
+
+      setEvent((prevState) => ({
+        ...prevState,
+        category: Array.from(set),
+      }));
+      return;
+    }
     setEvent((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(event);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.currentTarget;
+    if (files) {
+      console.log(files[0]);
+      setEvent((prevState) => ({
+        ...prevState,
+        imgPoster: files[0],
+      }));
+    }
   };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const form = new FormData(e.currentTarget);
+      const res = await fetch(`/api/events/${event._id}`, {
+        method: "PUT",
+        body: form,
+      });
+
+      if (!res.ok) {
+        console.log("response not ok");
+      }
+
+      const data = await res.json();
+      console.log(data);
+
+      console.log(event);
+    } catch (error) {
+      const err = error as Error;
+      console.log("error in /host/[eventId]:", err);
+    }
+  };
+
+  const categories = [...CATEGORIES, "Uncategorized"];
+
+  const posterIsString = typeof event.imgPoster === "string";
 
   return (
     <>
@@ -163,26 +190,88 @@ export default function DashboardHostEvent({
         </div>
 
         <div>
-          <label htmlFor="category" className="mb-1 block text-gray-800">
-            Location
+          {event.imgPoster && typeof event.imgPoster === "string" && (
+            <>
+              <Image
+                width={200}
+                src={event.imgPoster as string}
+                alt="alt text"
+                height={150}
+                className="rounded-lg object-contain"
+              />
+              <p>{event.imgPoster as string}</p>
+            </>
+          )}
+          {event.imgPoster && typeof event.imgPoster !== "string" && (
+            <>
+              <Image
+                width={200}
+                src={URL.createObjectURL(event.imgPoster)}
+                alt="alt text"
+                height={150}
+                className="rounded-lg object-contain"
+              />
+              <p>Poster file {event.imgPoster.name}</p>
+            </>
+          )}
+          <label htmlFor="imgPoster" className="mb-1 block text-gray-800">
+            Upload Event Poster
           </label>
           <input
-            type="text"
-            name="category"
-            id="category"
-            value={event.category}
+            type="file"
+            name="imgPoster"
+            id="imgPoster"
+            accept={ACCEPTED_IMAGE_TYPES.join(", ")}
+            onChange={handleFileChange}
+            className="w-full rounded-md bg-gray-200 px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <p className="mb-1 block text-gray-800">Categories</p>
+          <div className="flex flex-wrap gap-4">
+            {categories.map((cat) => (
+              <div key={cat} className="flex items-center justify-center gap-2">
+                <label htmlFor={cat} className="mb-1 block text-gray-800">
+                  {cat}
+                </label>
+                <input
+                  type="checkbox"
+                  name="category"
+                  id={cat}
+                  value={cat}
+                  checked={event.category.includes(cat)}
+                  onChange={handleChange}
+                  className="w-full rounded-md bg-gray-200 px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div>
+          <label
+            htmlFor="maximumParticipants"
+            className="mb-1 block text-gray-800"
+          >
+            Maximum participants (0 for unlimited)
+          </label>
+          <input
+            type="number"
+            min={0}
+            name="maximumParticipants"
+            id="maximumParticipants"
+            value={event.maximumParticipants}
             onChange={handleChange}
             className="w-full rounded-md bg-gray-200 px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
             required
           />
         </div>
-
         <div>
           <label htmlFor="eventStartDate" className="mb-1 block text-gray-800">
             Event Start Date
           </label>
           <input
-            type="date"
+            type="datetime-local"
             name="eventStartDate"
             id="eventStartDate"
             value={event.eventStartDate}
@@ -192,14 +281,28 @@ export default function DashboardHostEvent({
           />
         </div>
         <div>
-          <label htmlFor="eventStartTime" className="mb-1 block text-gray-800">
-            Event Start Time
+          <label htmlFor="eventEndDate" className="mb-1 block text-gray-800">
+            Event End Date
           </label>
           <input
-            type="time"
-            name="eventStartTime"
-            id="eventStartTime"
-            value={event.eventStartTime}
+            type="datetime-local"
+            name="eventEndDate"
+            id="eventEndDate"
+            value={event.eventEndDate}
+            onChange={handleChange}
+            className="w-full rounded-md bg-gray-200 px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="lastDateToJoin" className="mb-1 block text-gray-800">
+            Last Date To Join
+          </label>
+          <input
+            type="datetime-local"
+            name="lastDateToJoin"
+            id="eventStartDate"
+            value={event.lastDateToJoin}
             onChange={handleChange}
             className="w-full rounded-md bg-gray-200 px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
             required

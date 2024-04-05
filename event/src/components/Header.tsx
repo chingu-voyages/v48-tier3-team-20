@@ -12,14 +12,14 @@ export default function Header() {
       const res = await fetch("/api/users/");
       const { data, error } = await res.json();
       if (error || !data) {
-        logout();
+        if (userData && userData.userId) logout();
       } else {
-        login(data);
+        if (!userData || !userData.userId) login(data);
       }
     };
 
     checkJwt();
-  }, [login, logout]);
+  }, [login, logout, userData]);
 
   return (
     <header className="flex w-full justify-between bg-sky-100 px-6 py-4">

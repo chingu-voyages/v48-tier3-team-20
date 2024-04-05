@@ -50,7 +50,7 @@ export default function DashboardHost() {
 
   return (
     <>
-      <p>Host Dashboard: Event Management</p>
+      <p>Host Dashboard: Event Management for {userData?.userId}</p>
       <nav className="flex flex-col gap-4">
         <EventList text="Manage Upcoming Events" link="/host/upcoming">
           {upcomingEvents.map((event) => (

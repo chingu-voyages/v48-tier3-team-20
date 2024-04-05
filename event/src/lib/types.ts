@@ -20,21 +20,31 @@ export type UserType = {
 // example
 export type EventCategory = (typeof CATEGORIES)[number];
 
-// example
+// FE useState
 export type EventType = {
-  id: string;
-  eventName: string;
-  hostId?: string;
+  _id: string;
+  name: string;
+  slug: string;
   description: string;
-  category: EventCategory;
-  date: Date;
-  img: string;
   location: string;
-  weeklyViews: number;
+  imgPoster?: File | string;
+  category: string[];
+  eventStartDate: string;
+  eventEndDate?: string;
+  lastDateToJoin: string;
+  maximumParticipants: number;
+  host: string;
+  participants: string[];
 };
 
-export type CreateEvent = Omit<z.infer<typeof CreateEventValidator>, 'imgPoster'> & { imgPoster: string };
-export type UpdateEvent = Omit<z.infer<typeof UpdateEventValidator>, 'imgPoster'> & { imgPoster: string };
+export type CreateEvent = Omit<
+  z.infer<typeof CreateEventValidator>,
+  "imgPoster"
+> & { imgPoster: string };
+export type UpdateEvent = Omit<
+  z.infer<typeof UpdateEventValidator>,
+  "imgPoster"
+> & { imgPoster: string };
 
 export type CloudinaryResponse = {
   asset_id: string;
@@ -57,8 +67,7 @@ export type CloudinaryResponse = {
   folder: string;
   original_filename: string;
   api_key: string;
-}
-
+};
 
 export type MongoEventType = {
   name: string;
