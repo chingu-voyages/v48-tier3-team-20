@@ -1,25 +1,34 @@
 "use client";
 import React from "react";
-import { UserContext, UserData } from "@/context/UserContext";
+import { UserContext } from "@/context/UserContext";
 import Link from "next/link";
 import LogoutButton from "./LogoutButton";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const { userData, login, logout } = React.useContext(UserContext);
+  const router = useRouter();
 
   React.useEffect(() => {
     const checkJwt = async () => {
-      const res = await fetch("/api/users/");
-      const { data, error } = await res.json();
-      if (error || !data) {
-        if (userData && userData.userId) logout();
-      } else {
-        if (!userData || !userData.userId) login(data);
+      try {
+        const res = await fetch("/api/users/");
+        const { data, error } = await res.json();
+        if (error || !data) {
+          if (userData && userData.userId) logout();
+          router.push("/login");
+        } else {
+          if (!userData || !userData.userId) login(data);
+        }
+      } catch (error) {
+        const err = error as Error;
+        console.log("error caught in header:", err);
+        router.push("/login");
       }
     };
 
     checkJwt();
-  }, [login, logout, userData]);
+  }, [login, logout, router, userData]);
 
   return (
     <header className="flex w-full justify-between bg-sky-100 px-6 py-4">

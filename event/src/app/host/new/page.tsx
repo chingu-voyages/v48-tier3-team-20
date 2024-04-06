@@ -8,12 +8,14 @@ import useFullscreen from "@/hooks/useFullscreen";
 import { useRouter, notFound } from "next/navigation";
 // import { Events } from "@/models/Event";
 
-// dashboard for host to edit/delete events
+// dashboard for host to create new event
+// copy/past from edit event page
+// to refactor and optimize later
 
 // issue with input type="file" going from uncontrolled to controlled
 // https://stackoverflow.com/questions/76103230/proper-way-to-create-a-controlled-input-type-file-element-in-react
 
-export default function DashboardHostEvent({
+export default function DashboardHostNewEvent({
   params,
 }: {
   params: { eventId: string };
@@ -32,38 +34,9 @@ export default function DashboardHostEvent({
     participants: [],
   });
 
-  const [prevImg, setPrevImg] = React.useState<string>("");
-  const { fullscreen, enterFullscreen, exitFullscreen } = useFullscreen();
   const router = useRouter();
 
   const inputRef = React.useRef<HTMLInputElement>(null);
-
-  React.useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch(`/api/events/${params.eventId}`);
-      const { data }: { data: EventType } = await res.json();
-      console.log(data);
-      if (!data) {
-        router.push("/404");
-        return;
-      }
-
-      const offset = new Date().getTimezoneOffset();
-
-      data.eventStartDate = getDateTime(new Date(data.eventStartDate));
-      data.lastDateToJoin = getDateTime(new Date(data.lastDateToJoin));
-
-      if (data.eventEndDate) {
-        data.eventEndDate = getDateTime(new Date(data.eventEndDate));
-      }
-
-      console.log(data);
-      setEvent(data);
-      setPrevImg(data.imgPoster as string);
-    };
-
-    fetchData();
-  }, [params.eventId, router]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -99,7 +72,7 @@ export default function DashboardHostEvent({
     if (!files || files.length === 0) {
       setEvent((prevState) => ({
         ...prevState,
-        imgPoster: prevImg,
+        imgPoster: "",
       }));
       return;
     }
@@ -118,8 +91,8 @@ export default function DashboardHostEvent({
         form.delete("imgPoster");
       }
       console.log("imgposterform", form.get("imgPoster"));
-      const res = await fetch(`/api/events/${event._id}`, {
-        method: "PUT",
+      const res = await fetch(`/api/events/`, {
+        method: "POST",
         body: form,
       });
 
@@ -138,34 +111,11 @@ export default function DashboardHostEvent({
     }
   };
 
-  const deleteEvent = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    id: string,
-  ) => {
-    e.preventDefault();
-    try {
-      const res = await fetch(`/api/events/${event._id}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) {
-        console.log("response not ok");
-      }
-
-      const data = await res.json();
-      console.log(data);
-      router.push("/host");
-    } catch (error) {
-      const err = error as Error;
-      console.log("error in /host/[eventId]:", err);
-    }
-  };
-
   const categories = [...CATEGORIES, "Uncategorized"];
 
   return (
     <>
-      <p>Host Dashboard: Edit Event {params.eventId}</p>
+      <p>Host Dashboard: New Event {params.eventId}</p>
       <form
         className="w-full max-w-screen-sm space-y-4 px-8"
         onSubmit={handleSubmit}
@@ -366,37 +316,9 @@ export default function DashboardHostEvent({
           type="submit"
           className="w-full rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-600 focus:outline-none"
         >
-          Update
-        </button>
-        <button
-          type="button"
-          onClick={enterFullscreen}
-          className="relative mb-32 w-full rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-600 focus:bg-red-600 focus:outline-none"
-        >
-          Delete
+          Create Event
         </button>
       </form>
-      {fullscreen && (
-        <div className="fixed inset-0 flex h-screen w-screen items-center justify-center backdrop-blur">
-          <div className="confirmDelete w-fit rounded-lg border-4 border-gray-600 bg-gray-200 px-6 py-4">
-            <h2 className="mb-4 text-xl font-bold">Confirm Delete Event?</h2>
-            <div className="flex justify-between gap-4">
-              <button
-                className="w-full rounded-lg bg-red-600 p-2 font-bold text-white hover:scale-110 focus-visible:ring"
-                onClick={(e) => deleteEvent(e, event._id)}
-              >
-                Yes
-              </button>
-              <button
-                className="w-full rounded-lg bg-gray-600 p-2 font-bold text-white hover:scale-110 focus-visible:ring"
-                onClick={exitFullscreen}
-              >
-                No
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }

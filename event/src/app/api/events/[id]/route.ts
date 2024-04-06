@@ -3,8 +3,9 @@ import Event from "@/models/Event";
 import dbConnect from "@/lib/mongo";
 import { UpdateEventValidator } from "@/lib/validator";
 import { verifyJwt } from "@/lib/authHelper";
-import { parseEventFormData, uploadImageToCloudinary } from "@/lib/utils";
-import { CloudinaryResponse, UpdateEvent } from "@/lib/types";
+import { parseEventFormData } from "@/lib/utils";
+import { uploadImageToCloudinary, deleteImage } from "@/lib/cloudinary";
+import { CloudinaryResponse, EventCategory, UpdateEvent } from "@/lib/types";
 
 export async function DELETE(
   req: NextRequest,
@@ -35,12 +36,10 @@ export async function PUT(
 ) {
   const id = params.id;
   const formData = await req.formData();
-  console.log(formData);
   const imgPoster = formData.get("imgPoster") as File;
 
-  // unable to send array via formData for category
-  // temp changed to category: z.string() in validator.ts
   const formDataObject = parseEventFormData(formData) as UpdateEvent;
+  formDataObject.category = formData.getAll("category") as EventCategory[];
   const validate = UpdateEventValidator.safeParse(formDataObject);
 
   if (!validate.success) {
@@ -67,11 +66,20 @@ export async function PUT(
   await dbConnect();
 
   if (imgPoster) {
+    // upload new imgPoster
     const arrayBuffer = await imgPoster.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    console.log("PUT /api/event/[id] imgPoster buffer", buffer);
-    // const results = await uploadImageToCloudinary(buffer, imgPoster.name);
-    // formDataObject.imgPoster = (results as CloudinaryResponse).url;
+    const results = await uploadImageToCloudinary(buffer, imgPoster.name);
+    formDataObject.imgPoster = (results as CloudinaryResponse).url;
+
+    // delete old imgPoster
+    const { imgPoster: prevImgPosterUrl } = await Event.findOne({
+      _id: id,
+    }).select("imgPoster");
+    const res = await deleteImage(prevImgPosterUrl);
+    if (res.error) {
+      console.log(res.error);
+    }
   }
 
   const updatedEvent = await Event.findOneAndUpdate(

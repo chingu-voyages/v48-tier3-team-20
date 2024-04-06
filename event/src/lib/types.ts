@@ -1,5 +1,5 @@
 // put all shared typescript types here
-import { CATEGORIES } from "@/lib/constants";
+import { FULL_CATEGORIES } from "@/lib/constants";
 import { z } from "zod";
 import { CreateEventValidator, UpdateEventValidator } from "./validator";
 
@@ -18,7 +18,7 @@ export type UserType = {
 };
 
 // example
-export type EventCategory = (typeof CATEGORIES)[number];
+export type EventCategory = (typeof FULL_CATEGORIES)[number];
 
 // FE useState
 export type EventType = {

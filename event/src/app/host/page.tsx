@@ -4,6 +4,7 @@ import { UserContext } from "@/context/UserContext";
 import { Events } from "@/models/Event";
 import HostEventCard from "@/components/HostEventCard";
 import EventList from "@/components/EventList";
+import Link from "next/link";
 
 // dashboard for hosts to manage events host has created
 // also shows a form to create new events
@@ -62,7 +63,7 @@ export default function DashboardHost() {
             <HostEventCard key={event._id} event={event} />
           ))}
         </EventList>
-        <form>Form for creating new events</form>
+        <Link href="/host/new">Create new event</Link>
       </nav>
     </>
   );
