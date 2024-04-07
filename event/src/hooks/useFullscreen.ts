@@ -7,6 +7,8 @@ function useFullscreen(init: boolean = false) {
   const enterFullscreen = React.useCallback(() => setFullscreen(true), []);
   const exitFullscreen = React.useCallback(() => setFullscreen(false), []);
 
+  const popupBoxClass = "popup-box";
+
   React.useEffect(() => {
     function handleEsc(e: KeyboardEvent) {
       if (e.code === "Escape") {
@@ -20,9 +22,11 @@ function useFullscreen(init: boolean = false) {
   React.useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       const target = e.target as Element;
+
+      // hack using classname, consider using useRef
       const isPopup =
-        target.classList.contains("confirmDelete") ||
-        target.parentElement?.classList.contains("confirmDelete");
+        target.classList.contains(popupBoxClass) ||
+        target.parentElement?.classList.contains(popupBoxClass);
 
       if (fullscreen && !isPopup) {
         exitFullscreen();
@@ -34,6 +38,7 @@ function useFullscreen(init: boolean = false) {
 
   return {
     fullscreen,
+    popupBoxClass,
     enterFullscreen,
     exitFullscreen,
   };

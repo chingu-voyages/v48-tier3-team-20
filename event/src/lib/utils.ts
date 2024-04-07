@@ -46,16 +46,16 @@ export function parseEventFormData(formData: FormData) {
 }
 
 // extract yyyy-MM-dd, hh:mm, and timezone offset from Date object
-export const getDateTimeTz = (dateObj: Date) => {
-  const offsetInMinutes = dateObj.getTimezoneOffset();
-  const offsetMs = offsetInMinutes * 60 * 1000;
-  const timeStr = dateObj.getTime();
+// export const getDateTimeTz = (dateObj: Date) => {
+//   const offsetInMinutes = dateObj.getTimezoneOffset();
+//   const offsetMs = offsetInMinutes * 60 * 1000;
+//   const timeStr = dateObj.getTime();
 
-  const [date, time] = new Date(timeStr - offsetMs).toISOString().split("T");
-  console.log(date, time.slice(0, 5));
-  return {
-    date,
-    time: time.slice(0, 5),
-    timezone: offsetInMinutes / 60,
-  };
-};
+//   const [date, time] = new Date(timeStr - offsetMs).toISOString().split("T");
+//   console.log(date, time.slice(0, 5));
+//   return {
+//     date,
+//     time: time.slice(0, 5),
+//     timezone: offsetInMinutes / 60,
+//   };
+// };

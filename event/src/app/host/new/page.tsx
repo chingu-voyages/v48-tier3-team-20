@@ -2,7 +2,7 @@
 import { EventType } from "@/lib/types";
 import { getDateTime } from "@/lib/utils";
 import React, { ChangeEvent, FormEvent } from "react";
-import { ACCEPTED_IMAGE_TYPES, CATEGORIES } from "@/lib/constants";
+import { ACCEPTED_IMAGE_TYPES, CATEGORIES, emptyEvent } from "@/lib/constants";
 import Image from "next/image";
 import useFullscreen from "@/hooks/useFullscreen";
 import { useRouter, notFound } from "next/navigation";
@@ -20,19 +20,7 @@ export default function DashboardHostNewEvent({
 }: {
   params: { eventId: string };
 }) {
-  const [event, setEvent] = React.useState<EventType>({
-    _id: "",
-    name: "",
-    slug: "",
-    description: "",
-    location: "",
-    category: ["Uncategorized"],
-    eventStartDate: "",
-    lastDateToJoin: "",
-    maximumParticipants: 0,
-    host: "",
-    participants: [],
-  });
+  const [event, setEvent] = React.useState<EventType>(emptyEvent);
 
   const router = useRouter();
 

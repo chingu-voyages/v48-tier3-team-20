@@ -1,8 +1,8 @@
 "use client";
 import { EventType } from "@/lib/types";
-import { getDateTime } from "@/lib/utils";
+import { cn, getDateTime } from "@/lib/utils";
 import React, { ChangeEvent, FormEvent } from "react";
-import { ACCEPTED_IMAGE_TYPES, CATEGORIES } from "@/lib/constants";
+import { ACCEPTED_IMAGE_TYPES, CATEGORIES, emptyEvent } from "@/lib/constants";
 import Image from "next/image";
 import useFullscreen from "@/hooks/useFullscreen";
 import { useRouter, notFound } from "next/navigation";
@@ -18,22 +18,11 @@ export default function DashboardHostEvent({
 }: {
   params: { eventId: string };
 }) {
-  const [event, setEvent] = React.useState<EventType>({
-    _id: "",
-    name: "",
-    slug: "",
-    description: "",
-    location: "",
-    category: ["Uncategorized"],
-    eventStartDate: "",
-    lastDateToJoin: "",
-    maximumParticipants: 0,
-    host: "",
-    participants: [],
-  });
+  const [event, setEvent] = React.useState<EventType>(emptyEvent);
 
   const [prevImg, setPrevImg] = React.useState<string>("");
-  const { fullscreen, enterFullscreen, exitFullscreen } = useFullscreen();
+  const { fullscreen, popupBoxClass, enterFullscreen, exitFullscreen } =
+    useFullscreen();
   const router = useRouter();
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -48,6 +37,7 @@ export default function DashboardHostEvent({
         return;
       }
 
+      // get timezone offset
       const offset = new Date().getTimezoneOffset();
 
       data.eventStartDate = getDateTime(new Date(data.eventStartDate));
@@ -124,7 +114,8 @@ export default function DashboardHostEvent({
       });
 
       if (!res.ok) {
-        throw new Error("response from BE not ok");
+        const { error } = await res.json();
+        throw new Error(error);
       }
 
       const data = await res.json();
@@ -140,7 +131,6 @@ export default function DashboardHostEvent({
 
   const deleteEvent = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    id: string,
   ) => {
     e.preventDefault();
     try {
@@ -149,7 +139,8 @@ export default function DashboardHostEvent({
       });
 
       if (!res.ok) {
-        console.log("response not ok");
+        const { error } = await res.json();
+        throw new Error(error);
       }
 
       const data = await res.json();
@@ -378,12 +369,17 @@ export default function DashboardHostEvent({
       </form>
       {fullscreen && (
         <div className="fixed inset-0 flex h-screen w-screen items-center justify-center backdrop-blur">
-          <div className="confirmDelete w-fit rounded-lg border-4 border-gray-600 bg-gray-200 px-6 py-4">
+          <div
+            className={cn(
+              popupBoxClass,
+              "confirmDelete w-fit rounded-lg border-4 border-gray-600 bg-gray-200 px-6 py-4",
+            )}
+          >
             <h2 className="mb-4 text-xl font-bold">Confirm Delete Event?</h2>
             <div className="flex justify-between gap-4">
               <button
                 className="w-full rounded-lg bg-red-600 p-2 font-bold text-white hover:scale-110 focus-visible:ring"
-                onClick={(e) => deleteEvent(e, event._id)}
+                onClick={deleteEvent}
               >
                 Yes
               </button>

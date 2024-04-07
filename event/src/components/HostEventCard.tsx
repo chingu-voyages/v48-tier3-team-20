@@ -22,7 +22,7 @@ interface HostEventListProp {
 export default function HostEventCard({ event }: HostEventListProp) {
   return (
     <div className="relative my-3 max-w-60 bg-green-200 p-5">
-      <Link href={`/event/${event._id}`}>
+      <Link href={`/events/${event._id}`}>
         <div className="relative aspect-[4/3] w-full">
           <Image
             src={event.imgPoster}

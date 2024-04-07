@@ -107,7 +107,10 @@ export async function GET(req: NextRequest, content: any) {
   // }
 
   await dbConnect();
-  const event = await Event.findOne({ _id: id });
+  const event = await Event.findOne({ _id: id })
+    .populate({ path: "participants", select: "username" })
+    .exec();
+
   if (event) {
     return NextResponse.json({ data: event });
   }
