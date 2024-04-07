@@ -16,9 +16,15 @@ export async function PUT(req: NextRequest) {
             const salt: string = await bcrypt.genSalt(10);
             const hashedPassword: string = await bcrypt.hash(body.newPassword, salt);
             const user = User.findOneAndUpdate({ _id: userId }, {password: hashedPassword});
-            return NextResponse.json({message: "Password changed!", data: user})
+            if(!user){
+                throw new Error("User not found.")
+            }
+            return NextResponse.json({message: "Password changed!"})
         }
-    } catch (err) {
-        console.log(err)
+    } catch (error) {
+        const err = error as Error;
+        console.log("error caught in /api/users/update-password:", err);
+        const response = NextResponse.json({ Error: err.message });
+        return response;
     }
 }

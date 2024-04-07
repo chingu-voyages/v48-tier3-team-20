@@ -1,6 +1,5 @@
 import dbConnect from "@/lib/mongo";
 import Event from "@/models/Event";
-import { NextApiRequest } from "next";
 import { NextResponse } from 'next/server';
 
 export async function GET(req: Request) {
@@ -24,7 +23,10 @@ export async function GET(req: Request) {
         }
         return NextResponse.json({message: "No results found..."})
 
-    } catch(err){
-        console.log(err)
+    } catch(error){
+        const err = error as Error;
+        console.log("error caught in /api/events/search:", err);
+        const response = NextResponse.json({ Error: err.message });
+        return response;
     }
 }
