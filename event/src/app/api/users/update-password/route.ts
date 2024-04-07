@@ -6,16 +6,22 @@ import bcrypt from "bcrypt";
 
 export async function PUT(req: NextRequest) {
     const body = await req.json();
-    const token = body.cookies.get("accessToken");
+    console.log(body)
+    const cookie = req.cookies.get("accessToken");
+    if (!cookie) {
+        return NextResponse.json({message: "no cookie"})
+    }
+
     try {
         await dbConnect();
-        const userData = await verifyJwt(token);
-        console.log("userDATA", userData)
-        if (userData.data) {
-            const userId = userData.data.userId;
+        const {data, error} = await verifyJwt(cookie.value);
+        console.log("userDATA", data)
+        if (data) {
+            const userId = data.userId;
             const salt: string = await bcrypt.genSalt(10);
             const hashedPassword: string = await bcrypt.hash(body.newPassword, salt);
-            const user = User.findOneAndUpdate({ _id: userId }, {password: hashedPassword});
+            const user = await User.findOneAndUpdate({ _id: userId }, {password: hashedPassword});
+            console.log(user)
             if(!user){
                 throw new Error("User not found.")
             }
