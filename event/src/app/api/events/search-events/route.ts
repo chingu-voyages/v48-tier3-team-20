@@ -3,8 +3,11 @@ import Event from "@/models/Event";
 import { NextApiRequest } from "next";
 import { NextResponse } from 'next/server';
 
-export async function GET(req: NextApiRequest) {
-    const { q } = req.query;
+export async function GET(req: Request) {
+
+    const { searchParams } = new URL(req.url);
+    const q = searchParams.get("q");
+
     try{
         await dbConnect();
         await Event.createIndexes();
