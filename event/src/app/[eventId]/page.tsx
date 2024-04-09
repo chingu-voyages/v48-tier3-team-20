@@ -1,6 +1,7 @@
 import { getEventById } from "@/lib/dummyBackend";
 import Link from "next/link";
 import Image from "next/image";
+import Button from "@/components/Button";
 
 export default async function EventId({
   params,
@@ -38,9 +39,9 @@ export default async function EventId({
       </div>
 
       <div className="my-5 flex">
-        <button className="mr-2 border px-5 py-2">Buy regular ticket</button>
-        <button className="mr-2 border px-5 py-2">Buy VIP ticket</button>
-        <button className="border px-5 py-2">Invite your friend</button>
+        <Button type="button" title="Buy VIP ticket"/>
+        <Button type="button" title="Invite your friend"/>
+        <Button type="button" title="Buy regular ticket"/>
       </div>
 
       <p>Description</p>
