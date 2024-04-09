@@ -1,39 +1,28 @@
 import React from "react";
 
 interface InputProps {
-  htmlFor: string;
-  className: string;
   type: string;
   name: string;
   required: boolean;
-  labelClassName: string;
-  labelName: string;
   id: string;
 }
 
-const Input = ({
-  htmlFor,
-  className,
-  type,
-  name,
-  required,
-  labelClassName,
-  labelName,
-  id,
-}: InputProps) => {
+const Input = ({ type, name, required, id }: InputProps) => {
   return (
-    <div>
-      <label htmlFor={htmlFor} className={labelClassName}>
-        { labelName}
-      </label>
-      <input
-        type={type}
-        name={name}
-        id={id}
-        className={className}
-        required={required}
-      />
-    </div>
+    <form className="space-y-4">
+      <div>
+        <label htmlFor={id} className="mb-1 block text-gray-200">
+          {name}
+        </label>
+        <input
+          type={type}
+          name={name}
+          id={id}
+          className="w-full rounded-md bg-gray-700 px-3 py-2 text-gray-200 focus:outline-none focus:ring focus:ring-blue-500"
+          required={required}
+        />
+      </div>
+    </form>
   );
 };
 

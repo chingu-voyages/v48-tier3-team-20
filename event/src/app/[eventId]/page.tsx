@@ -39,9 +39,9 @@ export default async function EventId({
       </div>
 
       <div className="my-5 flex">
-        <Button title="Buy VIP ticket"/>
-        <Button title="Invite your friend"/>
-        <Button title="Buy regular ticket"/>
+        <Button type="button" title="Buy VIP ticket"/>
+        <Button type="button" title="Invite your friend"/>
+        <Button type="button" title="Buy regular ticket"/>
       </div>
 
       <p>Description</p>
