@@ -9,7 +9,6 @@ interface InputProps {
 
 const Input = ({ type, name, required, id }: InputProps) => {
   return (
-    <form className="space-y-4">
       <div>
         <label htmlFor={id} className="mb-1 block text-gray-200">
           {name}
@@ -22,7 +21,6 @@ const Input = ({ type, name, required, id }: InputProps) => {
           required={required}
         />
       </div>
-    </form>
   );
 };
 

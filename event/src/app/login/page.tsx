@@ -8,7 +8,6 @@ export default function LoginPage() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email");
     const password = formData.get("password");
@@ -29,40 +28,10 @@ export default function LoginPage() {
   }
 
   return (
-    <section className="flex w-96 items-center justify-center">
-      <div className="bg- w-full max-w-md rounded-lg p-8 shadow-md dark:bg-gray-800">
-        <h2 className="mb-6 text-3xl font-semibold text-gray-100">Login</h2>
-        <form className="space-y-4" onSubmit={handleSubmit}>
-         
-         <Input 
-            htmlFor="email"
-            labelClassName="mb-1 block text-gray-200"
-            labelName="Email"
-            type="email"
-            name="email"
-            id="email"
-            className="w-full rounded-md bg-gray-700 px-3 py-2 text-gray-200 focus:outline-none focus:ring focus:ring-blue-500"
-            required={true}
-         />
-    
-          <Input
-            htmlFor="password"
-            labelClassName="mb-1 block text-gray-200"
-            labelName="Password"
-            type="password"
-            name="password"
-            id="password"
-            className="w-full rounded-md bg-gray-700 px-3 py-2 text-gray-200 focus:outline-none focus:ring focus:ring-blue-500"
-            required={true}
-          />
-          <button
-            type="submit"
-            className="w-full rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-600 focus:outline-none"
-          >
-            Login
-          </button>
-        </form>
-      </div>
-    </section>
+    <form onSubmit={handleSubmit}>
+      <Input type="email" name="email" id="email" required={true} />
+      <Input type="password" name="password" id="password" required={true} />
+      <button type="submit">Login</button>
+    </form>
   );
 }

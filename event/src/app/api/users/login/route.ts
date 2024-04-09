@@ -19,7 +19,7 @@ export async function POST(req: Request) {
 
     const body = await req.json();
     const user: IUsers = await Users.findOne({ email: body.email }).exec();
-
+    console.log(body)
     if (!user) {
       return NextResponse.json(
         { message: "No user by that email..." },
