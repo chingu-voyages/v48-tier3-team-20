@@ -16,7 +16,6 @@ export type UserType = {
 };
 
 // example
-// type EventCategory = "Sports" | "Music" | "Games" | "Comedy" | "Others";
 export type EventCategory = (typeof CATEGORIES)[number];
 
 // example
@@ -31,3 +30,22 @@ export type EventType = {
   location: string;
   weeklyViews: number;
 };
+
+export type MongoEventType = {
+  name: string;
+  slug: string; // has to be unique, default to name.split(' ').join('-')?
+  description: string;
+  location: string;
+  imgPoster: string; // image url
+  category: string[];
+  eventStartDate: Date; // new Date().setUTCHours
+  eventEndDate?: Date;
+  lastDateToJoin: Date;
+  maximumParticipants: number;
+  host: any;
+  participants: string[];
+};
+
+export type ReturnType<T> =
+  | { data: T; error: null }
+  | { data: null; error: string };

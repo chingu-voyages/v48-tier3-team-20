@@ -4,6 +4,9 @@ import EventCard from "@/components/EventCard";
 import { isType } from "@/lib/utils";
 import { CATEGORIES } from "@/lib/constants";
 
+
+let hide = false;
+
 export default async function EventType({
   params,
 }: {
@@ -26,7 +29,14 @@ export default async function EventType({
 
   const { data } = await getEventByCategory(params.eventType);
   if (!data) {
-    return <>No events for {params.eventType}</>;
+    return <EventCard
+      id="Testing404Event"
+      eventName="Testing404Event"
+      date={new Date()}
+      location="Click to test 404 event"
+      img="https://picsum.photos/id/1/200/150"
+      views={0}
+    />;
   }
 
   return (
@@ -46,14 +56,7 @@ export default async function EventType({
             />
           ))}
 
-          <EventCard
-            id="Testing404Event"
-            eventName="Testing404Event"
-            date={new Date()}
-            location="Click to test 404 event"
-            img="https://picsum.photos/id/1/200/150"
-            views={0}
-          />
+
         </div>
       </div>
     </>
