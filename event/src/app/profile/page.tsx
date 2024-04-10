@@ -3,10 +3,10 @@ import React, { useState, useEffect } from "react";
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({
-    name: "Test User",
-    email: "TestUser@mail.com",
+    name: "",
+    email: "",
     about:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+      "",
   });
 
   const [editMode, setEditMode] = useState(false);
@@ -17,7 +17,6 @@ const Profile = () => {
         method: "GET",
       });
       const data = await res.json();
-      console.log(data)
       return setProfileData({
         ...profileData, 
         name: data.data.username,
@@ -27,10 +26,18 @@ const Profile = () => {
     };
     fetchData();
   }, []);
-
+  const updateData = async () => {
+    const newBio = profileData.about
+    const res = await fetch("/api/users/update-user-profile", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({newBio}), 
+    });
+  }
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setEditMode(false);
+    updateData();
   };
 
   const handleChange = (e: { target: { name: any; value: any; }; }) => {
@@ -85,15 +92,10 @@ const Profile = () => {
               </div>
             )}
           </div>
-          <blockquote contentEditable="true">
-  <p>Edit this content to add your own quote</p>
-</blockquote>
-
           <div>
             <label htmlFor="about" className="mb-1 block text-gray-200">
               About
             </label>
-            <p contentEditable = {editMode}></p>
             {editMode ? (
               <textarea
                 name="about"
@@ -120,7 +122,9 @@ const Profile = () => {
           ) : (
             <button
               type="button"
-              onClick={() => setEditMode(!editMode)}
+              onClick={(e)=> {
+                e.preventDefault();
+                return setEditMode(true)}}
               className="w-full rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-600 focus:outline-none"
             >
               Edit Profile
