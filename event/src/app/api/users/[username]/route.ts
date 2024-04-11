@@ -9,7 +9,7 @@ export async function GET(req:Request, {
   }){
     try{
         await dbConnect();
-        const publicData = await Users.findOne({username: params.username}).select("interest username email profile_pic bio")
+        const publicData = await Users.findOne({username: params.username}).select("interest username email profile_pic bio fullname")
 
         return NextResponse.json({message: "Public data", data: publicData})
 

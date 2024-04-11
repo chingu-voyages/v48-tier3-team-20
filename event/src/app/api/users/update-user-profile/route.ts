@@ -14,13 +14,16 @@ export async function PUT(req: NextRequest) {
     }
 
     try {
+        console.log("updating user...")
         await dbConnect();
         const {data, error} = await verifyJwt(cookie.value);
         if (data) {
             const newBio = body.newBio;
             const newInterests = body.newInterests;
             const userId = data.userId;
-            const user = await User.findOneAndUpdate({ _id: userId }, {bio: newBio, interests: newInterests});
+            const newName = body.newName;
+            const user = await User.findOneAndUpdate({ _id: userId }, {bio: newBio, interests: newInterests, fullname: newName});
+            console.log("new user info", user.fullname)
             if(!user){
                 throw new Error("User not found.")
             }
