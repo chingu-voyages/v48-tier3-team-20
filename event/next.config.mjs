@@ -19,6 +19,10 @@ const nextConfig = {
             protocol: "http",
             hostname: "placeimg.com"
           },
+          {
+            protocol: "https",
+            hostname: "cdn-icons-png.flaticon.com"
+          },
         ]
     }
 };
