@@ -95,24 +95,17 @@ export async function PUT(
   return NextResponse.json({ error: "Nothing..." });
 }
 
-export async function GET(req: NextRequest, content: any) {
-  const id = content.params.id;
-  // const body: IEvent = await req.json();
-  // const validate = EventSchema.safeParse(body);
-  // if (!validate.success) {
-  //   return NextResponse.json({
-  //     status: 400,
-  //     body: { error: 'Data Invalid', details: validate.error },
-  //   })
-  // }
-
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } },
+) {
   await dbConnect();
-  const event = await Event.findOne({ _id: id })
+  const event = await Event.findOne({ _id: params.id })
     .populate({ path: "participants", select: "username" })
     .exec();
 
-  if (event) {
-    return NextResponse.json({ data: event });
+  if (!event) {
+    return NextResponse.json({ error: "Nothing..." });
   }
-  return NextResponse.json({ error: "Nothing..." });
+  return NextResponse.json({ data: event });
 }

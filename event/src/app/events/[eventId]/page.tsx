@@ -6,7 +6,7 @@ import Image from "next/image";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 import { emptyEvent } from "@/lib/constants";
-import Button from "@/components/Button";
+import Link from "next/link";
 
 export default function EventId({ params }: { params: { eventId: string } }) {
   const [event, setEvent] = React.useState<EventType>(emptyEvent);
@@ -15,26 +15,33 @@ export default function EventId({ params }: { params: { eventId: string } }) {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`/api/events/${params.eventId}`);
-      const { data }: { data: EventType } = await res.json();
-      console.log(data);
-      if (!data) {
-        router.push("/404");
-        return;
+      try {
+        const res = await fetch(`/api/events/${params.eventId}`);
+        console.log(res);
+        const { data }: { data: EventType } = await res.json();
+        console.log({ data });
+        if (!data) {
+          router.push("/404");
+          return;
+        }
+
+        // get timezone offset
+        const offset = new Date().getTimezoneOffset();
+
+        data.eventStartDate = getDateTime(new Date(data.eventStartDate));
+        data.lastDateToJoin = getDateTime(new Date(data.lastDateToJoin));
+
+        if (data.eventEndDate) {
+          data.eventEndDate = getDateTime(new Date(data.eventEndDate));
+        }
+
+        console.log(data);
+        setEvent(data);
+      } catch (error) {
+        const err = error as Error;
+        console.log("error caught:", error);
+        console.log(err.name, err.message);
       }
-
-      // get timezone offset
-      const offset = new Date().getTimezoneOffset();
-
-      data.eventStartDate = getDateTime(new Date(data.eventStartDate));
-      data.lastDateToJoin = getDateTime(new Date(data.lastDateToJoin));
-
-      if (data.eventEndDate) {
-        data.eventEndDate = getDateTime(new Date(data.eventEndDate));
-      }
-
-      console.log(data);
-      setEvent(data);
     };
 
     fetchData();
@@ -80,7 +87,7 @@ export default function EventId({ params }: { params: { eventId: string } }) {
   const isNotFullyBooked =
     event.participants.length < event.maximumParticipants;
 
-  const isAbleToJoin = isBeforeDeadline && isNotFullyBooked;
+  const isAbleToJoin = isBeforeDeadline && isNotFullyBooked && userData?.userId;
 
   const isParticipant =
     userData && event.participants.some((p) => p._id === userData.userId);
@@ -114,15 +121,13 @@ export default function EventId({ params }: { params: { eventId: string } }) {
       <p>{event.participants.map((p) => p.username).join(", ")}</p>
 
       {isParticipant ? (
-        <>
-          <button
-            type="button"
-            onClick={leaveEvent}
-            className="rounded bg-blue-200 py-2"
-          >
-            Leave Event
-          </button>
-        </>
+        <button
+          type="button"
+          onClick={leaveEvent}
+          className="rounded bg-blue-200 py-2"
+        >
+          Leave Event
+        </button>
       ) : (
         <>
           {isAbleToJoin ? (
@@ -136,7 +141,20 @@ export default function EventId({ params }: { params: { eventId: string } }) {
               </button>
             </>
           ) : (
-            <p>Deadline has passed, unable to join</p>
+            <>
+              {isBeforeDeadline ? (
+                <Link
+                  href="/login"
+                  className="rounded bg-blue-200 py-2 text-center"
+                >
+                  Login to join
+                </Link>
+              ) : (
+                <p className="rounded bg-blue-200 py-2 text-center">
+                  Deadline to join already passed
+                </p>
+              )}
+            </>
           )}
         </>
       )}

@@ -27,9 +27,13 @@ export default function DashboardHostUpcoming() {
       const body: Events[] = await res.json();
 
       const now = new Date().getTime();
-      const upcoming = body.filter(
-        (e) => new Date(e.eventStartDate).getTime() > now,
-      );
+      const upcoming = body
+        .filter((e) => new Date(e.eventStartDate).getTime() > now)
+        .sort(
+          (a, b) =>
+            new Date(a.eventStartDate).getTime() -
+            new Date(b.eventStartDate).getTime(),
+        );
 
       setUpcomingEvents(upcoming);
     };
@@ -41,9 +45,15 @@ export default function DashboardHostUpcoming() {
     <>
       <p>Host Dashboard: Event Management for upcoming events</p>
       <div className="flex flex-wrap gap-4">
-        {upcomingEvents.map((event) => (
-          <HostEventCard key={event._id} event={event} />
-        ))}
+        {upcomingEvents.length > 0 ? (
+          upcomingEvents.map((event) => (
+            <HostEventCard key={event._id} event={event} />
+          ))
+        ) : (
+          <>
+            <h2>No upcoming events...</h2>
+          </>
+        )}
       </div>
     </>
   );

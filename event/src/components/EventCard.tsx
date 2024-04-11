@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Events } from "@/models/Event";
+import { EventType } from "@/lib/types";
 
 interface EventListProp {
   event: Events;
@@ -18,11 +19,10 @@ export default function EventCard({ event }: EventListProp) {
       <Link href={`/events/${event._id}`}>
         <div className="relative aspect-[4/3] w-full">
           <Image
-            width={200}
             src={event.imgPoster}
             alt="alt text"
-            height={150}
-            className="rounded-lg object-contain"
+            fill={true}
+            className="rounded-lg object-cover"
           />
         </div>
         <p className="font-bold">{event.name}</p>

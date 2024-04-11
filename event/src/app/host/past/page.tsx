@@ -27,9 +27,13 @@ export default function DashboardHostPast() {
       const body: Events[] = await res.json();
 
       const now = new Date().getTime();
-      const past = body.filter(
-        (e) => new Date(e.eventStartDate).getTime() <= now,
-      );
+      const past = body
+        .filter((e) => new Date(e.eventStartDate).getTime() <= now)
+        .sort(
+          (a, b) =>
+            new Date(a.eventStartDate).getTime() -
+            new Date(b.eventStartDate).getTime(),
+        );
 
       setPastEvents(past);
     };
@@ -41,9 +45,15 @@ export default function DashboardHostPast() {
     <>
       <p>Host Dashboard: Event Management for past events</p>
       <div className="flex flex-wrap gap-4">
-        {pastEvents.map((event) => (
-          <HostEventCard key={event._id} event={event} />
-        ))}
+        {pastEvents.length > 0 ? (
+          pastEvents.map((event) => (
+            <HostEventCard key={event._id} event={event} />
+          ))
+        ) : (
+          <>
+            <h2>No past events...</h2>
+          </>
+        )}
       </div>
     </>
   );

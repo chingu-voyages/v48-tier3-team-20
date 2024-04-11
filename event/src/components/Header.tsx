@@ -16,14 +16,13 @@ export default function Header() {
         const { data, error } = await res.json();
         if (error || !data) {
           if (userData && userData.userId) logout();
-          router.push("/login");
-        } else {
-          if (!userData || !userData.userId) login(data);
+          throw new Error(error);
         }
+        if (!userData || !userData.userId) login(data);
       } catch (error) {
         const err = error as Error;
         console.log("error caught in header:", err);
-        router.push("/login");
+        router.push(window.location.pathname);
       }
     };
 

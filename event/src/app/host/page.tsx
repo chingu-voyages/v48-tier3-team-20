@@ -37,9 +37,19 @@ export default function DashboardHost() {
       const now = new Date().getTime();
       const past = body
         .filter((e) => new Date(e.eventStartDate).getTime() <= now)
+        .sort(
+          (a, b) =>
+            new Date(a.eventStartDate).getTime() -
+            new Date(b.eventStartDate).getTime(),
+        )
         .slice(0, 3);
       const upcoming = body
         .filter((e) => new Date(e.eventStartDate).getTime() > now)
+        .sort(
+          (a, b) =>
+            new Date(a.eventStartDate).getTime() -
+            new Date(b.eventStartDate).getTime(),
+        )
         .slice(0, 3);
       console.log(body[0]);
       setPastEvents(past);
@@ -54,14 +64,26 @@ export default function DashboardHost() {
       <p>Host Dashboard: Event Management for {userData?.userId}</p>
       <nav className="flex flex-col gap-4">
         <EventList text="Manage Upcoming Events" link="/host/upcoming">
-          {upcomingEvents.map((event) => (
-            <HostEventCard key={event._id} event={event} />
-          ))}
+          {upcomingEvents.length > 0 ? (
+            upcomingEvents.map((event) => (
+              <HostEventCard key={event._id} event={event} />
+            ))
+          ) : (
+            <>
+              <h2>No upcoming events...</h2>
+            </>
+          )}
         </EventList>
         <EventList text="View Past Events" link="/host/past">
-          {pastEvents.map((event) => (
-            <HostEventCard key={event._id} event={event} />
-          ))}
+          {pastEvents.length > 0 ? (
+            pastEvents.map((event) => (
+              <HostEventCard key={event._id} event={event} />
+            ))
+          ) : (
+            <>
+              <h2>No past events...</h2>
+            </>
+          )}
         </EventList>
         <Link href="/host/new">Create new event</Link>
       </nav>
