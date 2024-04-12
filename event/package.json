@@ -19,10 +19,8 @@
     "node-jose": "^2.2.0",
     "react": "^18",
     "react-dom": "^18",
-    "tailwind-merge": "^2.2.2",
-    "uuid": "^9.0.1",
-    "uuidv4": "^6.2.13",
-    "zod": "^3.22.4"
+    "react-spinners": "^0.13.8",
+    "tailwind-merge": "^2.2.2"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",

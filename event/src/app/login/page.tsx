@@ -3,6 +3,7 @@ import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { UserContext, UserData } from "@/context/UserContext";
+import Input from "@/components/Input";
 
 // add data to UserContext to keep login state on FE
 // delete UserContext on logout
@@ -39,8 +40,8 @@ export default function LoginPage() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input type="email" name="email" placeholder="Email" required />
-      <input type="password" name="password" placeholder="Password" required />
+      <Input type="email" name="email" id="email" required={true} />
+      <Input type="password" name="password" id="password" required={true} />
       <button type="submit">Login</button>
     </form>
   );

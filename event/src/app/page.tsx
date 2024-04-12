@@ -1,7 +1,7 @@
 import EventCard from "@/components/EventCard";
 import EventList from "@/components/EventList";
+import Hero from "@/components/Hero";
 import { BASE_URL } from "@/lib/constants";
-import { cn } from "@/lib/utils";
 import { Events } from "@/models/Event";
 import React from "react";
 
@@ -26,25 +26,7 @@ export default async function Home() {
 
   return (
     <main className="h-full w-full text-lg outline">
-      <div className="mb-10 flex flex-col items-center gap-4 pt-12">
-        <h1 className="text-3xl">Find your favourite event</h1>
-        <p>Invite your best friends and make them happy</p>
-        <div className="relative flex">
-          <input
-            className="w-80 rounded-lg py-2 pl-8 pr-16"
-            type="text"
-            placeholder="enter keyword or location"
-          />
-          <button
-            className={cn(
-              "absolute right-3 top-1/2 -translate-y-1/2",
-              "rounded-3xl bg-slate-200 px-2 py-1 text-sm hover:ring",
-            )}
-          >
-            GO
-          </button>
-        </div>
-      </div>
+      <Hero/>
 
       <EventList text="Trending" link="/category/Trending">
         {trending.map((event) => (

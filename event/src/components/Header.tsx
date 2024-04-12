@@ -5,6 +5,7 @@ import Link from "next/link";
 import LogoutButton from "./LogoutButton";
 import { useRouter } from "next/navigation";
 
+
 export default function Header() {
   const { userData, login, logout } = React.useContext(UserContext);
   const router = useRouter();
@@ -12,7 +13,7 @@ export default function Header() {
   React.useEffect(() => {
     const checkJwt = async () => {
       try {
-        const res = await fetch("/api/users/");
+        const res = await fetch("/api/users/check-login");
         const { data, error } = await res.json();
         if (error || !data) {
           if (userData && userData.userId) logout();
@@ -38,6 +39,7 @@ export default function Header() {
         <Link className="text-sky-700" href="/category">
           Category
         </Link>
+   
         {userData === null ? (
           <>
             <Link className="text-sky-700" href="/login">
