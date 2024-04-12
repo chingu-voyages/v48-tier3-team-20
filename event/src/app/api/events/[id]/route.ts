@@ -109,23 +109,3 @@ export async function GET(
   }
   return NextResponse.json({ data: event });
 }
-
-export async function GET(req: NextRequest, content: any){
-  const id = content.params.id
-  // const body: IEvent = await req.json();
-  // const validate = EventSchema.safeParse(body);
-  // if (!validate.success) {
-  //   return NextResponse.json({
-  //     status: 400,
-  //     body: { error: 'Data Invalid', details: validate.error },
-  //   })
-  // }
-
-  await dbConnect();
-  const event = await Event.findOne({_id: id});
-  if(event){
-    return NextResponse.json({data: event});
-  }
-  return NextResponse.json({error: "Nothing..."})
-
-}

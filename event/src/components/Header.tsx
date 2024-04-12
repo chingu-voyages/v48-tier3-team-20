@@ -1,14 +1,10 @@
 "use client";
 import React from "react";
 import { UserContext } from "@/context/UserContext";
-"use client";
-import React from "react";
-import { UserContext } from "@/context/UserContext";
 import Link from "next/link";
 import LogoutButton from "./LogoutButton";
 import { useRouter } from "next/navigation";
-import LogoutButton from "./LogoutButton";
-import { useRouter } from "next/navigation";
+
 
 export default function Header() {
   const { userData, login, logout } = React.useContext(UserContext);
@@ -43,28 +39,7 @@ export default function Header() {
         <Link className="text-sky-700" href="/category">
           Category
         </Link>
-        {userData === null ? (
-          <>
-            <Link className="text-sky-700" href="/login">
-              Login
-            </Link>
-          </>
-        ) : (
-          <>
-            {userData.isSubscribed && (
-              <Link className="text-sky-700" href="/host">
-                Host
-              </Link>
-            )}
-            <Link className="text-sky-700" href="/dashboard">
-              Dashboard
-            </Link>
-            <Link className="text-sky-700" href="/profile">
-              Profile
-            </Link>
-            <LogoutButton className="text-sky-700" />
-          </>
-        )}
+   
         {userData === null ? (
           <>
             <Link className="text-sky-700" href="/login">
