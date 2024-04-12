@@ -19,6 +19,10 @@ const nextConfig = {
             protocol: "http",
             hostname: "placeimg.com"
           },
+          {
+            protocol: "http",
+            hostname: "res.cloudinary.com"
+          }
         ]
     }
 };
