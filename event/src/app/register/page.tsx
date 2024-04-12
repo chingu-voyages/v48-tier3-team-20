@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import React, { FormEvent } from "react";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/navigation";
 
 const Register = () => {
   const router = useRouter();
