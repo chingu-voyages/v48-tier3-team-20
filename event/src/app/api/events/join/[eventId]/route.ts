@@ -22,10 +22,12 @@ export async function PUT(
   const cookie = request.cookies.get("accessToken");
 
   if (!cookie) {
-    return NextResponse.json({
-      status: 400,
-      body: { error: "Please login, to redirect to login page" },
-    });
+    return NextResponse.json(
+      {
+        body: { error: "Please login, to redirect to login page" },
+      },
+      { status: 400 },
+    );
   }
 
   try {
@@ -33,21 +35,27 @@ export async function PUT(
 
     const { data, error } = await verifyJwt(cookie.value);
     if (!data || error) {
-      return NextResponse.json({ error });
+      throw new Error(error);
     }
 
-    const join: Events | null = await Event.findByIdAndUpdate(params.eventId, {
-      $push: { participants: data.userId },
-    });
+    const join: Events | null = await Event.findByIdAndUpdate(
+      params.eventId,
+      {
+        $push: { participants: data.userId },
+      },
+      { new: true },
+    )
+      .populate({ path: "participants", select: "username" })
+      .exec();
 
     if (!join) {
-      return NextResponse.json({ message: "No such event found" });
+      throw new Error("No such event found");
     }
 
-    return NextResponse.json({ message: "Successfully joined the event" });
+    return NextResponse.json({ data: join });
   } catch (error) {
     const err = error as Error;
     console.log("error caught in api/events/join/[eventid]:", err);
-    return NextResponse.json({ error: "Something went wrong..." });
+    return NextResponse.json({ error: err.message });
   }
 }

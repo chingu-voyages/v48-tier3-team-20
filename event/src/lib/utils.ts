@@ -15,3 +15,47 @@ export const sleep = (ms: number) => {
 export function isType<T>(value: any, array: readonly T[]): value is T {
   return array.includes(value as T);
 }
+
+// extract yyyy-MM-ddThh:mm
+export const getDateTime = (dateObj: Date) => {
+  const offset = dateObj.getTimezoneOffset() * 60 * 1000;
+  const timeStr = dateObj.getTime();
+  const dateTime = new Date(timeStr - offset).toISOString().slice(0, 16);
+
+  return dateTime;
+};
+
+export const convertToIso = (dateStr: string) => {
+  return new Date(dateStr).toISOString();
+};
+
+export function tryParseJSON(jsonString: string) {
+  try {
+    return JSON.parse(jsonString);
+  } catch (error) {
+    return jsonString;
+  }
+}
+
+export function parseEventFormData(formData: FormData) {
+  const formDataObject: { [key: string]: any } = {};
+  formData.forEach((val, key) => {
+    formDataObject[key] = typeof val === "string" ? tryParseJSON(val) : val;
+  });
+  return formDataObject;
+}
+
+// extract yyyy-MM-dd, hh:mm, and timezone offset from Date object
+// export const getDateTimeTz = (dateObj: Date) => {
+//   const offsetInMinutes = dateObj.getTimezoneOffset();
+//   const offsetMs = offsetInMinutes * 60 * 1000;
+//   const timeStr = dateObj.getTime();
+
+//   const [date, time] = new Date(timeStr - offsetMs).toISOString().split("T");
+//   console.log(date, time.slice(0, 5));
+//   return {
+//     date,
+//     time: time.slice(0, 5),
+//     timezone: offsetInMinutes / 60,
+//   };
+// };
