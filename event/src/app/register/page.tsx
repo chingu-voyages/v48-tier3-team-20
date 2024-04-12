@@ -1,18 +1,58 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import React from "react";
+import React, { FormEvent } from "react";
+import { useRouter } from 'next/router';
 
 const Register = () => {
+  const router = useRouter();
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email");
+    const password = formData.get("password")
+    const confirmPassword = formData.get("confirm")
+
+    if (!email || !password || !confirmPassword) {
+      console.error("Please enter all fields.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      console.error("Passwords do not match.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/users/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Registration successful:", data);
+        router.push("/profile");
+      } else {
+        const errorData = await response.json();
+        console.error("Registration failed:", errorData);
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+    }
+  }
+
   return (
-    <section className="flex w-96 items-center justify-center">
-      <div className="w-full max-w-md rounded-lg bg-gray-800 p-8 shadow-md">
-        <h2 className="mb-6 text-3xl font-semibold text-gray-100">Register</h2>
-        <form className="space-y-4">
-          <Input type="text" name="username" id="username" required={true} />
-          <Input type="text" name="email" id="email" required={true} />
-          <Input type="password" name="password" id="password" required={true} />
+    <section className="register-form flex w-96 items-center justify-center">
+      <div className="form-container w-full max-w-md rounded-lg bg-gray-800 p-8 shadow-md">
+        <h2 className="text-3xl font-semibold text-gray-100 mb-6">Register</h2>
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <Input type="email" name="email" id="email" required={true} />
+          <Input type="password" name="password" id="password" required={true}/>
           <Input type="password" name="confirm" id="confirm" required={true} />
-         <Button type="submit" title="Submit"  />
+          <button type="submit">Register</button>
         </form>
       </div>
     </section>
