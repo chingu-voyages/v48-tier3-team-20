@@ -1,5 +1,5 @@
 import dbConnect from "@/lib/mongo/index";
-import Users, { IUsers } from "@/models/User";
+import Users from "@/models/User";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request, {

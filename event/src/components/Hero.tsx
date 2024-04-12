@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 const Hero = () => {
   return (
     <div className="mb-10 flex w-full flex-col items-center gap-4 pt-12">
-      <h1 className="text-4xl font-extrabold text-white sm:text-3xl md:text-5xl">
+      <h1 className="text-4xl font-extrabold text-black sm:text-3xl md:text-5xl">
         Find your favourite event
       </h1>
       <p className="my-4 text-xl">
