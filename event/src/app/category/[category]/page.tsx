@@ -30,7 +30,6 @@ export default async function CategoryPage({
     { cache: "no-store" },
   );
   const { data }: { data: Events[] } = await res.json();
-  console.log(data);
   if (!data) {
     return <>No events in {params.category}</>;
   }

@@ -42,7 +42,7 @@ export const emptyEvent: EventType = {
   eventStartDate: "",
   eventEndDate: "",
   lastDateToJoin: "",
-  maximumParticipants: 0,
+  maximumParticipants: 1,
   host: "",
   participants: [],
 };

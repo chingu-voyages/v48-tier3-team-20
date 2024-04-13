@@ -5,7 +5,6 @@ import { verifyJwt } from "./lib/authHelper";
 export async function middleware(request: NextRequest) {
   const cookie = request.cookies.get("accessToken");
   const url = new URL(request.url);
-  console.log(url.pathname, url.search);
 
   // if user visits /login and has no cookies, do nothing and return
   if (!cookie) {

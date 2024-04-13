@@ -36,10 +36,8 @@ export default function LoginPage() {
     }
 
     const { user }: { user: UserData } = await response.json();
-    console.log("data", user);
 
     login(user);
-    console.log(redirect);
     redirect ? router.push(redirect) : router.push("/dashboard");
   }
 

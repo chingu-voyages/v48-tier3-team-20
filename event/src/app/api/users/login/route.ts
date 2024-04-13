@@ -38,7 +38,6 @@ export async function POST(req: Request) {
     const token = await createJwt(payload);
 
     cookies().set("accessToken", token, { secure: true, httpOnly: true });
-    console.log("token creation", token);
 
     const responseUser = user.toJSON();
     delete responseUser.password;

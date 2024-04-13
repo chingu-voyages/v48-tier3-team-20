@@ -2,6 +2,7 @@ import dbConnect from "@/lib/mongo";
 import Event, { Events } from "@/models/Event";
 import { NextRequest, NextResponse } from "next/server";
 import { verifyJwt } from "@/lib/authHelper";
+import User from "@/models/User";
 
 // workflow:
 // check auth and get user id from mongo
@@ -45,7 +46,7 @@ export async function PUT(
       },
       { new: true },
     )
-      .populate({ path: "participants", select: "username" })
+      .populate({ path: "participants", model: User, select: "username" })
       .exec();
 
     if (!join) {

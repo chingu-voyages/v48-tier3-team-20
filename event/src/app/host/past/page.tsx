@@ -18,7 +18,6 @@ export default function DashboardHostPast() {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      console.log(userData);
       if (!userData || !userData.userId) {
         return;
       }

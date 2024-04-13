@@ -6,6 +6,7 @@ import { verifyJwt } from "@/lib/authHelper";
 import { parseEventFormData } from "@/lib/utils";
 import { uploadImageToCloudinary, deleteImage } from "@/lib/cloudinary";
 import { CloudinaryResponse, EventCategory, UpdateEvent } from "@/lib/types";
+import User from "@/models/User";
 
 export async function DELETE(
   req: NextRequest,
@@ -101,11 +102,9 @@ export async function GET(
 ) {
   try {
     await dbConnect();
-    console.log("event");
     const event = await Event.findOne({ _id: params.id })
-      .populate({ path: "participants", select: "username" })
+      .populate({ path: "participants", model: User, select: "username" })
       .exec();
-    console.log(event);
     if (!event) {
       return NextResponse.json({ error: "Nothing..." });
     }

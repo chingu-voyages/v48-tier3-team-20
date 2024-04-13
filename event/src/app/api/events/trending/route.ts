@@ -24,11 +24,12 @@ export async function GET(req: NextRequest) {
           { $addFields: { participantCount: { $size: "$participants" } } },
           { $sort: { participantCount: -1 } },
         ]);
-    console.log(trendingEvents);
 
     return NextResponse.json(trendingEvents);
   } catch (error) {
-    console.log(error);
-    return NextResponse.json({ message: "Something went wrong" });
+    const err = error as Error;
+    console.log("error caught:", error);
+    console.log(err.name, err.message);
+    return NextResponse.json(error);
   }
 }

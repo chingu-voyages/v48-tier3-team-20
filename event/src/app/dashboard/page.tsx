@@ -23,7 +23,6 @@ export default function Dashboard() {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      console.log(userData);
       if (!userData || !userData.userId) {
         return;
       }
@@ -37,36 +36,11 @@ export default function Dashboard() {
           `/api/events/user/${userData.userId}?n=3&type=upcoming`,
         );
         upcoming = await res2.json();
-        console.log({ past, upcoming });
       } catch (error) {
         const err = error as Error;
         console.log("error caught in page:", error);
         console.log(err.name, err.message);
       }
-
-      // const res = await fetch(`/api/events/user/${userData.userId}`);
-      // const { data, error }: ReturnType<Events[]> = await res.json();
-      // console.log(data);
-      // if (error || !data) {
-      //   return;
-      // }
-      // const now = new Date().getTime();
-      // const past = data
-      //   .filter((e) => new Date(e.eventStartDate).getTime() <= now)
-      //   .sort(
-      //     (a, b) =>
-      //       new Date(a.eventStartDate).getTime() -
-      //       new Date(b.eventStartDate).getTime(),
-      //   )
-      //   .slice(0, 3);
-      // const upcoming = data
-      //   .filter((e) => new Date(e.eventStartDate).getTime() > now)
-      //   .sort(
-      //     (a, b) =>
-      //       new Date(a.eventStartDate).getTime() -
-      //       new Date(b.eventStartDate).getTime(),
-      //   )
-      //   .slice(0, 3);
 
       setPastEvents(past.data);
       setUpcomingEvents(upcoming.data);
@@ -77,8 +51,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <p>Dashboard</p>
-      <nav className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
         <EventList text="Manage Upcoming Events" link="/dashboard/upcoming">
           {upcomingEvents.length > 0 ? (
             upcomingEvents.map((event) => (
@@ -101,9 +74,12 @@ export default function Dashboard() {
             </>
           )}
         </EventList>
-      </nav>
+      </div>
 
-      <Link className="text-sky-700" href="/category">
+      <Link
+        className="w-fit rounded-md bg-blue-500 px-6 py-2 text-center text-white hover:bg-blue-600 focus:bg-blue-600 focus:outline-none"
+        href="/category"
+      >
         View event catogories
       </Link>
     </>

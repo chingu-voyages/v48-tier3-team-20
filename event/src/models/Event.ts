@@ -18,7 +18,6 @@ export interface Events extends mongoose.Document {
 const Eventschema = new mongoose.Schema<Events>({
   name: {
     type: String,
-    lowercase: true,
     unique: true,
     required: true,
   },
@@ -58,7 +57,7 @@ const Eventschema = new mongoose.Schema<Events>({
   },
   maximumParticipants: {
     type: Number,
-    default: 0, // 0 means no limit
+    required: true,
   },
   host: {
     type: Schema.Types.ObjectId,

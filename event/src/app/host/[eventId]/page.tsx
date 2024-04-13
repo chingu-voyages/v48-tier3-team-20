@@ -31,7 +31,6 @@ export default function DashboardHostEvent({
     const fetchData = async () => {
       const res = await fetch(`/api/events/${params.eventId}`);
       const { data }: { data: EventType } = await res.json();
-      console.log(data);
       if (!data) {
         router.push("/404");
         return;
@@ -47,7 +46,6 @@ export default function DashboardHostEvent({
         data.eventEndDate = getDateTime(new Date(data.eventEndDate));
       }
 
-      console.log(data);
       setEvent(data);
       setPrevImg(data.imgPoster as string);
     };
@@ -107,7 +105,7 @@ export default function DashboardHostEvent({
       if (poster.size === 0) {
         form.delete("imgPoster");
       }
-      console.log("imgposterform", form.get("imgPoster"));
+      // console.log("imgposterform", form.get("imgPoster"));
       const res = await fetch(`/api/events/${event._id}`, {
         method: "PUT",
         body: form,
@@ -119,9 +117,7 @@ export default function DashboardHostEvent({
       }
 
       const data = await res.json();
-      console.log(data);
 
-      console.log(event);
       router.push("/host");
     } catch (error) {
       const err = error as Error;
@@ -144,7 +140,6 @@ export default function DashboardHostEvent({
       }
 
       const data = await res.json();
-      console.log(data);
       router.push("/host");
     } catch (error) {
       const err = error as Error;
@@ -241,6 +236,7 @@ export default function DashboardHostEvent({
                   src={event.imgPoster as string}
                   alt="alt text"
                   fill={true}
+                  sizes="500px"
                   className="rounded-lg object-cover"
                 />
               </div>
@@ -256,6 +252,7 @@ export default function DashboardHostEvent({
                   src={URL.createObjectURL(event.imgPoster)}
                   alt="alt text"
                   fill={true}
+                  sizes="500px"
                   className="rounded-lg object-cover"
                 />
               </div>

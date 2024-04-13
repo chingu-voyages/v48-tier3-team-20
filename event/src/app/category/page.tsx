@@ -8,7 +8,6 @@ export default async function Category() {
     cache: "no-store",
   });
   const { result }: { result: { [k: string]: Events[] } } = await res.json();
-  console.log(result);
 
   if (!result) {
     return <>No result</>;

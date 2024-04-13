@@ -17,7 +17,6 @@ export default async function Home() {
       cache: "no-store",
     });
     upcoming = await res2.json();
-    console.log({ trending, upcoming });
   } catch (error) {
     const err = error as Error;
     console.log("error caught in page:", error);
@@ -26,7 +25,7 @@ export default async function Home() {
 
   return (
     <main className="h-full w-full text-lg outline">
-      <Hero/>
+      <Hero />
 
       <EventList text="Trending" link="/category/Trending">
         {trending.map((event) => (

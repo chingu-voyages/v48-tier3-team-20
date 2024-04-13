@@ -28,6 +28,7 @@ export default function HostEventCard({ event }: HostEventListProp) {
             src={event.imgPoster}
             alt="alt text"
             fill={true}
+            sizes="500px"
             className="rounded-lg object-cover"
           />
         </div>

@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
   if (!n || isNaN(n)) {
     limit = false;
   }
-  console.log(n);
+
   try {
     await dbConnect();
 
@@ -25,7 +25,6 @@ export async function GET(req: NextRequest) {
           { $match: { eventStartDate: { $gt: new Date() } } },
           { $sort: { eventStartDate: 1 } },
         ]);
-    console.log(upcomingEvents);
 
     return NextResponse.json(upcomingEvents);
   } catch (error) {

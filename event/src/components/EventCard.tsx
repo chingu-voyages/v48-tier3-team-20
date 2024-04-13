@@ -22,6 +22,7 @@ export default function EventCard({ event }: EventListProp) {
             src={event.imgPoster}
             alt="alt text"
             fill={true}
+            sizes="500px"
             className="rounded-lg object-cover"
           />
         </div>

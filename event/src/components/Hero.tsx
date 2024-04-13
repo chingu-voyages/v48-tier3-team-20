@@ -7,7 +7,6 @@ const Hero = () => {
   const router = useRouter();
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("submit");
     const formData = new FormData(e.currentTarget);
     const q = formData.get("q");
     router.push(`/search?q=${q}`);

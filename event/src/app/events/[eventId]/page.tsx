@@ -17,9 +17,7 @@ export default function EventId({ params }: { params: { eventId: string } }) {
     const fetchData = async () => {
       try {
         const res = await fetch(`/api/events/${params.eventId}`);
-        console.log(res);
         const { data }: { data: EventType } = await res.json();
-        console.log({ data });
         if (!data) {
           router.push("/404");
           return;
@@ -35,7 +33,6 @@ export default function EventId({ params }: { params: { eventId: string } }) {
           data.eventEndDate = getDateTime(new Date(data.eventEndDate));
         }
 
-        console.log(data);
         setEvent(data);
       } catch (error) {
         const err = error as Error;
@@ -48,12 +45,10 @@ export default function EventId({ params }: { params: { eventId: string } }) {
   }, [params.eventId, router]);
 
   const joinEvent = async () => {
-    console.log("joining", event.participants);
     const res = await fetch(`/api/events/join/${params.eventId}`, {
       method: "PUT",
     });
     const { data }: { data: EventType } = await res.json();
-    console.log(data);
     if (!data) {
       console.log("something went wrong with join event");
       return;
@@ -65,12 +60,10 @@ export default function EventId({ params }: { params: { eventId: string } }) {
   };
 
   const leaveEvent = async () => {
-    console.log("leaving", event.participants);
     const res = await fetch(`/api/events/leave/${params.eventId}`, {
       method: "PUT",
     });
     const { data }: { data: EventType } = await res.json();
-    console.log(data);
     if (!data) {
       console.log("something went wrong with leave event");
       return;
@@ -113,6 +106,7 @@ export default function EventId({ params }: { params: { eventId: string } }) {
       {event.eventEndDate && (
         <p>End date: {event.eventEndDate.split("T").join(" at ")}</p>
       )}
+      <p>Deadline to join: {event.lastDateToJoin.split("T").join(" at ")}</p>
 
       <p>
         Participants ({event.participants.length}/{event.maximumParticipants}):
@@ -142,16 +136,17 @@ export default function EventId({ params }: { params: { eventId: string } }) {
             </>
           ) : (
             <>
-              {isBeforeDeadline ? (
+              {isBeforeDeadline && isNotFullyBooked ? (
                 <Link
-                  href="/login"
+                  href={`/login?redirect=${window.location.pathname}`}
                   className="rounded bg-blue-200 py-2 text-center"
                 >
                   Login to join
                 </Link>
               ) : (
-                <p className="rounded bg-blue-200 py-2 text-center">
-                  Deadline to join already passed
+                <p className="rounded bg-blue-200 px-4 py-2 text-center">
+                  {!isBeforeDeadline && "Deadline to join has already passed. "}
+                  {!isNotFullyBooked && "Event fully booked! "}
                 </p>
               )}
             </>

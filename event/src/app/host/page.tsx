@@ -26,7 +26,6 @@ export default function DashboardHost() {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      console.log(userData);
       if (!userData || !userData.userId) {
         return;
       }
@@ -51,7 +50,6 @@ export default function DashboardHost() {
             new Date(b.eventStartDate).getTime(),
         )
         .slice(0, 3);
-      console.log(body[0]);
       setPastEvents(past);
       setUpcomingEvents(upcoming);
     };
@@ -60,9 +58,19 @@ export default function DashboardHost() {
   }, [userData]);
 
   return (
-    <>
-      <p>Host Dashboard: Event Management for {userData?.userId}</p>
-      <nav className="flex flex-col gap-4">
+    <div className="max-w-screen-sm">
+      <div className="my-4 flex w-full items-center justify-between">
+        <p className="text-xl font-bold">
+          Host Dashboard for {userData?.username}
+        </p>
+        <Link
+          href="/host/new"
+          className="w-fit rounded-md bg-blue-500 px-6 py-2 text-center text-white hover:bg-blue-600 focus:bg-blue-600 focus:outline-none"
+        >
+          Create new event
+        </Link>
+      </div>
+      <div className="flex flex-col gap-4">
         <EventList text="Manage Upcoming Events" link="/host/upcoming">
           {upcomingEvents.length > 0 ? (
             upcomingEvents.map((event) => (
@@ -85,8 +93,7 @@ export default function DashboardHost() {
             </>
           )}
         </EventList>
-        <Link href="/host/new">Create new event</Link>
-      </nav>
-    </>
+      </div>
+    </div>
   );
 }

@@ -4,6 +4,8 @@ import { UserContext } from "@/context/UserContext";
 import Link from "next/link";
 import LogoutButton from "./LogoutButton";
 import { useRouter } from "next/navigation";
+import icon from "@/app/icon.png";
+import Image from "next/image";
 
 export default function Header() {
   const { userData, login, logout } = React.useContext(UserContext);
@@ -31,9 +33,19 @@ export default function Header() {
   }, [login, logout, router, userData]);
 
   return (
-    <header className="flex w-full justify-between bg-sky-100 px-6 py-4">
-      <Link href="/" className="text-sky-700">
-        LOGO
+    <header className="flex w-full items-center justify-between bg-sky-100 px-6 py-4 text-lg">
+      <Link
+        href="/"
+        className="flex items-center justify-center gap-2 text-sky-700"
+      >
+        <Image
+          src={icon}
+          alt="logo"
+          height={32}
+          width={32}
+          className="rounded-full"
+        />
+        <p className="">EventBytes</p>
       </Link>
       <nav className="flex gap-4">
         <Link className="text-sky-700" href="/category">

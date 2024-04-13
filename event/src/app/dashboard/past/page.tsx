@@ -21,13 +21,11 @@ export default function DashboardPast() {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      console.log(userData);
       if (!userData || !userData.userId) {
         return;
       }
       const res = await fetch(`/api/events/user/${userData.userId}`);
       const { data, error }: ReturnType<Events[]> = await res.json();
-      console.log(data);
       if (error || !data) {
         return;
       }

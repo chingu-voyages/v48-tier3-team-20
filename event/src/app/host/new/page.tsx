@@ -1,10 +1,8 @@
 "use client";
 import { EventType } from "@/lib/types";
-import { getDateTime } from "@/lib/utils";
 import React, { ChangeEvent, FormEvent } from "react";
 import { ACCEPTED_IMAGE_TYPES, CATEGORIES, emptyEvent } from "@/lib/constants";
 import Image from "next/image";
-import useFullscreen from "@/hooks/useFullscreen";
 import { useRouter, notFound } from "next/navigation";
 // import { Events } from "@/models/Event";
 
@@ -78,7 +76,7 @@ export default function DashboardHostNewEvent({
       if (poster.size === 0) {
         form.delete("imgPoster");
       }
-      console.log("imgposterform", form.get("imgPoster"));
+      // console.log("imgposterform", form.get("imgPoster"));
       const res = await fetch(`/api/events/`, {
         method: "POST",
         body: form,
@@ -89,9 +87,7 @@ export default function DashboardHostNewEvent({
       }
 
       const data = await res.json();
-      console.log(data);
 
-      console.log(event);
       router.push("/host");
     } catch (error) {
       const err = error as Error;
@@ -188,6 +184,7 @@ export default function DashboardHostNewEvent({
                   src={event.imgPoster as string}
                   alt="alt text"
                   fill={true}
+                  sizes="500px"
                   className="rounded-lg object-cover"
                 />
               </div>
@@ -203,6 +200,7 @@ export default function DashboardHostNewEvent({
                   src={URL.createObjectURL(event.imgPoster)}
                   alt="alt text"
                   fill={true}
+                  sizes="500px"
                   className="rounded-lg object-cover"
                 />
               </div>
@@ -244,7 +242,7 @@ export default function DashboardHostNewEvent({
             htmlFor="maximumParticipants"
             className="mb-1 block text-gray-800"
           >
-            Maximum participants (0 for unlimited)
+            Maximum participants
           </label>
           <input
             type="number"
