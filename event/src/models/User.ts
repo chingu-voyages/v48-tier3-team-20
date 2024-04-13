@@ -5,10 +5,10 @@ export interface IUser extends mongoose.Document {
   email: string;
   username: string;
   password: string;
-  isSubscribed: boolean;
-  profile_pic: string;
-  bio: string;
-  interest: Array<string>;
+  isSubscribed?: boolean;
+  profile_pic?: string;
+  bio?: string;
+  interest?: Array<string>;
   // dob: string;   // Date of birth
 }
 
@@ -41,7 +41,7 @@ const UserSchema = new mongoose.Schema<IUser>({
   },
   profile_pic: {
     type: String,
-    required: true,
+    // required: true,
   },
   bio: {
     type: String

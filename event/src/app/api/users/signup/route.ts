@@ -9,7 +9,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     
     try {
         const reqBody = await request.json();
-        const { fullname, email, username, password, isSubscribed }: {fullname: string, email: string, username: string, password: string, isSubscribed: boolean } = reqBody;
+        const { fullname, email, username, password }: {fullname: string, email: string, username: string, password: string } = reqBody;
        
         const user: IUser | null = await User.findOne({ email });
 
@@ -24,8 +24,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             fullname,
             email,
             username,
-            password: hashedPassword,            
-            isSubscribed            
+            password: hashedPassword,                                    
         });
 
         const savedUser = await newUser.save();
