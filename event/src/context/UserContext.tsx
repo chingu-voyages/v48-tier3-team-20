@@ -10,8 +10,8 @@ type UserContextType = {
 export type UserData = {
   //   fullname: string;
   //   email: string;
-  //   username: string;
   userId: string;
+  username: string;
   isSubscribed: boolean;
 } | null;
 

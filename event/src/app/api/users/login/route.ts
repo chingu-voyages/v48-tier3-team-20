@@ -31,6 +31,7 @@ export async function POST(req: Request) {
 
     const payload: UserJWTPayload = {
       userId: user._id as string,
+      username: user.username as string,
       isSubscribed: user.isSubscribed,
     };
 

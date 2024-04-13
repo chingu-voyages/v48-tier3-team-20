@@ -39,7 +39,7 @@ const Eventschema = new mongoose.Schema<Events>({
   },
   imgPoster: {
     type: String,
-    default: "/placeholder/image",
+    default: "/placeholder-image.png",
   },
   category: {
     type: [String],

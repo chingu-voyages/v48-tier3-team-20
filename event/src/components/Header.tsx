@@ -5,7 +5,6 @@ import Link from "next/link";
 import LogoutButton from "./LogoutButton";
 import { useRouter } from "next/navigation";
 
-
 export default function Header() {
   const { userData, login, logout } = React.useContext(UserContext);
   const router = useRouter();
@@ -23,7 +22,8 @@ export default function Header() {
       } catch (error) {
         const err = error as Error;
         console.log("error caught in header:", err);
-        router.push(window.location.pathname);
+        router.push(window.location.pathname + window.location.search);
+        // router.refresh();
       }
     };
 
@@ -39,7 +39,7 @@ export default function Header() {
         <Link className="text-sky-700" href="/category">
           Category
         </Link>
-   
+
         {userData === null ? (
           <>
             <Link className="text-sky-700" href="/login">
@@ -56,7 +56,10 @@ export default function Header() {
             <Link className="text-sky-700" href="/dashboard">
               Dashboard
             </Link>
-            <Link className="text-sky-700" href="/profile">
+            <Link
+              className="text-sky-700"
+              href={`/profile/${userData.username}`}
+            >
               Profile
             </Link>
             <LogoutButton className="text-sky-700" />

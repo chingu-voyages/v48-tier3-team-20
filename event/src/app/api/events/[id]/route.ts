@@ -99,13 +99,20 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } },
 ) {
-  await dbConnect();
-  const event = await Event.findOne({ _id: params.id })
-    .populate({ path: "participants", select: "username" })
-    .exec();
-
-  if (!event) {
-    return NextResponse.json({ error: "Nothing..." });
+  try {
+    await dbConnect();
+    console.log("event");
+    const event = await Event.findOne({ _id: params.id })
+      .populate({ path: "participants", select: "username" })
+      .exec();
+    console.log(event);
+    if (!event) {
+      return NextResponse.json({ error: "Nothing..." });
+    }
+    return NextResponse.json({ data: event });
+  } catch (error) {
+    const err = error as Error;
+    console.log("error caught in /api/events/user/[userId]:", err);
+    return NextResponse.json({ data: null, error: err.message });
   }
-  return NextResponse.json({ data: event });
 }

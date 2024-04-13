@@ -3,6 +3,7 @@ import { ReturnType } from "./types";
 
 export interface UserJWTPayload extends JWTPayload {
   userId: string;
+  username: string;
   isSubscribed: boolean;
 }
 

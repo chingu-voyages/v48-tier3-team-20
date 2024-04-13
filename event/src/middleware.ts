@@ -4,6 +4,8 @@ import { verifyJwt } from "./lib/authHelper";
 
 export async function middleware(request: NextRequest) {
   const cookie = request.cookies.get("accessToken");
+  const url = new URL(request.url);
+  console.log(url.pathname, url.search);
 
   // if user visits /login and has no cookies, do nothing and return
   if (!cookie) {
@@ -12,7 +14,9 @@ export async function middleware(request: NextRequest) {
     }
 
     // else redirect to /login
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(
+      new URL(`/login?redirect=${url.pathname}`, request.url),
+    );
   }
 
   try {
