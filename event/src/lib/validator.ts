@@ -74,3 +74,32 @@ export const UpdateEventValidator = EventValidator.omit({
     message: "Request body is empty. Please provide data for the event update.",
   },
 );
+
+export const UserValidator = z.object({
+  fullname: z.string(),
+  username: z.string(),
+  email: z.string(),
+  password: z.string(),
+  isSubscribed: z.boolean(),
+  profile_pic: z
+    .object({
+      size: z.number(),
+      type: z.string(),
+    })
+    .refine((files) => files?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
+    .refine(
+      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.type),
+      "Only .jpg, .jpeg, .png and .webp formats are supported.",
+    ),
+  bio: z.string(),
+  interest: z.array(z.string()),
+});
+
+export const UpdateUserValidator = UserValidator.partial().refine(
+  (data) => {
+    return Object.keys(data).length > 0;
+  },
+  {
+    message: "Request body is empty. Please provide data for the event update.",
+  },
+);

@@ -8,6 +8,7 @@ import icon from "@/app/icon.png";
 import Image from "next/image";
 
 export default function Header() {
+  const [isLogin, setIsLogin] = React.useState(false);
   const { userData, login, logout } = React.useContext(UserContext);
   const router = useRouter();
 
@@ -17,15 +18,19 @@ export default function Header() {
         const res = await fetch("/api/users/check-login");
         const { data, error } = await res.json();
         if (error || !data) {
-          if (userData && userData.userId) logout();
-          throw new Error(error);
+          if (userData && userData.userId) {
+            logout();
+          }
+          setIsLogin(false);
+          return;
         }
-        if (!userData || !userData.userId) login(data);
+        if (!userData || !userData.userId) {
+          login(data);
+        }
+        setIsLogin(true);
       } catch (error) {
         const err = error as Error;
         console.log("error caught in header:", err);
-        router.push(window.location.pathname + window.location.search);
-        // router.refresh();
       }
     };
 
@@ -52,7 +57,7 @@ export default function Header() {
           Category
         </Link>
 
-        {userData === null ? (
+        {!isLogin || userData === null ? (
           <>
             <Link className="text-sky-700" href="/login">
               Login

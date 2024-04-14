@@ -11,6 +11,10 @@ export const sleep = (ms: number) => {
   return new Promise((res) => setTimeout(res, ms));
 };
 
+export const toTitleCase = (str: string) => {
+  return str[0].toUpperCase() + str.slice(1).toLowerCase();
+};
+
 // checks if the type for value matches the const array
 export function isType<T>(value: any, array: readonly T[]): value is T {
   return array.includes(value as T);
@@ -45,17 +49,11 @@ export function parseEventFormData(formData: FormData) {
   return formDataObject;
 }
 
-// extract yyyy-MM-dd, hh:mm, and timezone offset from Date object
-// export const getDateTimeTz = (dateObj: Date) => {
-//   const offsetInMinutes = dateObj.getTimezoneOffset();
-//   const offsetMs = offsetInMinutes * 60 * 1000;
-//   const timeStr = dateObj.getTime();
-
-//   const [date, time] = new Date(timeStr - offsetMs).toISOString().split("T");
-//   console.log(date, time.slice(0, 5));
-//   return {
-//     date,
-//     time: time.slice(0, 5),
-//     timezone: offsetInMinutes / 60,
-//   };
-// };
+/* user form data */
+export function parseUserFormData(formData: FormData) {
+  const formDataObject: { [key: string]: any } = {};
+  formData.forEach((val, key) => {
+    formDataObject[key] = typeof val === "string" ? tryParseJSON(val) : val;
+  });
+  return formDataObject;
+}

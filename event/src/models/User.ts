@@ -5,10 +5,10 @@ export interface IUser extends mongoose.Document {
   email: string;
   username: string;
   password: string;
-  isSubscribed: boolean;
-  profile_pic: string;
-  bio: string;
-  interest: Array<string>;
+  isSubscribed?: boolean;
+  profile_pic?: string;
+  bio?: string;
+  interest?: Array<string>;
   // dob: string;   // Date of birth
 }
 
