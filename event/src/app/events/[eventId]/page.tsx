@@ -1,6 +1,6 @@
 "use client";
 import { EventType } from "@/lib/types";
-import { cn, getDateTime } from "@/lib/utils";
+import { getDateTime } from "@/lib/utils";
 import React from "react";
 import Image from "next/image";
 import { UserContext } from "@/context/UserContext";
@@ -101,6 +101,24 @@ export default function EventId({ params }: { params: { eventId: string } }) {
       <p>Description:</p>
 
       <p>{event.description}</p>
+      <div className="flex items-center gap-2">
+        <p>Hosted by:</p>
+        <Link
+          href={`/events/host/${event.host._id}`}
+          className="flex gap-2 rounded-xl bg-gray-200 px-3 py-2 hover:bg-gray-300"
+        >
+          <div className="relative w-6">
+            <Image
+              src={event.host.profile_pic}
+              alt="host profile pic"
+              sizes="200px"
+              fill={true}
+              className="rounded-full object-cover"
+            />
+          </div>
+          {event.host.username}
+        </Link>
+      </div>
       <p>Location: {event.location}</p>
       <p>Start date: {event.eventStartDate.split("T").join(" at ")}</p>
       {event.eventEndDate && (
@@ -112,7 +130,26 @@ export default function EventId({ params }: { params: { eventId: string } }) {
         Participants ({event.participants.length}/{event.maximumParticipants}):
       </p>
 
-      <p>{event.participants.map((p) => p.username).join(", ")}</p>
+      <div className="flex gap-4">
+        {event.participants.map((p) => (
+          <Link
+            href={`/profile/${p.username}`}
+            key={p._id}
+            className="flex gap-2 rounded-xl bg-gray-200 px-3 py-2 hover:bg-gray-300"
+          >
+            <div className="relative w-6">
+              <Image
+                src={p.profile_pic}
+                alt="participant profile pic"
+                sizes="200px"
+                fill={true}
+                className="rounded-full object-cover"
+              />
+            </div>
+            {p.username}
+          </Link>
+        ))}
+      </div>
 
       {isParticipant ? (
         <button

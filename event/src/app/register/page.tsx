@@ -27,7 +27,7 @@ const Register = () => {
     }
 
     if ((username as string).length < 3) {
-      setMessage("Min username: 3 letters long");
+      setMessage("Username: Min 3 letters long");
       return;
     }
 
@@ -61,8 +61,8 @@ const Register = () => {
   }
 
   return (
-    <section className="register-form flex w-96 items-center justify-center">
-      <div className="form-container relative w-full max-w-md rounded-lg bg-gray-100 p-8 shadow-md">
+    <section className="register-form flex w-full max-w-md items-center justify-center">
+      <div className="form-container relative w-full rounded-lg bg-gray-100 p-8 shadow-md">
         {message && (
           <p className="absolute -top-2 text-lg font-bold text-red-500">
             {message}

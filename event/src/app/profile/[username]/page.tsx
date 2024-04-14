@@ -9,7 +9,7 @@ const Profile = ({ params }: { params: { username: string } }) => {
     name: "",
     email: "",
     about: "",
-    img: "",
+    img: "/stock-user.jpeg",
     role: "",
   });
 
@@ -17,25 +17,25 @@ const Profile = ({ params }: { params: { username: string } }) => {
 
   const { userData } = useContext(UserContext);
 
-  const fetchData = async () => {
+  const fetchData = React.useCallback(async () => {
     const response = await fetch(`/api/users/${params.username}`);
     const data = await response.json();
     if (!data.data.profile_pic) {
       data.data.profile_pic = "/stock-user.jpeg";
     }
-    return setProfileData({
-      ...profileData,
+    return setProfileData((prevState) => ({
+      ...prevState,
       _id: data.data._id,
       name: data.data.fullname,
       email: data.data.email,
       about: data.data.bio,
       img: data.data.profile_pic,
-    });
-  };
+    }));
+  }, [params.username]);
 
   useEffect(() => {
     fetchData();
-  }, [userData]);
+  }, [fetchData, userData]);
 
   const updateData = async () => {
     const newBio = profileData.about;
@@ -46,6 +46,10 @@ const Profile = ({ params }: { params: { username: string } }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ newBio, newName }),
     });
+
+    if (!res.ok) {
+      console.log("res not ok");
+    }
   };
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
@@ -63,25 +67,25 @@ const Profile = ({ params }: { params: { username: string } }) => {
 
   return (
     <>
-      <div className="flex w-full gap-12 px-12">
+      <div className="flex w-full max-w-screen-md flex-col gap-12 px-12 sm:flex-row">
         {/* Left panel starts here */}
-        <div className="h-fit w-1/4">
-          <div className="flex flex-col items-center">
+        <div className="mx-auto mt-8">
+          <div className="flex h-36 w-36 flex-col items-center justify-center">
             <Image
-              className="h-24 w-24 rounded-full sm:h-28 sm:w-28 md:h-36 md:w-36 lg:h-40 lg:w-40"
+              className="rounded-full"
               src={profileData.img}
               alt="profile pic"
               width={150}
               height={150}
             />
-            <div className="text-sm">
-              <h3 className="font-semibold leading-7 tracking-tight text-gray-900">
-                {profileData.name}
-              </h3>
-              <p className="font-semibold leading-5 text-indigo-600">
-                {profileData.role}
-              </p>
-            </div>
+          </div>
+          <div className="text-center text-sm">
+            <h3 className="font-semibold leading-7 tracking-tight text-gray-900">
+              {profileData.name}
+            </h3>
+            <p className="font-semibold leading-5 text-indigo-600">
+              {profileData.role}
+            </p>
           </div>
         </div>
         {/* Left panel ends here */}

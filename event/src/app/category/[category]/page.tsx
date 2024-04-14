@@ -1,6 +1,6 @@
 import Link from "next/link";
 import EventCard from "@/components/EventCard";
-import { isType } from "@/lib/utils";
+import { isType, toTitleCase } from "@/lib/utils";
 import { BASE_URL, FULL_CATEGORIES } from "@/lib/constants";
 import { notFound } from "next/navigation";
 import { Events } from "@/models/Event";
@@ -10,34 +10,33 @@ export default async function CategoryPage({
 }: {
   params: { category: string };
 }) {
-  if (params.category === "Upcoming" || params.category === "Trending") {
-    return (
-      <div>
-        <p>{params.category} feature to be build eventually</p>
-        <Link className="text-sky-700" href="/">
-          Back to Home
-        </Link>
-      </div>
-    );
-  }
+  const category = toTitleCase(params.category);
 
-  if (!isType(params.category, FULL_CATEGORIES)) {
+  if (
+    !isType(category, FULL_CATEGORIES) &&
+    !["Trending", "Upcoming"].includes(category)
+  ) {
+    console.log("redirect");
     notFound();
   }
 
-  const res = await fetch(
-    BASE_URL + `/api/events/category/${params.category}`,
-    { cache: "no-store" },
-  );
+  const endpoint = isType(category, FULL_CATEGORIES)
+    ? `/api/events/category/${category}`
+    : `/api/events/${(category as string).toLowerCase()}`;
+
+  console.log(endpoint);
+  const res = await fetch(BASE_URL + endpoint, {
+    cache: "no-store",
+  });
   const { data }: { data: Events[] } = await res.json();
   if (!data) {
-    return <>No events in {params.category}</>;
+    return <>No events in {category}</>;
   }
 
   return (
     <>
       <div className="flex flex-col gap-2">
-        <p>Category {params.category}: </p>
+        <p>Category: {category} </p>
         <div className="flex flex-wrap gap-2">
           {data.map((event) => (
             <EventCard key={event._id} event={event} />

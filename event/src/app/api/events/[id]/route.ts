@@ -103,7 +103,16 @@ export async function GET(
   try {
     await dbConnect();
     const event = await Event.findOne({ _id: params.id })
-      .populate({ path: "participants", model: User, select: "username" })
+      .populate({
+        path: "participants",
+        model: User,
+        select: "username profile_pic",
+      })
+      .populate({
+        path: "host",
+        model: User,
+        select: "username profile_pic",
+      })
       .exec();
     if (!event) {
       return NextResponse.json({ error: "Nothing..." });

@@ -3,7 +3,6 @@ import User from "@/models/User";
 import { NextRequest, NextResponse } from "next/server";
 import { verifyJwt } from "@/lib/authHelper";
 
-//Right now only updates BIO and interests. Not sure if we should allow email or name to be changed too.
 export async function PUT(req: NextRequest) {
   const body = await req.json();
   const cookie = req.cookies.get("accessToken");

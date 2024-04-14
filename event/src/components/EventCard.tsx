@@ -5,12 +5,6 @@ import { EventType } from "@/lib/types";
 
 interface EventListProp {
   event: Events;
-  // id: string;
-  // eventName: string;
-  // date: Date;
-  // location: string;
-  // img: string;
-  // views: number;
 }
 
 export default function EventCard({ event }: EventListProp) {

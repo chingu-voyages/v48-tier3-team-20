@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
           { $sort: { eventStartDate: 1 } },
         ]);
 
-    return NextResponse.json(upcomingEvents);
+    return NextResponse.json({ data: upcomingEvents });
   } catch (error) {
     const err = error as Error;
     console.log("error caught:", error);

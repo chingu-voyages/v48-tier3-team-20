@@ -5,8 +5,6 @@ import bcrypt from "bcrypt";
 import { cookies } from "next/headers";
 import { createJwt, UserJWTPayload } from "@/lib/authHelper";
 
-// to update with authHelper later
-
 export async function POST(req: Request) {
   try {
     await dbConnect();
@@ -32,7 +30,7 @@ export async function POST(req: Request) {
     const payload: UserJWTPayload = {
       userId: user._id as string,
       username: user.username as string,
-      isSubscribed: user.isSubscribed,
+      isSubscribed: user.isSubscribed ?? false,
     };
 
     const token = await createJwt(payload);

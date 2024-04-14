@@ -43,6 +43,6 @@ export const emptyEvent: EventType = {
   eventEndDate: "",
   lastDateToJoin: "",
   maximumParticipants: 1,
-  host: "",
+  host: { _id: "", username: "", profile_pic: "/stock-user.jpeg" },
   participants: [],
 };

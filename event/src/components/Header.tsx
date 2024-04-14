@@ -31,11 +31,11 @@ export default function Header() {
       } catch (error) {
         const err = error as Error;
         console.log("error caught in header:", err);
+        router.refresh();
       }
     };
-
     checkJwt();
-  }, [login, logout, router, userData]);
+  });
 
   return (
     <header className="flex w-full items-center justify-between bg-sky-100 px-6 py-4 text-lg">

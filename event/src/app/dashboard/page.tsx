@@ -5,19 +5,10 @@ import { Events } from "@/models/Event";
 import EventCard from "@/components/EventCard";
 import EventList from "@/components/EventList";
 import Link from "next/link";
-import { ReturnType } from "@/lib/types";
-// dashboard for logged in users to manage events they joined
-// also shows recommended events and explore more
 
 export default function Dashboard() {
-  // fetch GET /api/events/user/[userid]
-  // render event list with links to /events/[eventId]
-  // show list of recommendations and explore more
-
   const { userData } = React.useContext(UserContext);
 
-  // hack: get all events by host, then sort into past/upcoming
-  // to request from BE an endpoint to handle this
   const [pastEvents, setPastEvents] = React.useState<Events[]>([]);
   const [upcomingEvents, setUpcomingEvents] = React.useState<Events[]>([]);
 
@@ -52,7 +43,7 @@ export default function Dashboard() {
   return (
     <>
       <div className="flex flex-col gap-4">
-        <EventList text="Manage Upcoming Events" link="/dashboard/upcoming">
+        <EventList text="View Upcoming Events" link="/dashboard/upcoming">
           {upcomingEvents.length > 0 ? (
             upcomingEvents.map((event) => (
               <EventCard key={event._id} event={event} />

@@ -6,13 +6,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Input from "@/components/Input";
 
-// dashboard for host to create new event
-// copy/past from edit event page
-// to refactor and optimize later
-
-// issue with input type="file" going from uncontrolled to controlled
-// https://stackoverflow.com/questions/76103230/proper-way-to-create-a-controlled-input-type-file-element-in-react
-
 export default function DashboardHostNewEvent({
   params,
 }: {

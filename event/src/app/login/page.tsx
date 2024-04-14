@@ -1,14 +1,10 @@
 "use client";
-import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { FormEvent } from "react";
 import { UserContext, UserData } from "@/context/UserContext";
 import Input from "@/components/Input";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-
-// add data to UserContext to keep login state on FE
-// delete UserContext on logout
 
 export default function LoginPage() {
   const [message, setMessage] = React.useState("");
@@ -43,8 +39,8 @@ export default function LoginPage() {
   }
 
   return (
-    <section className="flex w-96 items-center justify-center">
-      <div className="relative w-full max-w-md rounded-lg bg-gray-100 p-8 shadow-md dark:bg-gray-800">
+    <section className="flex w-full max-w-md items-center justify-center">
+      <div className="relative w-full rounded-lg bg-gray-100 p-8 shadow-md dark:bg-gray-800">
         {message && (
           <p className="absolute -top-2 text-lg font-bold text-red-500">
             {message}
@@ -62,7 +58,7 @@ export default function LoginPage() {
           </button>
         </form>
         <Link href="/register" className="mt-4 block text-blue-600 underline">
-          Don't have an account? Register here.
+          No account? Register here.
         </Link>
       </div>
     </section>

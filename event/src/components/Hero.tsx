@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { FormEvent } from "react";
+import React, { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
 const Hero = () => {

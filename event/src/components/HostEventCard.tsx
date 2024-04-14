@@ -5,19 +5,7 @@ import { Events } from "@/models/Event";
 
 interface HostEventListProp {
   event: Events;
-  // id: string;
-  // eventName: string;
-  // date: Date;
-  // location: string;
-  // img: string;
-  // views: number;
 }
-
-// todo
-// built in view and delete button
-// if clicked on card, show /host/[eventId]
-// if clicked on view, show /event/[eventId]
-// if clicked on delete, show delete confirmation
 
 export default function HostEventCard({ event }: HostEventListProp) {
   return (

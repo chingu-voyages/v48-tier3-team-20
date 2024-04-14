@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
           { $sort: { participantCount: -1 } },
         ]);
 
-    return NextResponse.json(trendingEvents);
+    return NextResponse.json({ data: trendingEvents });
   } catch (error) {
     const err = error as Error;
     console.log("error caught:", error);

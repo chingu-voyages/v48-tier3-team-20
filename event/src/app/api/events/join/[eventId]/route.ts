@@ -9,9 +9,6 @@ import User from "@/models/User";
 // get event from mongo and check participants list
 // add to list if not in list
 
-// eventId for testing
-// const eventId = "6602d50fffeaf0f99e6ce171";
-
 export async function PUT(
   request: NextRequest,
   {

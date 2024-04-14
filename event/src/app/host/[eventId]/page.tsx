@@ -8,11 +8,6 @@ import useFullscreen from "@/hooks/useFullscreen";
 import { useRouter } from "next/navigation";
 import Input from "@/components/Input";
 
-// dashboard for host to edit/delete events
-
-// issue with input type="file" going from uncontrolled to controlled
-// https://stackoverflow.com/questions/76103230/proper-way-to-create-a-controlled-input-type-file-element-in-react
-
 export default function DashboardHostEvent({
   params,
 }: {

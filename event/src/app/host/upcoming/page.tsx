@@ -4,15 +4,9 @@ import { UserContext } from "@/context/UserContext";
 import { Events } from "@/models/Event";
 import HostEventCard from "@/components/HostEventCard";
 
-// show list of upcoming events user has created
-
 export default function DashboardHostUpcoming() {
-  // fetch GET /api/events/host/[hostid]
-
   const { userData } = React.useContext(UserContext);
 
-  // hack: get all events by host, then filter
-  // to request from BE an endpoint with pagination
   // to update FE to support pagination
   const [upcomingEvents, setUpcomingEvents] = React.useState<Events[]>([]);
 
@@ -22,20 +16,11 @@ export default function DashboardHostUpcoming() {
       if (!userData || !userData.userId) {
         return;
       }
-      // const res = await fetch("/api/events/host");
-      const res = await fetch(`/api/events/host/${userData.userId}`);
-      const body: Events[] = await res.json();
-
-      const now = new Date().getTime();
-      const upcoming = body
-        .filter((e) => new Date(e.eventStartDate).getTime() > now)
-        .sort(
-          (a, b) =>
-            new Date(a.eventStartDate).getTime() -
-            new Date(b.eventStartDate).getTime(),
-        );
-
-      setUpcomingEvents(upcoming);
+      const res = await fetch(
+        `/api/events/host/${userData.userId}?type=upcoming`,
+      );
+      const { data }: { data: Events[] } = await res.json();
+      setUpcomingEvents(data);
     };
 
     fetchData();

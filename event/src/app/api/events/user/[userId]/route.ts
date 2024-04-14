@@ -12,13 +12,17 @@ export async function GET(
   const type = searchParams.get("type");
   let limit = true;
   let sortOpt = {};
+  let filterOpt = {};
+
   if (!n || isNaN(n)) {
     limit = false;
   }
   if (type === "past") {
-    sortOpt = { $lt: new Date() };
+    filterOpt = { $lt: new Date() };
+    sortOpt = { eventStartDate: -1 };
   } else {
-    sortOpt = { $gt: new Date() };
+    filterOpt = { $gt: new Date() };
+    sortOpt = { eventStartDate: 1 };
   }
 
   const cookie = req.cookies.get("accessToken");
@@ -39,12 +43,14 @@ export async function GET(
     const events = limit
       ? await Event.find({
           participants: params.userId,
-          eventStartDate: sortOpt,
-        }).limit(n)
+          eventStartDate: filterOpt,
+        })
+          .sort(sortOpt)
+          .limit(n)
       : await Event.find({
           participants: params.userId,
-          eventStartDate: sortOpt,
-        });
+          eventStartDate: filterOpt,
+        }).sort(sortOpt);
 
     if (!events) {
       return NextResponse.json({ data: null, error: "No events" });

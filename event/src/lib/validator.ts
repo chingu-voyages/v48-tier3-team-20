@@ -49,15 +49,6 @@ export const CreateEventValidator = EventValidator.omit({
     },
   );
 
-// export const UpdateEventValidator = EventValidator.partial().refine(
-//   (data) => {
-//     return Object.keys(data).length > 0;
-//   },
-//   {
-//     message: "Request body is empty. Please provide data for the event update.",
-//   },
-// );
-
 // update event validator also needs to check date validity
 export const UpdateEventValidator = EventValidator.omit({
   participants: true,

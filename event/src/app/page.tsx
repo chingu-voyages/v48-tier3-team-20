@@ -12,11 +12,13 @@ export default async function Home() {
     const res1 = await fetch(BASE_URL + `/api/events/trending?n=3`, {
       cache: "no-store",
     });
-    trending = await res1.json();
+    const { data: trendingData }: { data: Events[] } = await res1.json();
+    trending = trendingData;
     const res2 = await fetch(BASE_URL + `/api/events/upcoming?n=3`, {
       cache: "no-store",
     });
-    upcoming = await res2.json();
+    const { data: upcomingData }: { data: Events[] } = await res2.json();
+    upcoming = upcomingData;
   } catch (error) {
     const err = error as Error;
     console.log("error caught in page:", error);

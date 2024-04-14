@@ -33,8 +33,8 @@ export type EventType = {
   eventEndDate?: string;
   lastDateToJoin: string;
   maximumParticipants: number;
-  host: string;
-  participants: { _id: string; username: string }[];
+  host: { _id: string; username: string; profile_pic: string };
+  participants: { _id: string; username: string; profile_pic: string }[];
 };
 
 export type CreateEvent = Omit<

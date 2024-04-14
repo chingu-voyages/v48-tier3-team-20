@@ -6,21 +6,9 @@ import HostEventCard from "@/components/HostEventCard";
 import EventList from "@/components/EventList";
 import Link from "next/link";
 
-// dashboard for hosts to manage events host has created
-// also shows a form to create new events
-
 export default function DashboardHost() {
-  // fetch GET /api/events/host/[hostid]
-  // render event list with edit button and delete button
-  // edit button links to /host/[eventId]
-  // delete button (with confirmation popup) fetch DELETE /api/events/[eventid]
-  // shows a form for creating new event
-  // form onSubmit fetch POST /api/events
-
   const { userData } = React.useContext(UserContext);
 
-  // hack: get all events by host, then sort into past/upcoming
-  // to request from BE an endpoint to handle this
   const [pastEvents, setPastEvents] = React.useState<Events[]>([]);
   const [upcomingEvents, setUpcomingEvents] = React.useState<Events[]>([]);
 
@@ -29,29 +17,25 @@ export default function DashboardHost() {
       if (!userData || !userData.userId) {
         return;
       }
-      // const res = await fetch("/api/events/host");
-      const res = await fetch(`/api/events/host/${userData.userId}`);
-      const body: Events[] = await res.json();
 
-      const now = new Date().getTime();
-      const past = body
-        .filter((e) => new Date(e.eventStartDate).getTime() <= now)
-        .sort(
-          (a, b) =>
-            new Date(a.eventStartDate).getTime() -
-            new Date(b.eventStartDate).getTime(),
-        )
-        .slice(0, 3);
-      const upcoming = body
-        .filter((e) => new Date(e.eventStartDate).getTime() > now)
-        .sort(
-          (a, b) =>
-            new Date(a.eventStartDate).getTime() -
-            new Date(b.eventStartDate).getTime(),
-        )
-        .slice(0, 3);
-      setPastEvents(past);
-      setUpcomingEvents(upcoming);
+      let past, upcoming;
+      try {
+        const res1 = await fetch(
+          `/api/events/host/${userData.userId}?n=3&type=past`,
+        );
+        past = await res1.json();
+        const res2 = await fetch(
+          `/api/events/host/${userData.userId}?n=3&type=upcoming`,
+        );
+        upcoming = await res2.json();
+      } catch (error) {
+        const err = error as Error;
+        console.log("error caught in page:", error);
+        console.log(err.name, err.message);
+      }
+
+      setPastEvents(past.data);
+      setUpcomingEvents(upcoming.data);
     };
 
     fetchData();
@@ -82,7 +66,7 @@ export default function DashboardHost() {
             </>
           )}
         </EventList>
-        <EventList text="View Past Events" link="/host/past">
+        <EventList text="Manage Past Events" link="/host/past">
           {pastEvents.length > 0 ? (
             pastEvents.map((event) => (
               <HostEventCard key={event._id} event={event} />
