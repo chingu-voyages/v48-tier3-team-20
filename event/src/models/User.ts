@@ -12,12 +12,11 @@ export interface IUser extends mongoose.Document {
   // dob: string;   // Date of birth
 }
 
-export interface PublicUser extends Omit <IUser, 'password'> {}
+export interface PublicUser extends Omit<IUser, "password"> {}
 
 const UserSchema = new mongoose.Schema<IUser>({
   fullname: {
     type: String,
-    lowercase: true,
     required: true,
   },
   username: {
@@ -41,14 +40,14 @@ const UserSchema = new mongoose.Schema<IUser>({
   },
   profile_pic: {
     type: String,
-    // required: true,
+    default: "/stock-user.jpeg",
   },
   bio: {
-    type: String
+    type: String,
   },
   interest: {
-    type: [String]
-  }
+    type: [String],
+  },
   // dob: {
   //   type: Date
   // }

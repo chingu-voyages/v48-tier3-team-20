@@ -2,19 +2,35 @@ import dbConnect from "@/lib/mongo";
 import Event from "@/models/Event";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET (req: NextRequest) {
-    try {
-        await dbConnect();
-        const upcomingEvents = await Event.find().sort({ _id: -1 }).limit(3)
+export const dynamic = "force-dynamic";
 
-        if(!upcomingEvents) {
-           return NextResponse.json({ error: "No events.." })
-        }
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  let limit = true;
+  let n = Number(searchParams.get("n"));
+  if (!n || isNaN(n)) {
+    limit = false;
+  }
 
-        return NextResponse.json(upcomingEvents)
-        
-    } catch(error) {
-        const err = error as Error
-        return NextResponse.json(err)
-    }    
+  try {
+    await dbConnect();
+
+    const upcomingEvents = limit
+      ? await Event.aggregate([
+          { $match: { eventStartDate: { $gt: new Date() } } },
+          { $sort: { eventStartDate: 1 } },
+          { $limit: n },
+        ])
+      : await Event.aggregate([
+          { $match: { eventStartDate: { $gt: new Date() } } },
+          { $sort: { eventStartDate: 1 } },
+        ]);
+
+    return NextResponse.json(upcomingEvents);
+  } catch (error) {
+    const err = error as Error;
+    console.log("error caught:", error);
+    console.log(err.name, err.message);
+    return NextResponse.json(error);
+  }
 }
