@@ -11,9 +11,11 @@ export default async function Home() {
   let trending: Events[] = [];
   let upcoming: Events[] = [];
   try {
+    console.log(BASE_URL + `/api/events/trending?n=3`)
     const res1 = await fetch(BASE_URL + `/api/events/trending?n=3`, {
       cache: "no-store",
     });
+    console.log(res1)
     const { data: trendingData }: { data: Events[] } = await res1.json();
     trending = trendingData;
     const res2 = await fetch(BASE_URL + `/api/events/upcoming?n=3`, {
