@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import Image from "next/image";
 import { UserContext } from "@/context/UserContext";
+import { useRouter } from "next/navigation";
 
 const Profile = ({ params }: { params: { username: string } }) => {
   const [profileData, setProfileData] = useState({
@@ -12,6 +13,7 @@ const Profile = ({ params }: { params: { username: string } }) => {
     img: "/stock-user.jpeg",
     role: "",
   });
+  const router = useRouter();
 
   const [editMode, setEditMode] = useState(false);
 
@@ -20,6 +22,10 @@ const Profile = ({ params }: { params: { username: string } }) => {
   const fetchData = React.useCallback(async () => {
     const response = await fetch(`/api/users/${params.username}`);
     const data = await response.json();
+    console.log(data)
+    if(!data.data){
+      router.push("/404");
+    }
     if (!data.data.profile_pic) {
       data.data.profile_pic = "/stock-user.jpeg";
     }
@@ -59,10 +65,18 @@ const Profile = ({ params }: { params: { username: string } }) => {
   };
 
   const handleChange = (e: { target: { name: any; value: any } }) => {
-    setProfileData({
-      ...profileData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    if (name === "name") {
+      setProfileData({
+        ...profileData,
+        name: value,
+      });
+    } else {
+      setProfileData({
+        ...profileData,
+        about: value,
+      });
+    }
   };
 
   return (
@@ -159,8 +173,8 @@ const Profile = ({ params }: { params: { username: string } }) => {
                 </dt>
                 {editMode ? (
                   <textarea
-                    name="name"
-                    id="name"
+                    name="about"
+                    id="about"
                     value={profileData.about}
                     onChange={handleChange}
                     rows={5}

@@ -15,6 +15,7 @@ export async function GET(
     const publicData = await Users.findOne({
       username: params.username,
     }).select("interest username email profile_pic bio fullname _id");
+ 
     return NextResponse.json({ message: "Public data", data: publicData });
   } catch (error) {
     const err = error as Error;
