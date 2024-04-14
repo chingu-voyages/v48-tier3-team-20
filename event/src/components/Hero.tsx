@@ -9,6 +9,9 @@ const Hero = () => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const q = formData.get("q");
+    if (!q) {
+      return;
+    }
     router.push(`/search?q=${q}`);
   };
 

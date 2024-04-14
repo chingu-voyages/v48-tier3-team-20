@@ -1,6 +1,6 @@
 import EventCard from "@/components/EventCard";
-import { BASE_URL } from "@/lib/constants";
-import { Events } from "@/models/Event";
+import { searchEvents } from "@/lib/mongo/helper";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -9,10 +9,11 @@ export default async function Search({
 }: {
   searchParams: { q: string };
 }) {
-  const res = await fetch(BASE_URL + `/api/events/search?q=${searchParams.q}`, {
-    cache: "no-store",
-  });
-  const { data }: { data: Events[] } = await res.json();
+  if (!searchParams.q) {
+    redirect("/");
+  }
+
+  const data = await searchEvents(searchParams.q);
 
   if (!data) {
     return <>No results for {searchParams.q}</>;

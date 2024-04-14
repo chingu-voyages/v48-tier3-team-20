@@ -24,7 +24,7 @@ export default function RootLayout({
         className={cn(
           inter.className,
           "flex min-h-screen flex-col items-center justify-between gap-2",
-          "bg-slate-100 text-slate-900 dark:bg-slate-700 dark:text-slate-100",
+          "bg-slate-100 text-slate-900",
         )}
       >
         <UserProvider>

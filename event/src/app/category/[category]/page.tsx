@@ -1,9 +1,8 @@
-import Link from "next/link";
 import EventCard from "@/components/EventCard";
 import { isType, toTitleCase } from "@/lib/utils";
-import { BASE_URL, FULL_CATEGORIES } from "@/lib/constants";
+import { FULL_CATEGORIES } from "@/lib/constants";
 import { notFound } from "next/navigation";
-import { Events } from "@/models/Event";
+import { getTrending, getUpcoming, getCategory } from "@/lib/mongo/helper";
 
 export const dynamic = "force-dynamic";
 
@@ -22,15 +21,12 @@ export default async function CategoryPage({
     notFound();
   }
 
-  const endpoint = isType(category, FULL_CATEGORIES)
-    ? `/api/events/category/${category}`
-    : `/api/events/${(category as string).toLowerCase()}`;
+  const data = isType(category, FULL_CATEGORIES)
+    ? await getCategory(category)
+    : category === "Upcoming"
+      ? await getUpcoming()
+      : await getTrending();
 
-  console.log(endpoint);
-  const res = await fetch(BASE_URL + endpoint, {
-    cache: "no-store",
-  });
-  const { data }: { data: Events[] } = await res.json();
   if (!data) {
     return <>No events in {category}</>;
   }

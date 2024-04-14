@@ -26,11 +26,6 @@ export const CATEGORIES = [
 
 export const FULL_CATEGORIES = [...CATEGORIES, "Uncategorized"] as const;
 
-export const BASE_URL =
-  process.env.NODE_ENV === "production"
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : "http://localhost:3000";
-
 export const emptyEvent: EventType = {
   _id: "",
   name: "",

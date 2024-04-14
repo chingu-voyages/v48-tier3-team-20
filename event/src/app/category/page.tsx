@@ -1,19 +1,11 @@
 import EventCard from "@/components/EventCard";
 import EventList from "@/components/EventList";
-import { BASE_URL } from "@/lib/constants";
-import { Events } from "@/models/Event";
+import { getAllCategory } from "@/lib/mongo/helper";
 
 export const dynamic = "force-dynamic";
 
 export default async function Category() {
-  const res = await fetch(BASE_URL + "/api/events/category", {
-    cache: "no-store",
-  });
-  const { result }: { result: { [k: string]: Events[] } } = await res.json();
-
-  if (!result) {
-    return <>No result</>;
-  }
+  const result = await getAllCategory();
 
   return (
     <>

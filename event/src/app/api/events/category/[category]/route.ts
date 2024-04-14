@@ -1,6 +1,5 @@
-import dbConnect from "@/lib/mongo";
-import Event from "@/models/Event";
 import { NextRequest, NextResponse } from "next/server";
+import { getCategory } from "@/lib/mongo/helper";
 
 // workflow:
 // check auth and get user id from mongo
@@ -12,9 +11,7 @@ export async function GET(
   { params }: { params: { category: string } },
 ) {
   try {
-    await dbConnect();
-
-    const events = await Event.find({ category: params.category });
+    const events = await getCategory(params.category);
 
     if (!events || events.length === 0) {
       return NextResponse.json({ error: "No events in db" });

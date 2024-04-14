@@ -83,7 +83,7 @@ const Profile = ({ params }: { params: { username: string } }) => {
           <div className="flex h-36 w-36 flex-col items-center justify-center">
             <Image
               className="rounded-full"
-              src={profileData.img}
+              src={profileData.img ?? "/stock-user.jpeg"}
               alt="profile pic"
               width={150}
               height={150}
@@ -144,7 +144,7 @@ const Profile = ({ params }: { params: { username: string } }) => {
                     id="name"
                     value={profileData.name}
                     onChange={handleChange}
-                    className="h-8 w-full rounded-md bg-gray-300 px-3 py-2 text-gray-900 focus:outline-none focus:ring focus:ring-blue-500 sm:col-span-2"
+                    className="h-8 w-full rounded-md bg-gray-300 px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring focus:ring-blue-500 sm:col-span-2"
                     required
                   />
                 ) : (
@@ -174,7 +174,7 @@ const Profile = ({ params }: { params: { username: string } }) => {
                     value={profileData.about}
                     onChange={handleChange}
                     rows={5}
-                    className="h-32 w-full rounded-md bg-gray-300 px-3 py-2 text-gray-900 focus:outline-none focus:ring focus:ring-blue-500 sm:col-span-2"
+                    className="h-32 w-full rounded-md  bg-gray-300 px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring focus:ring-blue-500 sm:col-span-2"
                     required
                   />
                 ) : (

@@ -203,7 +203,7 @@ export default function DashboardHostEvent({
             <>
               <div className="relative aspect-[4/3] w-full">
                 <Image
-                  src={event.imgPoster as string}
+                  src={(event.imgPoster as string) ?? "/placeholder-image.png"}
                   alt="alt text"
                   fill={true}
                   sizes="500px"
@@ -219,7 +219,10 @@ export default function DashboardHostEvent({
             <>
               <div className="relative aspect-[4/3] w-full">
                 <Image
-                  src={URL.createObjectURL(event.imgPoster)}
+                  src={
+                    URL.createObjectURL(event.imgPoster) ??
+                    "/placeholder-image.png"
+                  }
                   alt="alt text"
                   fill={true}
                   sizes="500px"
@@ -237,7 +240,7 @@ export default function DashboardHostEvent({
           <p className="mb-1 block text-lg font-bold text-gray-800">
             Categories
           </p>
-          <div className="xs:grid-cols-2 grid gap-3 py-2 sm:grid-cols-3">
+          <div className="grid gap-3 py-2 xs:grid-cols-2 sm:grid-cols-3">
             {categories.map((cat) => (
               <div
                 key={cat}
