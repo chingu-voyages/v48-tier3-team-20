@@ -9,10 +9,13 @@ export default async function Search({
 }: {
   searchParams: { q: string };
 }) {
+  console.log('start search')
   const res = await fetch(BASE_URL + `/api/events/search?q=${searchParams.q}`, {
     cache: "no-store",
   });
+  console.log('res', res)
   const { data }: { data: Events[] } = await res.json();
+  console.log('data', data)
 
   if (!data) {
     return <>No results for {searchParams.q}</>;
