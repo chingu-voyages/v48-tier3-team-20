@@ -40,7 +40,7 @@ EventBytes is a fullstack web app built using NextJs. It is an application where
 
 ## The team 
 - Boon Kai (Brunei) : [GitHub](https://github.com/bk7312)
-- Eric Iwan (Japan) : [GitHub](https://github.com/Ejemy) 
+- Eric Iwan (Japan) : [GitHub](https://github.com/Ejemy) / [LinkedIn](https://www.linkedin.com/in/eric-iwan-61319714b/)
 - Jeisa Raja (Indonesia) : [GitHub](https://github.com/jeisaRaja) 
 - Jyotirmoy Das (India) : [GitHub](https://github.com/jdx-code) / [LinkedIn](https://www.linkedin.com/in/jdx-code/)
 - Avaz (Korea) : [GitHub](https://github.com/devavaz)
