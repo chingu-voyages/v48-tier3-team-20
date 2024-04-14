@@ -11,6 +11,10 @@ export const sleep = (ms: number) => {
   return new Promise((res) => setTimeout(res, ms));
 };
 
+export const toTitleCase = (str: string) => {
+  return str[0].toUpperCase() + str.slice(1).toLowerCase();
+};
+
 // checks if the type for value matches the const array
 export function isType<T>(value: any, array: readonly T[]): value is T {
   return array.includes(value as T);

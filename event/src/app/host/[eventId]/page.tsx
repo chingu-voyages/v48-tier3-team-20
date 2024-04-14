@@ -5,8 +5,8 @@ import React, { ChangeEvent, FormEvent } from "react";
 import { ACCEPTED_IMAGE_TYPES, CATEGORIES, emptyEvent } from "@/lib/constants";
 import Image from "next/image";
 import useFullscreen from "@/hooks/useFullscreen";
-import { useRouter, notFound } from "next/navigation";
-// import { Events } from "@/models/Event";
+import { useRouter } from "next/navigation";
+import Input from "@/components/Input";
 
 // dashboard for host to edit/delete events
 
@@ -156,35 +156,18 @@ export default function DashboardHostEvent({
         className="w-full max-w-screen-sm space-y-4 px-8"
         onSubmit={handleSubmit}
       >
-        <div>
-          <label htmlFor="name" className="mb-1 block text-gray-800">
-            Name
-          </label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            value={event.name}
-            onChange={handleChange}
-            className="w-full rounded-md bg-gray-200 px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="slug" className="mb-1 block text-gray-800">
-            Slug
-          </label>
-          <input
-            type="text"
-            name="slug"
-            id="slug"
-            value={event.slug}
-            onChange={handleChange}
-            className="w-full rounded-md bg-gray-200 px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
-            required
-          />
-        </div>
+        <Input
+          name="name"
+          id="name"
+          value={event.name}
+          onChange={handleChange}
+        />
+        <Input
+          name="slug"
+          id="slug"
+          value={event.slug}
+          onChange={handleChange}
+        />
 
         <div>
           <label htmlFor="description" className="mb-1 block text-gray-800">
@@ -201,20 +184,12 @@ export default function DashboardHostEvent({
           />
         </div>
 
-        <div>
-          <label htmlFor="location" className="mb-1 block text-gray-800">
-            Location
-          </label>
-          <input
-            type="text"
-            name="location"
-            id="location"
-            value={event.location}
-            onChange={handleChange}
-            className="w-full rounded-md bg-gray-200 px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
-            required
-          />
-        </div>
+        <Input
+          name="location"
+          id="location"
+          value={event.location}
+          onChange={handleChange}
+        />
 
         <div>
           <label htmlFor="imgPoster" className="mb-1 block text-gray-800">
@@ -294,11 +269,11 @@ export default function DashboardHostEvent({
             htmlFor="maximumParticipants"
             className="mb-1 block text-gray-800"
           >
-            Maximum participants (0 for unlimited)
+            Maximum participants
           </label>
           <input
             type="number"
-            min={0}
+            min={1}
             name="maximumParticipants"
             id="maximumParticipants"
             value={event.maximumParticipants}
@@ -307,48 +282,30 @@ export default function DashboardHostEvent({
             required
           />
         </div>
-        <div>
-          <label htmlFor="eventStartDate" className="mb-1 block text-gray-800">
-            Event Start Date
-          </label>
-          <input
-            type="datetime-local"
-            name="eventStartDate"
-            id="eventStartDate"
-            value={event.eventStartDate}
-            onChange={handleChange}
-            className="w-full rounded-md bg-gray-200 px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="eventEndDate" className="mb-1 block text-gray-800">
-            Event End Date
-          </label>
-          <input
-            type="datetime-local"
-            name="eventEndDate"
-            id="eventEndDate"
-            value={event.eventEndDate}
-            onChange={handleChange}
-            className="w-full rounded-md bg-gray-200 px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="lastDateToJoin" className="mb-1 block text-gray-800">
-            Last Date To Join
-          </label>
-          <input
-            type="datetime-local"
-            name="lastDateToJoin"
-            id="eventStartDate"
-            value={event.lastDateToJoin}
-            onChange={handleChange}
-            className="w-full rounded-md bg-gray-200 px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
-            required
-          />
-        </div>
+        <Input
+          type="datetime-local"
+          name="eventStartDate"
+          id="eventStartDate"
+          text="Event Start Date"
+          value={event.eventStartDate}
+          onChange={handleChange}
+        />
+        <Input
+          type="datetime-local"
+          name="eventEndDate"
+          id="eventEndDate"
+          text="Event End Date"
+          value={event.eventEndDate}
+          onChange={handleChange}
+        />
+        <Input
+          type="datetime-local"
+          name="lastDateToJoin"
+          id="lastDateToJoin"
+          text="Deadline to join"
+          value={event.lastDateToJoin}
+          onChange={handleChange}
+        />
 
         <button
           type="submit"

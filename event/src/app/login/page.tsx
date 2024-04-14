@@ -5,6 +5,7 @@ import React from "react";
 import { UserContext, UserData } from "@/context/UserContext";
 import Input from "@/components/Input";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 // add data to UserContext to keep login state on FE
 // delete UserContext on logout
@@ -51,13 +52,8 @@ export default function LoginPage() {
         )}
         <h2 className="mb-6 text-3xl font-semibold text-gray-900">Login</h2>
         <form className="space-y-4" onSubmit={handleSubmit}>
-          <Input type="email" name="email" id="email" required={true} />
-          <Input
-            type="password"
-            name="password"
-            id="password"
-            required={true}
-          />
+          <Input type="email" name="email" id="email" />
+          <Input type="password" name="password" id="password" />
           <button
             type="submit"
             className="w-full rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-600 focus:outline-none"
@@ -65,6 +61,9 @@ export default function LoginPage() {
             Login
           </button>
         </form>
+        <Link href="/register" className="mt-4 block text-blue-600 underline">
+          Don't have an account? Register here.
+        </Link>
       </div>
     </section>
   );
