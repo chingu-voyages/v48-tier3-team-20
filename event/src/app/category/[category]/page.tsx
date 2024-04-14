@@ -1,9 +1,8 @@
-import Link from "next/link";
 import EventCard from "@/components/EventCard";
 import { isType, toTitleCase } from "@/lib/utils";
 import { BASE_URL, FULL_CATEGORIES } from "@/lib/constants";
 import { notFound } from "next/navigation";
-import { Events } from "@/models/Event";
+import Event, { Events } from "@/models/Event";
 
 export const dynamic = "force-dynamic";
 
@@ -22,15 +21,29 @@ export default async function CategoryPage({
     notFound();
   }
 
-  const endpoint = isType(category, FULL_CATEGORIES)
-    ? `/api/events/category/${category}`
-    : `/api/events/${(category as string).toLowerCase()}`;
+  // const endpoint = isType(category, FULL_CATEGORIES)
+  //   ? `/api/events/category/${category}`
+  //   : `/api/events/${(category as string).toLowerCase()}`;
 
-  console.log(endpoint);
-  const res = await fetch(BASE_URL + endpoint, {
-    cache: "no-store",
-  });
-  const { data }: { data: Events[] } = await res.json();
+  // console.log(endpoint);
+  // const res = await fetch(BASE_URL + endpoint, {
+  //   cache: "no-store",
+  // });
+  // const { data }: { data: Events[] } = await res.json();
+
+  const data = isType(category, FULL_CATEGORIES)
+    ? await Event.find({ category: params.category })
+    : category === 'Upcoming' 
+      ? await Event.aggregate([
+        { $match: { eventStartDate: { $gt: new Date() } } },
+        { $sort: { eventStartDate: 1 } },
+      ]) 
+      : await Event.aggregate([
+        { $match: { eventStartDate: { $gt: new Date() } } },
+        { $addFields: { participantCount: { $size: "$participants" } } },
+        { $sort: { participantCount: -1 } },
+      ]);
+
   if (!data) {
     return <>No events in {category}</>;
   }

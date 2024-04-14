@@ -1,6 +1,8 @@
 import EventCard from "@/components/EventCard";
-import { BASE_URL } from "@/lib/constants";
-import { Events } from "@/models/Event";
+// import { BASE_URL } from "@/lib/constants";
+import Event, { Events } from "@/models/Event";
+import dbConnect from "@/lib/mongo";
+
 
 export const dynamic = "force-dynamic";
 
@@ -10,12 +12,21 @@ export default async function Search({
   searchParams: { q: string };
 }) {
   console.log('start search')
-  const res = await fetch(BASE_URL + `/api/events/search?q=${searchParams.q}`, {
-    cache: "no-store",
-  });
-  console.log('res', res)
-  const { data }: { data: Events[] } = await res.json();
-  console.log('data', data)
+  await dbConnect();
+  await Event.createIndexes();
+
+  const data = await Event.find({
+      $or:[
+          { name: {$regex: searchParams.q, $options: "i"}},
+          { description: {$regex: searchParams.q, $options: "i"}},
+      ],
+  })
+  // const res = await fetch(BASE_URL + `/api/events/search?q=${searchParams.q}`, {
+  //   cache: "no-store",
+  // });
+  // console.log('res', res)
+  // const { data }: { data: Events[] } = await res.json();
+  // console.log('data', data)
 
   if (!data) {
     return <>No results for {searchParams.q}</>;

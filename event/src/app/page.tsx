@@ -1,8 +1,9 @@
 import EventCard from "@/components/EventCard";
 import EventList from "@/components/EventList";
 import Hero from "@/components/Hero";
-import { BASE_URL } from "@/lib/constants";
-import { Events } from "@/models/Event";
+// import { BASE_URL } from "@/lib/constants";
+import Event, { Events } from "@/models/Event";
+import dbConnect from "@/lib/mongo";
 import React from "react";
 
 export const dynamic = "force-dynamic";
@@ -11,18 +12,33 @@ export default async function Home() {
   let trending: Events[] = [];
   let upcoming: Events[] = [];
   try {
-    console.log(BASE_URL + `/api/events/trending?n=3`)
-    const res1 = await fetch(BASE_URL + `/api/events/trending?n=3`, {
-      cache: "no-store",
-    });
-    console.log(res1)
-    const { data: trendingData }: { data: Events[] } = await res1.json();
-    trending = trendingData;
-    const res2 = await fetch(BASE_URL + `/api/events/upcoming?n=3`, {
-      cache: "no-store",
-    });
-    const { data: upcomingData }: { data: Events[] } = await res2.json();
-    upcoming = upcomingData;
+    await dbConnect()
+    // console.log(BASE_URL + `/api/events/trending?n=3`)
+    
+    // const res1 = await fetch(BASE_URL + `/api/events/trending?n=3`, {
+    //   cache: "no-store",
+    // });
+    // console.log(res1)
+    // const { data: trendingData }: { data: Events[] } = await res1.json();
+    // trending = trendingData;
+    trending = await Event.aggregate([
+        { $match: { eventStartDate: { $gt: new Date() } } },
+        { $addFields: { participantCount: { $size: "$participants" } } },
+        { $sort: { participantCount: -1 } },
+        { $limit: 3 },
+      ])
+
+    upcoming = await Event.aggregate([
+        { $match: { eventStartDate: { $gt: new Date() } } },
+        { $sort: { eventStartDate: 1 } },
+        { $limit: 3 },
+      ])
+
+    // const res2 = await fetch(BASE_URL + `/api/events/upcoming?n=3`, {
+    //   cache: "no-store",
+    // });
+    // const { data: upcomingData }: { data: Events[] } = await res2.json();
+    // upcoming = upcomingData;
   } catch (error) {
     const err = error as Error;
     console.log("error caught in page:", error);
