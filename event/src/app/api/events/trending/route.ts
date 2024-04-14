@@ -1,29 +1,14 @@
-import dbConnect from "@/lib/mongo";
-import Event from "@/models/Event";
 import { NextRequest, NextResponse } from "next/server";
+import { getTrending } from "@/lib/mongo/helper";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  let limit = true;
   let n = Number(searchParams.get("n"));
   if (!n || isNaN(n)) {
-    limit = false;
+    n = 0;
   }
   try {
-    await dbConnect();
-
-    const trendingEvents = limit
-      ? await Event.aggregate([
-          { $match: { eventStartDate: { $gt: new Date() } } },
-          { $addFields: { participantCount: { $size: "$participants" } } },
-          { $sort: { participantCount: -1 } },
-          { $limit: n },
-        ])
-      : await Event.aggregate([
-          { $match: { eventStartDate: { $gt: new Date() } } },
-          { $addFields: { participantCount: { $size: "$participants" } } },
-          { $sort: { participantCount: -1 } },
-        ]);
+    const trendingEvents = await getTrending(n);
 
     return NextResponse.json({ data: trendingEvents });
   } catch (error) {

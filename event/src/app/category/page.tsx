@@ -1,34 +1,11 @@
 import EventCard from "@/components/EventCard";
 import EventList from "@/components/EventList";
-import { BASE_URL, FULL_CATEGORIES } from "@/lib/constants";
-import dbConnect from "@/lib/mongo";
-import Event, { Events } from "@/models/Event";
+import { getAllCategory } from "@/lib/mongo/helper";
 
 export const dynamic = "force-dynamic";
 
 export default async function Category() {
-  // const res = await fetch(BASE_URL + "/api/events/category", {
-  //   cache: "no-store",
-  // });
-  // const { result }: { result: { [k: string]: Events[] } } = await res.json();
-  await dbConnect();
-  let result: {} = {};
-  for (let category of FULL_CATEGORIES) {
-    const events = await Event.aggregate([
-      { $match: { category: category } },
-      { $addFields: { participantCounts: { $size: "$participants" } } },
-      { $sort: { participantCounts: -1 } },
-      { $limit: 3 },
-    ]);
-    if (!events) {
-      continue;
-    }
-    result = { ...result, [category]: events };
-  }
-  
-  if (!result) {
-    return <>No result</>;
-  }
+  const result = await getAllCategory();
 
   return (
     <>

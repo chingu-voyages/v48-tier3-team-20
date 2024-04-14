@@ -1,30 +1,17 @@
-import dbConnect from "@/lib/mongo";
-import Event from "@/models/Event";
 import { NextRequest, NextResponse } from "next/server";
+import { getUpcoming } from "@/lib/mongo/helper";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  let limit = true;
   let n = Number(searchParams.get("n"));
   if (!n || isNaN(n)) {
-    limit = false;
+    n = 0;
   }
 
   try {
-    await dbConnect();
-
-    const upcomingEvents = limit
-      ? await Event.aggregate([
-          { $match: { eventStartDate: { $gt: new Date() } } },
-          { $sort: { eventStartDate: 1 } },
-          { $limit: n },
-        ])
-      : await Event.aggregate([
-          { $match: { eventStartDate: { $gt: new Date() } } },
-          { $sort: { eventStartDate: 1 } },
-        ]);
+    const upcomingEvents = getUpcoming(n);
 
     return NextResponse.json({ data: upcomingEvents });
   } catch (error) {
