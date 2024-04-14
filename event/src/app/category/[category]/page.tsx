@@ -5,6 +5,8 @@ import { BASE_URL, FULL_CATEGORIES } from "@/lib/constants";
 import { notFound } from "next/navigation";
 import { Events } from "@/models/Event";
 
+export const dynamic = "force-dynamic";
+
 export default async function CategoryPage({
   params,
 }: {

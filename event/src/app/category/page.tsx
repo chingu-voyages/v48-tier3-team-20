@@ -3,6 +3,8 @@ import EventList from "@/components/EventList";
 import { BASE_URL } from "@/lib/constants";
 import { Events } from "@/models/Event";
 
+export const dynamic = "force-dynamic";
+
 export default async function Category() {
   const res = await fetch(BASE_URL + "/api/events/category", {
     cache: "no-store",
