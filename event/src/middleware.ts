@@ -4,26 +4,39 @@ import { verifyJwt } from "./lib/authHelper";
 
 export async function middleware(request: NextRequest) {
   const cookie = request.cookies.get("accessToken");
+  const url = new URL(request.url);
+
+  // if user visits /login and has no cookies, do nothing and return
   if (!cookie) {
-    // if user visits /login and has no cookies, do nothing and return
     if (request.nextUrl.pathname.startsWith("/login")) {
       return;
     }
 
-    return NextResponse.redirect(new URL("/login", request.url));
+    // else redirect to /login
+    return NextResponse.redirect(
+      new URL(`/login?redirect=${url.pathname}`, request.url),
+    );
   }
-
 
   try {
     const { data, error } = await verifyJwt(cookie.value);
-    console.log(data)
+
+    // throw error if invalid jwt, catch block to delete cookie
     if (!data || error) {
-      return NextResponse.redirect(new URL("/login", request.url));
+      throw new Error("Invalid or expired JWT");
     }
 
-    // if logged in user visits /login, redirects to /about, for testing only
+    // if logged in user visits /host, verify isSubscribed
+    if (request.nextUrl.pathname.startsWith("/host")) {
+      if (data.isSubscribed === true) {
+        return;
+      }
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+
+    // if logged in user visits /login, redirects to /dashboard
     if (request.nextUrl.pathname.startsWith("/login")) {
-      return NextResponse.redirect(new URL("/about", request.url));
+      return NextResponse.redirect(new URL("/dashboard", request.url));
     }
   } catch (error) {
     const err = error as Error;
@@ -37,5 +50,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/about:path*", "/dashboard:path*", "/login"],
+  matcher: ["/host/:path*", "/dashboard/:path*", "/login", "/profile/:path*"],
 };

@@ -1,21 +1,22 @@
 import mongoose from "mongoose";
 
-export interface IUsers extends mongoose.Document {
+export interface IUser extends mongoose.Document {
   fullname: string;
   email: string;
   username: string;
   password: string;
-  isSubscribed: boolean;
-  profile_pic: string;
-  bio: string;
-  interest: Array<string>;
+  isSubscribed?: boolean;
+  profile_pic?: string;
+  bio?: string;
+  interest?: Array<string>;
   // dob: string;   // Date of birth
 }
 
-const UserSchema = new mongoose.Schema<IUsers>({
+export interface PublicUser extends Omit<IUser, "password"> {}
+
+const UserSchema = new mongoose.Schema<IUser>({
   fullname: {
     type: String,
-    lowercase: true,
     required: true,
   },
   username: {
@@ -39,14 +40,14 @@ const UserSchema = new mongoose.Schema<IUsers>({
   },
   profile_pic: {
     type: String,
-    required: true,
+    default: "/stock-user.jpeg",
   },
   bio: {
-    type: String
+    type: String,
   },
   interest: {
-    type: [String]
-  }
+    type: [String],
+  },
   // dob: {
   //   type: Date
   // }

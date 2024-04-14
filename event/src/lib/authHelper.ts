@@ -3,6 +3,7 @@ import { ReturnType } from "./types";
 
 export interface UserJWTPayload extends JWTPayload {
   userId: string;
+  username: string;
   isSubscribed: boolean;
 }
 
@@ -26,7 +27,7 @@ export const createJwt = async (payload: UserJWTPayload): Promise<string> => {
     .setProtectedHeader({
       alg: "HS256",
     })
-    .setExpirationTime("1hr")
+    .setExpirationTime("12hr")
     .sign(key);
 
   return token;

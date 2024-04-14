@@ -1,4 +1,4 @@
-import User, { Users } from "@/models/User";
+import User, { IUser } from "@/models/User";
 import Event, { Events } from "@/models/Event";
 import { ReturnType } from "../types";
 
@@ -9,8 +9,8 @@ import { ReturnType } from "../types";
 
 export const getUserById = async (
   userId: string,
-): Promise<ReturnType<Users>> => {
-  const user: Users | null = await User.findById(userId);
+): Promise<ReturnType<IUser>> => {
+  const user: IUser | null = await User.findById(userId);
   if (!user) {
     return { data: null, error: "No such user in db" };
   }
@@ -30,7 +30,7 @@ export const getEventById = async (
 };
 
 export const joinEvent = async (
-  user: Users,
+  user: IUser,
   event: Events,
 ): Promise<ReturnType<string>> => {
   if (event.participants.includes(user._id)) {
@@ -45,7 +45,7 @@ export const joinEvent = async (
 };
 
 export const leaveEvent = async (
-  user: Users,
+  user: IUser,
   event: Events,
 ): Promise<ReturnType<string>> => {
   if (!event.participants.includes(user._id)) {
