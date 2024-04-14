@@ -5,6 +5,8 @@ import { BASE_URL } from "@/lib/constants";
 import { Events } from "@/models/Event";
 import React from "react";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   let trending: Events[] = [];
   let upcoming: Events[] = [];

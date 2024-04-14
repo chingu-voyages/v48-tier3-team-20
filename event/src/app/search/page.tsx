@@ -2,6 +2,8 @@ import EventCard from "@/components/EventCard";
 import { BASE_URL } from "@/lib/constants";
 import { Events } from "@/models/Event";
 
+export const dynamic = "force-dynamic";
+
 export default async function Search({
   searchParams,
 }: {

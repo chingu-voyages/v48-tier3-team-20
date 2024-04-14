@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, ChangeEvent } from "react";
 import Image from "next/image";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
@@ -22,9 +22,10 @@ const Profile = ({ params }: { params: { username: string } }) => {
   const fetchData = React.useCallback(async () => {
     const response = await fetch(`/api/users/${params.username}`);
     const data = await response.json();
-    console.log(data)
-    if(!data.data){
+    console.log(data);
+    if (!data.data) {
       router.push("/404");
+      return;
     }
     if (!data.data.profile_pic) {
       data.data.profile_pic = "/stock-user.jpeg";
@@ -37,7 +38,7 @@ const Profile = ({ params }: { params: { username: string } }) => {
       about: data.data.bio,
       img: data.data.profile_pic,
     }));
-  }, [params.username]);
+  }, [params.username, router]);
 
   useEffect(() => {
     fetchData();
@@ -58,25 +59,20 @@ const Profile = ({ params }: { params: { username: string } }) => {
     }
   };
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     setEditMode(false);
     updateData();
   };
 
-  const handleChange = (e: { target: { name: any; value: any } }) => {
-    const { name, value } = e.target;
-    if (name === "name") {
-      setProfileData({
-        ...profileData,
-        name: value,
-      });
-    } else {
-      setProfileData({
-        ...profileData,
-        about: value,
-      });
-    }
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.currentTarget;
+    setProfileData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   return (
@@ -187,54 +183,6 @@ const Profile = ({ params }: { params: { username: string } }) => {
                   </dd>
                 )}
               </div>
-              {/* <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">
-                  Interests
-                </dt>
-                <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                  <ul
-                    role="list"
-                    className="divide-y divide-gray-100 rounded-md border border-gray-200"
-                  >
-                    <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                      <div className="flex w-0 flex-1 items-center">
-                        <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                          <span className="truncate font-medium">Sports</span>
-                          <span className="flex-shrink-0 text-gray-400">
-                            Outdoor
-                          </span>
-                        </div>
-                      </div>
-                      <div className="ml-4 flex-shrink-0">
-                        <a
-                          href="#"
-                          className="font-medium text-indigo-600 hover:text-indigo-500"
-                        >
-                          Check events
-                        </a>
-                      </div>
-                    </li>
-                    <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                      <div className="flex w-0 flex-1 items-center">
-                        <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                          <span className="truncate font-medium">Music</span>
-                          <span className="flex-shrink-0 text-gray-400">
-                            Live concerts
-                          </span>
-                        </div>
-                      </div>
-                      <div className="ml-4 flex-shrink-0">
-                        <a
-                          href="#"
-                          className="font-medium text-indigo-600 hover:text-indigo-500"
-                        >
-                          Check events
-                        </a>
-                      </div>
-                    </li>
-                  </ul>
-                </dd>
-              </div> */}
             </dl>
           </div>
         </div>
