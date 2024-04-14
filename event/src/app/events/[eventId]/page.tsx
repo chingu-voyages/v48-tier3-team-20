@@ -90,7 +90,7 @@ export default function EventId({ params }: { params: { eventId: string } }) {
       <h2 className="text-3xl font-bold">{event.name}</h2>
       <div className="relative aspect-[4/3] w-full border bg-red-200">
         <Image
-          src={event.imgPoster as string}
+          src={(event.imgPoster as string) ?? "/placeholder-image.png"}
           alt="alt text"
           fill={true}
           sizes="500px"
@@ -109,7 +109,7 @@ export default function EventId({ params }: { params: { eventId: string } }) {
         >
           <div className="relative w-6">
             <Image
-              src={event.host.profile_pic}
+              src={event.host.profile_pic ?? "/stock-user.jpeg"}
               alt="host profile pic"
               sizes="200px"
               fill={true}
@@ -139,7 +139,7 @@ export default function EventId({ params }: { params: { eventId: string } }) {
           >
             <div className="relative w-6">
               <Image
-                src={p.profile_pic}
+                src={p.profile_pic ?? "/stock-user.jpeg"}
                 alt="participant profile pic"
                 sizes="200px"
                 fill={true}

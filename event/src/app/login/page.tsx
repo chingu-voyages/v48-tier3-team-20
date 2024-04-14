@@ -40,7 +40,7 @@ export default function LoginPage() {
 
   return (
     <section className="flex w-full max-w-md items-center justify-center">
-      <div className="relative w-full rounded-lg bg-gray-100 p-8 shadow-md dark:bg-gray-800">
+      <div className="relative w-full rounded-lg bg-gray-100 p-8 shadow-md">
         {message && (
           <p className="absolute -top-2 text-lg font-bold text-red-500">
             {message}

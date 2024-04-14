@@ -13,7 +13,7 @@ export default function HostEventCard({ event }: HostEventListProp) {
       <Link href={`/events/${event._id}`}>
         <div className="relative aspect-[4/3] w-full">
           <Image
-            src={event.imgPoster}
+            src={event.imgPoster ?? "/placeholder-image.png"}
             alt="alt text"
             fill={true}
             sizes="500px"
@@ -26,7 +26,7 @@ export default function HostEventCard({ event }: HostEventListProp) {
       </Link>
       <Link
         href={`/host/${event._id}`}
-        className="absolute right-1 top-1 cursor-pointer rounded-lg bg-gray-300 p-0.5 hover:scale-125 focus-visible:ring dark:bg-slate-500"
+        className="absolute right-1 top-1 cursor-pointer rounded-lg bg-gray-300 p-0.5 hover:scale-125 focus-visible:ring"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

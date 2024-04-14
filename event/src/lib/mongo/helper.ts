@@ -36,6 +36,7 @@ export const searchEvents = async (q: string): Promise<Events[]> => {
     $or: [
       { name: { $regex: q, $options: "i" } },
       { description: { $regex: q, $options: "i" } },
+      { location: { $regex: q, $options: "i" } },
     ],
   });
 };

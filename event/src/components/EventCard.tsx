@@ -13,7 +13,7 @@ export default function EventCard({ event }: EventListProp) {
       <Link href={`/events/${event._id}`}>
         <div className="relative aspect-[4/3] w-full">
           <Image
-            src={event.imgPoster}
+            src={event.imgPoster ?? "/placeholder-image.png"}
             alt="alt text"
             fill={true}
             sizes="500px"

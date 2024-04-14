@@ -11,7 +11,7 @@ export default async function Home() {
   const upcoming = await getUpcoming(3);
 
   return (
-    <main className="h-full w-full text-lg outline">
+    <main className="h-full w-full text-lg">
       <Hero />
 
       <EventList text="Trending" link="/category/Trending">
