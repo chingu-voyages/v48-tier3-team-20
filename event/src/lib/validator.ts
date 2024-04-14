@@ -33,21 +33,19 @@ export const EventValidator = z.object({
 export const CreateEventValidator = EventValidator.omit({
   participants: true,
   imgPoster: true,
-})
-  .strict()
-  .refine(
-    (data) => {
-      const isValid = data.lastDateToJoin < data.eventStartDate;
-      if (data.eventEndDate) {
-        return isValid && data.eventEndDate > data.eventStartDate;
-      }
-      return isValid;
-    },
-    {
-      message:
-        "Event end date must be after start date, last date to join must be before start date",
-    },
-  );
+}).refine(
+  (data) => {
+    const isValid = data.lastDateToJoin < data.eventStartDate;
+    if (data.eventEndDate) {
+      return isValid && data.eventEndDate > data.eventStartDate;
+    }
+    return isValid;
+  },
+  {
+    message:
+      "Event end date must be after start date, last date to join must be before start date",
+  },
+);
 
 // update event validator also needs to check date validity
 export const UpdateEventValidator = EventValidator.omit({
