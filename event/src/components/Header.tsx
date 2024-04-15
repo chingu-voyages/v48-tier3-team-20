@@ -39,46 +39,40 @@ export default function Header() {
   });
 
   return (
-    <header className="flex justify-between items-center w-full px-6 py-4 text-lg bg-gradient-to-r from-rose-200 to-pink-200">
-    <div className="flex items-center gap-2 text-gray-700">
-      <Link href="/" className="flex items-center gap-2">
-        <Image src={icon} alt="logo" height={32} width={32} className="rounded-full" />
-        <p className="">EventBytes</p>
-      </Link>
-    </div>
-    <div className="">
-    <Link className="text-gray-700 mr-2" href="/category">
-  Category
-</Link>
-<Link className="text-gray-700 mr-2" href="/category">
-  Pricing
-</Link>
-<Link className="text-gray-700" href="/category">
-  About
-</Link>
-      </div>
-    <div>
-      {!isLogin || userData === null ? (
-        <Link className="text-gray-700 bg-white rounded-full px-8 py-2 font-medium hover:font-semibold" href="/login">
-          Login
+    <header className="flex w-full items-center justify-between bg-gradient-to-r from-rose-100 to-pink-200 px-6 py-4 text-lg"> 
+      <div className="flex items-center gap-2 text-gray-700">
+        <Link href="/" className="flex items-center gap-2">
+          <p className="text-xl font-semibold">Event<span className="bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent ">Bytes</span></p>
         </Link>
-      ) : (
-        <>
-          {userData.isSubscribed && (
-            <Link className="text-gray-700" href="/host">
-              Host
+      </div>
+      <div className="flex items-center">
+        {!isLogin || userData === null ? (
+          <Link
+            className="rounded-full bg-white px-8 py-2 text-[#544350] font-semibold"
+            href="/login"
+          >
+            Login
+          </Link>
+        ) : (
+          <>
+            {userData.isSubscribed && (
+              <Link className="text-gray-700" href="/host">
+                Host
+              </Link>
+            )}
+            <Link className="text-gray-700 mr-3" href="/dashboard">
+              Dashboard
             </Link>
-          )}
-          <Link className="text-gray-700" href="/dashboard">
-            Dashboard
-          </Link>
-          <Link className="text-gray-700" href={`/profile/${userData.username}`}>
-            Profile
-          </Link>
-          <LogoutButton className="text-gray-700" />
-        </>
-      )}
-    </div>
-  </header>
+            <Link
+              className="text-gray-700"
+              href={`/profile/${userData.username}`}
+            >
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-user-circle mr-3"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" /></svg>
+            </Link>
+            <LogoutButton className="rounded-full text-[#544350] font-semibold bg-white px-8 py-2 hover:font-semibold" />
+          </>
+        )}
+      </div>
+    </header>
   );
 }

@@ -9,7 +9,7 @@ interface EventListProp {
 
 export default function EventCard({ event }: EventListProp) {
   return (
-    <div className="my-3 max-w-60 p-5 border-2 m-2 rounded-lg">
+    <div className="my-3 sm:max-w-80 p-5 m-2 rounded-lg">
       <Link href={`/events/${event._id}`}>
         <div className="relative aspect-[4/3] w-full">
           <Image
@@ -20,9 +20,9 @@ export default function EventCard({ event }: EventListProp) {
             className="rounded-lg object-cover"
           />
         </div>
-        <p className="font-bold">{event.name}</p>
+        <p className="font-bold my-2">{event.name}</p>
         <p>{new Date(event.eventStartDate).toLocaleString()}</p>
-        <p>{event.location}</p>
+        <p className=" text-stone-700">{event.location}</p>
       </Link>
     </div>
   );

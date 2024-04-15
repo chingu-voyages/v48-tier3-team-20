@@ -16,7 +16,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="mb-10 flex w-full flex-col items-center gap-4 bg-gradient-to-r  from-rose-200 to-pink-200 py-12">
+    <div className="mb-10 flex w-full flex-col items-center gap-4 bg-gradient-to-r from-rose-100 to-pink-200 py-12">
       <h1 className="text-center text-4xl font-extrabold text-[#544350] sm:text-3xl md:text-6xl">
         Find your <br /> favourite{" "}
         <span className="bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent ">
@@ -44,6 +44,9 @@ const Hero = () => {
           GO
         </button>
       </form>
+      <button
+          className="w-80 sm:w-4/1 text-center text-white rounded-full py-4 pl-8 focus:outline-none font-semibold bg-gradient-to-r from-red-500 to-blue-500 px-6 hover:ring"
+        >Explore all categories </button>
     </div>
   );
 };
