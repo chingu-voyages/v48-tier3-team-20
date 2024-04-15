@@ -9,7 +9,7 @@ interface EventListProp {
 
 export default function EventCard({ event }: EventListProp) {
   return (
-    <div className="my-3 max-w-60 bg-blue-200 p-5">
+    <div className="my-3 max-w-60 p-5 border-2 m-2 rounded-lg">
       <Link href={`/events/${event._id}`}>
         <div className="relative aspect-[4/3] w-full">
           <Image

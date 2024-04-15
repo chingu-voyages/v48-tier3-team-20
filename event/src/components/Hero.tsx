@@ -16,25 +16,29 @@ const Hero = () => {
   };
 
   return (
-    <div className="mb-10 flex w-full flex-col items-center gap-4 pt-12">
-      <h1 className="text-4xl font-extrabold text-black sm:text-3xl md:text-5xl">
-        Find your favourite event
+    <div className="mb-10 flex w-full flex-col items-center gap-4 bg-gradient-to-r  from-rose-200 to-pink-200 py-12">
+      <h1 className="text-center text-4xl font-extrabold text-[#544350] sm:text-3xl md:text-6xl">
+        Find your <br /> favourite{" "}
+        <span className="bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent ">
+          event
+        </span>
       </h1>
-      <p className="my-4 text-xl">
-        Invite your best friends and make them happy
+      <p className="my-4 text-center text-xl text-[#7A6774C2] sm:w-[50%]">
+        Invite your best friends and make them happy! <br /> Create
+        unforgettable memories with your favorite people!
       </p>
       <form className="relative mb-10 flex" onSubmit={handleSubmit}>
         <input
-          className="w-80 rounded-lg py-2 pl-8 pr-16"
+          className="w-full rounded-full py-4 pl-8 pr-20 focus:outline-none text-[#544350] font-semibold"
           type="text"
           name="q"
-          placeholder="enter keyword or location"
+          placeholder="enter a keyword"
         />
         <button
           type="submit"
           className={cn(
             "absolute right-3 top-1/2 -translate-y-1/2",
-            "rounded-3xl bg-slate-200 px-2 py-1 text-sm hover:ring",
+            "rounded-3xl bg-gradient-to-r from-red-500 to-blue-500 px-6 py-2 text-sm font-bold text-white hover:ring",
           )}
         >
           GO

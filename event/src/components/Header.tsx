@@ -6,6 +6,7 @@ import LogoutButton from "./LogoutButton";
 import { useRouter } from "next/navigation";
 import icon from "@/app/icon.png";
 import Image from "next/image";
+import Hero from "./Hero";
 
 export default function Header() {
   const [isLogin, setIsLogin] = React.useState(false);
@@ -38,51 +39,46 @@ export default function Header() {
   });
 
   return (
-    <header className="flex w-full items-center justify-between bg-sky-100 px-6 py-4 text-lg">
-      <Link
-        href="/"
-        className="flex items-center justify-center gap-2 text-sky-700"
-      >
-        <Image
-          src={icon}
-          alt="logo"
-          height={32}
-          width={32}
-          className="rounded-full"
-        />
+    <header className="flex justify-between items-center w-full px-6 py-4 text-lg bg-gradient-to-r from-rose-200 to-pink-200">
+    <div className="flex items-center gap-2 text-gray-700">
+      <Link href="/" className="flex items-center gap-2">
+        <Image src={icon} alt="logo" height={32} width={32} className="rounded-full" />
         <p className="">EventBytes</p>
       </Link>
-      <nav className="flex gap-4">
-        <Link className="text-sky-700" href="/category">
-          Category
+    </div>
+    <div className="">
+    <Link className="text-gray-700 mr-2" href="/category">
+  Category
+</Link>
+<Link className="text-gray-700 mr-2" href="/category">
+  Pricing
+</Link>
+<Link className="text-gray-700" href="/category">
+  About
+</Link>
+      </div>
+    <div>
+      {!isLogin || userData === null ? (
+        <Link className="text-gray-700 bg-white rounded-full px-8 py-2 font-medium hover:font-semibold" href="/login">
+          Login
         </Link>
-
-        {!isLogin || userData === null ? (
-          <>
-            <Link className="text-sky-700" href="/login">
-              Login
+      ) : (
+        <>
+          {userData.isSubscribed && (
+            <Link className="text-gray-700" href="/host">
+              Host
             </Link>
-          </>
-        ) : (
-          <>
-            {userData.isSubscribed && (
-              <Link className="text-sky-700" href="/host">
-                Host
-              </Link>
-            )}
-            <Link className="text-sky-700" href="/dashboard">
-              Dashboard
-            </Link>
-            <Link
-              className="text-sky-700"
-              href={`/profile/${userData.username}`}
-            >
-              Profile
-            </Link>
-            <LogoutButton className="text-sky-700" />
-          </>
-        )}
-      </nav>
-    </header>
+          )}
+          <Link className="text-gray-700" href="/dashboard">
+            Dashboard
+          </Link>
+          <Link className="text-gray-700" href={`/profile/${userData.username}`}>
+            Profile
+          </Link>
+          <LogoutButton className="text-gray-700" />
+        </>
+      )}
+    </div>
+  </header>
   );
 }

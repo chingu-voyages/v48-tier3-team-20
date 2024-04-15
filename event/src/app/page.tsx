@@ -7,13 +7,12 @@ import { getTrending, getUpcoming } from "@/lib/mongo/helper";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const trending = await getTrending(3);
-  const upcoming = await getUpcoming(3);
+  const trending = await getTrending(4);
+  const upcoming = await getUpcoming(4);
 
   return (
     <main className="h-full w-full text-lg">
       <Hero />
-
       <EventList text="Trending" link="/category/Trending">
         {trending.map((event) => (
           <EventCard key={event._id} event={event} />
