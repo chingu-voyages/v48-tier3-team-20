@@ -1,41 +1,44 @@
-# voyage-tasks
+# EventBytes
 
-Your project's `readme` is as important to success as your code. For 
-this reason you should put as much care into its creation and maintenance
-as you would any other component of the application.
+## Overview
 
-If you are unsure of what should go into the `readme` let this article,
-written by an experienced Chingu, be your starting point - 
-[Keys to a well written README](https://tinyurl.com/yk3wubft).
+EventBytes is a fullstack web app built using NextJs. It is an application where users (basically hosts) can create events and other users can participate in those events.
 
-And before we go there's "one more thing"! Once you decide what to include
-in your `readme` feel free to replace the text we've provided here.
+### CHECK IT LIVE [Click here](https://eventbytes.vercel.app/)
 
-> Own it & Make it your Own!
+## How to run locally :
 
-## Team Documents
+- Clone this repo
+- Open a terminal and go to v48-tier3-team-20/event
+- Rename `.env.example` file to `.env.local` and fill in your values for environment variables.
+- Now, `npm install`
+- Then, `npm run dev`
 
-You may find these helpful as you work together to organize your project.
+**If you have followed the above steps, your project should be running on localhost**
 
-- [Team Project Ideas](./docs/team_project_ideas.md)
-- [Team Decision Log](./docs/team_decision_log.md)
+## Features
 
-Meeting Agenda templates (located in the `/docs` directory in this repo):
+- Landing page:
+  - Searchbar to search any event
+  - Trending and Upcoming events
+- Authentication (login/register)
+- List of categories
+- Check an event
+- Join/leave events
+- View host profile
+- View participants profile
+- Edit profile
 
-- Meeting - Voyage Kickoff --> ./docs/meeting-voyage_kickoff.docx
-- Meeting - App Vision & Feature Planning --> ./docs/meeting-vision_and_feature_planning.docx
-- Meeting - Sprint Retrospective, Review, and Planning --> ./docs/meeting-sprint_retrospective_review_and_planning.docx
-- Meeting - Sprint Open Topic Session --> ./docs/meeting-sprint_open_topic_session.docx
+## Tech Stack Used
 
-## Our Team
+- Next.js with Typescript and TailwindCSS for styling on the Frontend
+- MongoDB Atlas with mongoose and zod for schema validation on the Backend
+- Cloudinary for storing images and Vercel to host and deploy the app
 
-Everyone on your team should add their name along with a link to their GitHub
-& optionally their LinkedIn profiles below. Do this in Sprint #1 to validate
-your repo access and to practice PR'ing with your team *before* you start
-coding!
+## The team
 
-- Teammate name #1: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
-- Teammate name #2: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
-
-   ...
-- Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
+- Boon Kai (Brunei) : [GitHub](https://github.com/bk7312)
+- Eric Iwan (Japan) : [GitHub](https://github.com/Ejemy) / [LinkedIn](https://www.linkedin.com/in/eric-iwan-61319714b/)
+- Jeisa Raja (Indonesia) : [GitHub](https://github.com/jeisaRaja)
+- Jyotirmoy Das (India) : [GitHub](https://github.com/jdx-code) / [LinkedIn](https://www.linkedin.com/in/jdx-code/)
+- Avaz (Korea) : [GitHub](https://github.com/devavaz)
