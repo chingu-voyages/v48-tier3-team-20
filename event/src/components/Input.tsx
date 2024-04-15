@@ -31,7 +31,7 @@ const Input = ({
         id={id}
         value={value}
         onChange={onChange}
-        className="w-full rounded-md bg-gray-200 px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
+        className="w-full rounded-md bg-white px-3 py-2 text-gray-800 focus:outline-none focus:ring focus:ring-pink-200"
         required={required}
       />
     </div>
