@@ -3,7 +3,7 @@
 ## Overview 
 EventBytes is a fullstack web app built using NextJs. It is an application where users (basically hosts) can create events and other users can participate in those events.
 
-### CHECK IT LIVE [Click here](https://v48-tier3-team-20.vercel.app/)
+### CHECK IT LIVE [Click here](https://eventbytes.vercel.app/)
 
 ## How to run locally :
 - Clone this repo
