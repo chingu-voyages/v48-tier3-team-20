@@ -6,7 +6,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { cn } from "@/lib/utils";
 import UserProvider from "@/context/UserContext";
-import TeamMembers from "@/components/TeamMembers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,7 +30,6 @@ export default function RootLayout({
         <UserProvider>
           <Header />
           {children}
-          <TeamMembers />
           <Footer />
         </UserProvider>
       </body>
