@@ -86,7 +86,7 @@ export default function EventId({ params }: { params: { eventId: string } }) {
     userData && event.participants.some((p) => p._id === userData.userId);
 
   return (
-    <div className="flex w-full max-w-screen-sm flex-col gap-4 border px-5 py-10">
+    <div className="flex w-full max-w-screen-sm flex-col gap-4  px-5 py-10">
       <h2 className="text-3xl font-bold">{event.name}</h2>
       <div className="relative aspect-[4/3] w-full border bg-red-200">
         <Image
@@ -98,11 +98,11 @@ export default function EventId({ params }: { params: { eventId: string } }) {
         />
       </div>
 
-      <p>Description:</p>
+      <p className="font-semibold">Description:</p>
 
       <p>{event.description}</p>
       <div className="flex items-center gap-2">
-        <p>Hosted by:</p>
+        <p className="font-semibold">Hosted by:</p>
         <Link
           href={`/events/host/${event.host._id}`}
           className="flex gap-2 rounded-xl bg-gray-200 px-3 py-2 hover:bg-gray-300"
@@ -119,15 +119,16 @@ export default function EventId({ params }: { params: { eventId: string } }) {
           {event.host.username}
         </Link>
       </div>
-      <p>Location: {event.location}</p>
-      <p>Start date: {event.eventStartDate.split("T").join(" at ")}</p>
+      <p> <span className="font-semibold">Location: </span> {event.location}</p>
+      <p> <span className="font-semibold">Start date: </span>  {event.eventStartDate.split("T").join(" at ")}</p>
       {event.eventEndDate && (
-        <p>End date: {event.eventEndDate.split("T").join(" at ")}</p>
+        <p><span className="font-semibold">End date: </span> {event.eventEndDate.split("T").join(" at ")}</p>
       )}
-      <p>Deadline to join: {event.lastDateToJoin.split("T").join(" at ")}</p>
+      
+      <p><span className="font-semibold">Deadline to join:</span> {event.lastDateToJoin.split("T").join(" at ")}</p>
 
       <p>
-        Participants ({event.participants.length}/{event.maximumParticipants}):
+      <span className="font-semibold">Participants:</span> ({event.participants.length}/{event.maximumParticipants}):
       </p>
 
       <div className="flex gap-4">
@@ -155,7 +156,7 @@ export default function EventId({ params }: { params: { eventId: string } }) {
         <button
           type="button"
           onClick={leaveEvent}
-          className="rounded bg-blue-200 py-2"
+          className="rounded  bg-rose-200 hover:bg-rose-100  py-2"
         >
           Leave Event
         </button>
@@ -166,7 +167,7 @@ export default function EventId({ params }: { params: { eventId: string } }) {
               <button
                 type="button"
                 onClick={joinEvent}
-                className="rounded bg-blue-200 py-2"
+                className="rounded bg-rose-200 hover:bg-rose-100 py-2"
               >
                 Join Event
               </button>
@@ -176,12 +177,12 @@ export default function EventId({ params }: { params: { eventId: string } }) {
               {isBeforeDeadline && isNotFullyBooked ? (
                 <Link
                   href={`/login?redirect=${window.location.pathname}`}
-                  className="rounded bg-blue-200 py-2 text-center"
+                  className="rounded bg-rose-200 hover:bg-rose-100 py-2 text-center"
                 >
                   Login to join
                 </Link>
               ) : (
-                <p className="rounded bg-blue-200 px-4 py-2 text-center">
+                <p className="rounded  bg-rose-200 hover:bg-rose-100 px-4 py-2 text-center">
                   {!isBeforeDeadline && "Deadline to join has already passed. "}
                   {!isNotFullyBooked && "Event fully booked! "}
                 </p>

@@ -2,6 +2,7 @@
 import { cn } from "@/lib/utils";
 import React, { FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Hero = () => {
   const router = useRouter();
@@ -44,9 +45,11 @@ const Hero = () => {
           GO
         </button>
       </form>
+      <Link href="./category">
       <button
           className="w-80 sm:w-4/1 text-center text-white rounded-full py-4 pl-8 focus:outline-none font-semibold bg-gradient-to-r from-red-500 to-blue-500 px-6 hover:ring"
         >Explore all categories </button>
+      </Link>
     </div>
   );
 };
