@@ -1,7 +1,14 @@
 import React from "react";
-import Image from "next/image";
 
-const TeamMemberCard = ({ name, role, description, githubLink, linkedinLink}) => {
+export interface TeamMember {
+  name: string;
+  description: string;
+  githubLink: string;
+  linkedinLink: string;
+  role: string;
+}
+
+const TeamMemberCard = ({ name, role, description, githubLink, linkedinLink}: TeamMember) => {
   return (
     <div className="mb-6 grid gap-8 md:grid-cols-1 lg:mb-5">
       <div className="items-center rounded-lg shadow sm:flex bg-gradient-to-r from-rose-100 to-pink-200">
