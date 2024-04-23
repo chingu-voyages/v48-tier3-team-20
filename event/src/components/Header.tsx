@@ -60,7 +60,7 @@ export default function Header() {
                 Host
               </Link>
             )}
-            <Link className="text-gray-700 mr-3" href="/dashboard">
+            <Link className="text-gray-700 mx-3" href="/dashboard">
               Dashboard
             </Link>
             <Link

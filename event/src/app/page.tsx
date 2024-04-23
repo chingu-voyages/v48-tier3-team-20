@@ -15,7 +15,9 @@ export default async function Home() {
     <>
       <main className="h-full w-full text-lg">
         <Hero />
-        <EventList text="Trending" link="/category/Trending">
+      </main>
+      <section>
+      <EventList text="Trending" link="/category/Trending">
           {trending.map((event) => (
             <EventCard key={event._id} event={event} />
           ))}
@@ -26,7 +28,7 @@ export default async function Home() {
             <EventCard key={event._id} event={event} />
           ))}
         </EventList>
-      </main>
+      </section>
       <TeamMembers />
     </>
   );
