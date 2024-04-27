@@ -57,7 +57,7 @@ export default function LoginPage() {
             Login
           </button>
         </form>
-        <Link href="/register" className="mt-4 block text-blue-600 ">
+        <Link href="/register" className="mt-4 block w-fit text-blue-600 underline">
           No account? Register here.
         </Link>
       </div>
