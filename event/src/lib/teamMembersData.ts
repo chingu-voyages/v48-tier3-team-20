@@ -37,7 +37,7 @@ const teamMembers: TeamMember[] = [
     },
     {
         name: "Jyotirmoy Das",
-        role:  "Backend Developer",
+        role:  "Full Stack Developer",
         description: "Jyotirmoy Das is a skilled Full Stack Developer from India having experience in designing and developing modern and responsive web applications.",
         githubLink: "https://github.com/jdx-code",
         linkedinLink: "https://www.linkedin.com/in/jdx-code/"

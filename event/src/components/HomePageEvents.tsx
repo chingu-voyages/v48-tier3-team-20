@@ -3,7 +3,7 @@ import EventList from "./EventList";
 import EventCard from "./EventCard";
 import { getTrending, getUpcoming } from "@/lib/mongo/helper";
 
-const Events = async () => {
+const HomePageEvents = async () => {
   const trending = await getTrending(4);
   const upcoming = await getUpcoming(4);
   return (
@@ -23,4 +23,4 @@ const Events = async () => {
   );
 };
 
-export default Events;
+export default HomePageEvents;

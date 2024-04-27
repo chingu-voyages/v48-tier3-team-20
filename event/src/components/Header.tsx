@@ -4,9 +4,7 @@ import { UserContext } from "@/context/UserContext";
 import Link from "next/link";
 import LogoutButton from "./LogoutButton";
 import { useRouter } from "next/navigation";
-import icon from "@/app/icon.png";
-import Image from "next/image";
-import Hero from "./Hero";
+
 
 export default function Header() {
   const [isLogin, setIsLogin] = React.useState(false);
@@ -45,7 +43,7 @@ export default function Header() {
           <p className="text-xl font-semibold">Event<span className="bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent ">Bytes</span></p>
         </Link>
       </div>
-      <div className="flex items-center">
+      <nav className="flex items-center">
         {!isLogin || userData === null ? (
           <Link
             className="rounded-full bg-white px-8 py-2 text-[#544350] font-semibold"
@@ -72,7 +70,7 @@ export default function Header() {
             <LogoutButton className="rounded-full text-[#544350] font-semibold bg-white px-8 py-2 hover:font-semibold" />
           </>
         )}
-      </div>
+      </nav>
     </header>
   );
 }
