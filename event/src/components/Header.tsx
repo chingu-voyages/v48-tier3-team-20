@@ -4,8 +4,7 @@ import { UserContext } from "@/context/UserContext";
 import Link from "next/link";
 import LogoutButton from "./LogoutButton";
 import { useRouter } from "next/navigation";
-import icon from "@/app/icon.png";
-import Image from "next/image";
+
 
 export default function Header() {
   const [isLogin, setIsLogin] = React.useState(false);
@@ -38,48 +37,37 @@ export default function Header() {
   });
 
   return (
-    <header className="flex w-full items-center justify-between bg-sky-100 px-6 py-4 text-lg">
-      <Link
-        href="/"
-        className="flex items-center justify-center gap-2 text-sky-700"
-      >
-        <Image
-          src={icon}
-          alt="logo"
-          height={32}
-          width={32}
-          className="rounded-full"
-        />
-        <p className="">EventBytes</p>
-      </Link>
-      <nav className="flex gap-4">
-        <Link className="text-sky-700" href="/category">
-          Category
+    <header className="flex w-full items-center justify-between bg-gradient-to-r from-rose-100 to-pink-200 px-6 py-4 text-lg"> 
+      <div className="flex items-center gap-2 text-gray-700">
+        <Link href="/" className="flex items-center gap-2">
+          <p className="text-xl font-semibold">Event<span className="bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent ">Bytes</span></p>
         </Link>
-
+      </div>
+      <nav className="flex items-center">
         {!isLogin || userData === null ? (
-          <>
-            <Link className="text-sky-700" href="/login">
-              Login
-            </Link>
-          </>
+          <Link
+            className="rounded-full bg-white px-8 py-2 text-[#544350] font-semibold"
+            href="/login"
+          >
+            Login
+          </Link>
         ) : (
           <>
             {userData.isSubscribed && (
-              <Link className="text-sky-700" href="/host">
+              <Link className="text-gray-700" href="/host">
                 Host
               </Link>
             )}
-            <Link className="text-sky-700" href="/dashboard">
+            <Link className="text-gray-700 mx-3" href="/dashboard">
               Dashboard
             </Link>
             <Link
-              className="text-sky-700"
+              className="text-gray-700"
               href={`/profile/${userData.username}`}
             >
-              Profile
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-user-circle mr-3"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" /></svg>
             </Link>
-            <LogoutButton className="text-sky-700" />
+            <LogoutButton className="rounded-full text-[#544350] font-semibold bg-white px-8 py-2 hover:font-semibold" />
           </>
         )}
       </nav>

@@ -14,7 +14,7 @@ const override = {
 const LoadingPage = ({ loading }: LoadingPageProps) => {
   return (
     <ClipLoader
-      color="#3b82f6"
+      color="#ffafcc"
       loading={loading}
       cssOverride={override}
       size={150}

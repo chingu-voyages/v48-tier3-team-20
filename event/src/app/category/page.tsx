@@ -9,8 +9,7 @@ export default async function Category() {
 
   return (
     <>
-      <div className="flex flex-col gap-2 bg-lime-200">
-        <p className="text-4xl font-bold">Categories: </p>
+      <div className="flex flex-col gap-2 my-10">
         {Object.entries(result).map(([k, v]) => (
           <EventList text={k} key={k} link={`/category/${k}`}>
             {Array.isArray(v) ? (

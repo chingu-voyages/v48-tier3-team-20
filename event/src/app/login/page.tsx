@@ -39,8 +39,8 @@ export default function LoginPage() {
   }
 
   return (
-    <section className="flex w-full max-w-md items-center justify-center">
-      <div className="relative w-full rounded-lg bg-gray-100 p-8 shadow-md">
+    <section className="flex w-full max-w-md items-center justify-center my-10 ">
+      <div className="relative w-full rounded-lg  bg-gradient-to-r from-pink-100 to-rose-200 p-8 shadow-md">
         {message && (
           <p className="absolute -top-2 text-lg font-bold text-red-500">
             {message}
@@ -52,12 +52,12 @@ export default function LoginPage() {
           <Input type="password" name="password" id="password" />
           <button
             type="submit"
-            className="w-full rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-600 focus:outline-none"
+            className="w-full rounded-md bg-gradient-to-r from-red-500 to-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-600 focus:outline-none"
           >
             Login
           </button>
         </form>
-        <Link href="/register" className="mt-4 block text-blue-600 underline">
+        <Link href="/register" className="mt-4 block w-fit text-blue-600 underline">
           No account? Register here.
         </Link>
       </div>

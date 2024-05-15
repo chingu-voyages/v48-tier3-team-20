@@ -33,8 +33,8 @@ export default async function CategoryPage({
 
   return (
     <>
-      <div className="flex flex-col gap-2">
-        <p>Category: {category} </p>
+      <div className="flex flex-col gap-2 my-10">
+        <p className="text-center text-4xl font-semibold">{category} </p>
         <div className="flex flex-wrap gap-2">
           {data.map((event) => (
             <EventCard key={event._id} event={event} />
