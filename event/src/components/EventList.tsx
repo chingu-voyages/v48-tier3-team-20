@@ -13,7 +13,7 @@ export default function EventList({ link, text, children }: EventListProp) {
         <h2 className="mr-4 text-2xl font-bold">{text}</h2>
         <Link
           href={link}
-          className="flex items-center rounded-lg border px-2 py-1 text-sm"
+          className="flex items-center rounded-lg border border-gray-500 px-2 py-1 text-sm"
         >
           View more
           <svg

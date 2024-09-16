@@ -23,9 +23,9 @@ export default function RootLayout({
       <body
         className={cn(
           inter.className,
-          "flex min-h-screen flex-col items-center justify-between gap-2",
-          "bg-slate-100 text-slate-900",
-        )}
+          "flex min-h-screen flex-col items-center justify-between",
+          "bg-slate-100 text-slate-900","bg-gradient-to-r from-purple-50 to-pink-50"
+        )} 
       >
         <UserProvider>
           <Header />
